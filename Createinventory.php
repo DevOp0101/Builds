@@ -5,7 +5,7 @@ $inv = $_POST['inv'];
 
 
 
-$con = mysqli_connect("sql9.freemysqlhosting.net:3306","sql9640930","v163ApYKra", "sql9640930") or ("Cannot connect!"  . mysql_error());
+$con = mysqli_connect("sql9.freemysqlhosting.net","sql9640930","v163ApYKra", "sql9640930") or ("Cannot connect!"  . mysql_error());
 if (!$con)
 	die('Could not connect: ' . mysql_error());
 	
