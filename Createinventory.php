@@ -5,7 +5,7 @@ $inv = $_POST['inv'];
 
 
 
-$con = mysqli_connect("sql.freedb.tech:3306","freedb_DevOpData","MrNs%wzJ&CjDT9w", "freedb_DevOpUser") or ("Cannot connect!"  . mysql_error());
+$con = mysqli_connect("sql.freedb.tech:3306","freedb_DevOpUser","MrNs%wzJ&CjDT9w", "freedb_DevOpData") or ("Cannot connect!"  . mysql_error());
 if (!$con)
 	die('Could not connect: ' . mysql_error());
 	
