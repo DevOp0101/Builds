@@ -3,7 +3,7 @@
 $user = $_POST['username'];
 
 
-$con = mysqli_connect("sql.freedb.tech:3306","freedb_DevOpUser","MrNs%wzJ&CjDT9w", "freedb_DevOpData") or ("Cannot connect!"  . mysql_error());
+$con = mysqli_connect("sql202.infinityfree.com","if0_34893532","abc123efg", "if0_34893532_devopData") or ("Cannot connect!"  . mysql_error());
 if (!$con)
 	die('Could not connect: ' . mysql_error());
 	
