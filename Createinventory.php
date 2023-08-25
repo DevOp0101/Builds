@@ -5,7 +5,7 @@ $inv = $_POST['inv'];
 
 
 
-$con = mysqli_connect("sql202.infinityfree.com","if0_34893532","abc123efg", "if0_34893532_devopData") or ("Cannot connect!"  . mysql_error());
+$con = mysqli_connect("fdb1031.runhosting.com:3306","4364293_devopdata","abc123efg", "4364293_devopdata") or ("Cannot connect!"  . mysql_error());
 if (!$con)
 	die('Could not connect: ' . mysql_error());
 	
