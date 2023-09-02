@@ -1,6 +1,28 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
+    <style>
+        .pulse {
+            height: 100vh;
+            width: 100vw;
+            background-image: radial-gradient(circle closest-side, rgba(255, 0, 0, 0.75), rgba(0, 0, 255, 0.25)), url("../Images/Hexagon.jpg");
+            background-size: cover;
+            background-position: center;
+            visibility: visible;
+            overflow: hidden;
+            animation: pulse 4s linear infinite;
+            position: relative;
+            z-index: -1;
+        }
+        @keyframes pulse {
+            from {
+                filter: hue-rotate(0deg);
+            }
+            to {
+                filter: hue-rotate(360deg);
+            }
+        }
+    </style>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity WebGL Player | Mergeball</title>
@@ -8,6 +30,7 @@
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body>
+    <div class="pulse"></div>
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas" width=960 height=600></canvas>
       <div id="unity-loading-bar">

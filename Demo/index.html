@@ -45,7 +45,9 @@
         background-position: center;
         animation: counterflash 1s infinite;
         opacity: .4;
-        padding-top: 30vh;
+        padding-top: 40vh;
+        padding-left: 15vh;
+        padding-right: 15vh;
         z-index: 2;
     }
 
@@ -143,6 +145,40 @@
         opacity: .3;
         z-index: -1;
     }
+    
+    @media only screen and (max-width: 480px) {
+        .face {
+            height: 30vh;
+            width: 10vw;
+            top: -5vh;
+            left: 40vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+        
+        .lefthand {
+            height: 120vh;
+            width: 20vw;
+            top: 5vh;
+            left: 65vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+        .righthand {
+            height: 120vh;
+            width: 20vw;
+            top: 5vh;
+            left: 0vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+    }
 </style>
 </head>
 <body>
@@ -150,16 +186,16 @@
     <div class="container">
         <!-- This HTML code creates a link to an image that is a link to another site -->
         <a href="https://devop0101.github.io/Builds/Metaball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
-        <img src="../images/Metaball.jpg" title="Metaball" width="350px" height="350px"> <!-- This is the link to the image you want to display -->
+        <img src="../Images/Metaball.jpg" title="Metaball" width="350px" height="350px"> <!-- This is the link to the image you want to display -->
         </a>
         <!-- This HTML code creates a link to an image that is a link to another site -->
         <a href="https://devop0101.github.io/Builds/Mergeball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
-        <img src="../images/Mergeball.jpg" title="Mergeball" width="375px" height="375px" padding-top="30vh"> <!-- This is the link to the image you want to display -->
+        <img src="../Images/Mergeball.jpg" title="Mergeball" width="350px" height="350px" padding-top="30vh"> <!-- This is the link to the image you want to display -->
         </a>
         <!-- This HTML code creates a link to an image that is a link to another site -->
         <a href="https://devop0101.github.io/Builds/Cryptoball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
-        <img src="../images/Cryptoball.jpg" title="Cryptoball" width="350px" height="350px"> <!-- This is the link to the image you want to display -->
-        </a>
+        <img src="../Images/Cryptoball.jpg" title="Cryptoball" width="350px" height="350px"> <!-- This is the link to the image you want to display -->
+        </a>        
     </div>
     <div class="face">
         <img src="../Images/Eyes.jpg" class="eyes" id="eyes">
