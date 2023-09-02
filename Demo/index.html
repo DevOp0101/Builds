@@ -1,107 +1,262 @@
-<!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Actionballs</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-  </head>
-  <body>
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
-        </div>
-      </div>
-      <div id="unity-warning"> </div>
-      <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">Actionballs</div>
-      </div>
+<html>
+<head>
+<style>
+    
+    /* This CSS code makes the image expand when the link is hovered */
+    a:hover img {
+        transform: scale(1.2);
+        transition: transform 0.5s;
+    }
+    
+    /* The element to apply the animation to */
+    .pulse {
+        height: 100vh; /* full viewport height */
+        width: 100vw; /* full viewport width */
+        background-image: radial-gradient(circle closest-side, rgba(255, 0, 0, 0.75), rgba(0, 0, 255, 0.25)), url("../Images/Hexagon.jpg");
+        background-size: cover;
+        background-position: center;
+        visibility: visible;
+        overflow: hidden;
+        animation: pulse 2s linear infinite;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* The animation code */
+    @keyframes pulse {
+        from {
+            /*clip-path: circle(50% at 50% 50%); /* start from a centered circle */
+            filter: hue-rotate(0deg);
+        }
+        to {
+            /*clip-path: circle(50% at 50% 50%); /* start from a centered circle */
+            filter: hue-rotate(360deg);
+        }
+    }
+    
+    .container {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        height: 100vh; /* full viewport height */
+        width: 100vw; /* full viewport width */
+        background-color: transparent;
+        background-size: cover;
+        background-position: center;
+        animation: counterflash 1s infinite;
+        opacity: .4;
+        padding-top: 30vh;
+        z-index: 2;
+    }
+
+    @keyframes counterflash {
+        from {
+            filter: hue-rotate(0deg);
+        }
+        to {
+            filter: hue-rotate(-360deg);
+        }
+    }
+    
+    /* Center the image and set the perspective */
+    .face {
+        height: 30vh;
+        width: 20vw;
+        top: -5vh;
+        left: 40vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .eyes {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .1;
+        z-index: -1;
+    }
+    
+    /* Rotate the image based on the mouse position */
+    .jaw {
+        object-fit: cover;
+        clip-path: circle(55% at center);
+        top: 13vh;
+        left: 1.75vw;
+        position: absolute;
+        width: 85%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .1;
+    }
+    
+    /* Center the image and set the perspective */
+    .lefthand {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 70vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .leftpalm {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .3;
+        z-index: -1;
+    }
+    
+    /* Center the image and set the perspective */
+    .righthand {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 0vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .rightpalm {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .3;
+        z-index: -1;
+    }
+</style>
+</head>
+<body>
+<div class="pulse">
+    <div class="container">
+        <!-- This HTML code creates a link to an image that is a link to another site -->
+        <a href="https://devop0101.github.io/Builds/Metaball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+        <img src="../images/Metaball.jpg" title="Metaball" width="350px" height="350px"> <!-- This is the link to the image you want to display -->
+        </a>
+        <!-- This HTML code creates a link to an image that is a link to another site -->
+        <a href="https://devop0101.github.io/Builds/Mergeball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+        <img src="../images/Mergeball.jpg" title="Mergeball" width="375px" height="375px" padding-top="30vh"> <!-- This is the link to the image you want to display -->
+        </a>
+        <!-- This HTML code creates a link to an image that is a link to another site -->
+        <a href="https://devop0101.github.io/Builds/Cryptoball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+        <img src="../images/Cryptoball.jpg" title="Cryptoball" width="350px" height="350px"> <!-- This is the link to the image you want to display -->
+        </a>
     </div>
-    <script>
-      var container = document.querySelector("#unity-container");
-      var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-      var warningBanner = document.querySelector("#unity-warning");
+    <div class="face">
+        <img src="../Images/Eyes.jpg" class="eyes" id="eyes">
+        <img src="../Images/Jaw.jpg" class="jaw" id="jaw">
+    </div>
+    <div class="lefthand">
+        <img src="../Images/Lefthand.jpg" class="leftpalm" id="leftpalm">
+    </div>
+    <div class="righthand">
+        <img src="../Images/Righthand.jpg" class="rightpalm" id="rightpalm">
+    </div>
+</div>
 
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
-      function unityShowBanner(msg, type) {
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-        }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
-      }
+<script>
+    // Get the eyes element
+    var eyes = document.getElementById("eyes");
 
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/Demo.loader.js";
-      var config = {
-        dataUrl: buildUrl + "/Demo.data",
-        frameworkUrl: buildUrl + "/Demo.framework.js",
-        codeUrl: buildUrl + "/Demo.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "Actionballs",
-        productName: "Actionballs",
-        productVersion: "1",
-        showBanner: unityShowBanner,
-      };
+    // Add a mousemove event listener to the container
+    document.querySelector(".container").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        var mouseX = event.clientX - this.offsetLeft;
+        var mouseY = event.clientY - this.offsetTop;
 
-      // By default Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
+        // Get the center of the container
+        var centerX = this.offsetWidth / 2;
+        var centerY = this.offsetHeight / 2;
 
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        container.className = "unity-mobile";
-        // Avoid draining fillrate performance on mobile devices,
-        // and default/override low DPI mode on mobile browsers.
-        config.devicePixelRatio = 1;
-        unityShowBanner('WebGL builds are not supported on mobile devices.');
-      } else {
-        canvas.style.width = "960px";
-        canvas.style.height = "600px";
-      }
-      loadingBar.style.display = "block";
+        // Calculate the rotation angles in degrees
+        var rotateX = - (mouseY - centerY) / 8;
+        var rotateY = (mouseX - centerX) / 15;
 
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-        }).then((unityInstance) => {
-          loadingBar.style.display = "none";
-          fullscreenButton.onclick = () => {
-            unityInstance.SetFullscreen(1);
-          };
-        }).catch((message) => {
-          alert(message);
-        });
-      };
-      document.body.appendChild(script);
-    </script>
-  </body>
+        // Apply the rotation to the eyes
+        eyes.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+    });
+    
+    // Get the jaw element
+    var jaw = document.getElementById("jaw");
+
+    // Add a mousemove event listener to the container
+    document.querySelector(".container").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        var mouseX = event.clientX - this.offsetLeft;
+        var mouseY = event.clientY - this.offsetTop;
+
+        // Get the center of the container
+        var centerX = this.offsetWidth / 2;
+        var centerY = this.offsetHeight / 2;
+
+        // Calculate the rotation angles in degrees
+        var rotateX = - (mouseY - centerY) / 8;
+        var rotateY = (mouseX - centerX) / 15;
+
+        // Apply the rotation to the jaw
+        jaw.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+    });
+    
+    // Get the leftpalm element
+    var leftpalm = document.getElementById("leftpalm");
+
+    // Add a mousemove event listener to the container
+    document.querySelector(".container").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        var mouseX = event.clientX - this.offsetLeft;
+        var mouseY = event.clientY - this.offsetTop;
+
+        // Get the center of the container
+        var centerX = this.offsetWidth / 2;
+        var centerY = this.offsetHeight / 2;
+
+        // Calculate the rotation angles in degrees
+        var rotateX = - (mouseY - centerY) / 15;
+        var rotateY = (mouseX - centerX) / 20;
+
+        // Apply the rotation to the leftpalm
+        leftpalm.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+    });
+    
+    // Get the rightpalm element
+    var rightpalm = document.getElementById("rightpalm");
+
+    // Add a mousemove event listener to the container
+    document.querySelector(".container").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        var mouseX = event.clientX - this.offsetLeft;
+        var mouseY = event.clientY - this.offsetTop;
+
+        // Get the center of the container
+        var centerX = this.offsetWidth / 2;
+        var centerY = this.offsetHeight / 2;
+
+        // Calculate the rotation angles in degrees
+        var rotateX = - (mouseY - centerY) / 15;
+        var rotateY = (mouseX - centerX) / 20;
+
+        // Apply the rotation to the rightpalm
+        rightpalm.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+    });
+</script>
+</body>
 </html>
