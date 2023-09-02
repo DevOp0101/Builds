@@ -146,6 +146,89 @@
         z-index: -1;
     }
     
+    /* Center the image and set the perspective */
+    .leftname {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 65vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+        
+    }
+
+    /* Rotate the image based on the mouse position */
+    .leftsignature {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .03;
+        z-index: -1;
+        background: url("../Images/Leftname.jpg") repeat-y;
+        animation: leftslide 3s linear infinite;
+    }
+
+    @keyframes leftslide {
+        from { 
+            height: 20%;
+            opacity: .01;
+        }
+        20% {
+            opacity: .02f;
+        }
+        to { 
+            height: 120%;
+            opacity: .03;
+        }
+    }
+    
+    /* Center the image and set the perspective */
+    .rightname {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 0vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+        
+    }
+
+    /* Rotate the image based on the mouse position */
+    .rightsignature {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        top: -5000px;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .05;
+        z-index: -1;
+        background: url("../Images/Rightname.jpg") repeat-y;
+        animation: rightslide 3s linear infinite;
+    }
+
+    @keyframes rightslide {
+        from { 
+            height: 20%;
+            opacity: .01;
+        }
+        20% {
+            opacity: .02;
+        }
+        to { 
+            height: 120%;
+            opacity: .03;
+        }
+    }
+    
     @media only screen and (max-width: 480px) {
         .face {
             height: 30vh;
@@ -169,6 +252,26 @@
             z-index: -1;
         }
         .righthand {
+            height: 120vh;
+            width: 20vw;
+            top: 5vh;
+            left: 0vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+        .leftname {
+            height: 120vh;
+            width: 20vw;
+            top: 5vh;
+            left: 65vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+        .rightname {
             height: 120vh;
             width: 20vw;
             top: 5vh;
@@ -206,6 +309,12 @@
     </div>
     <div class="righthand">
         <img src="../Images/Righthand.jpg" class="rightpalm" id="rightpalm">
+    </div>
+    <div class="leftname">
+        <img src="../Images/Leftname.jpg" class="leftsignature" id="leftsignature">
+    </div>
+    <div class="rightname">
+        <img src="../Images/Rightname.jpg" class="rightsignature" id="rightsignature">
     </div>
 </div>
 
@@ -292,6 +401,48 @@
 
         // Apply the rotation to the rightpalm
         rightpalm.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+    });
+    
+    // Get the leftsignature element
+    var leftsignature = document.getElementById("leftsignature");
+
+    // Add a mousemove event listener to the container
+    document.querySelector(".container").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        var mouseX = event.clientX - this.offsetLeft;
+        var mouseY = event.clientY - this.offsetTop;
+
+        // Get the center of the container
+        var centerX = this.offsetWidth / 2;
+        var centerY = this.offsetHeight / 2;
+
+        // Calculate the rotation angles in degrees
+        var rotateX = - (mouseY - centerY) / 15;
+        var rotateY = (mouseX - centerX) / 20;
+
+        // Apply the rotation to the leftsignature
+        leftsignature.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+    });
+    
+    // Get the rightsignature element
+    var rightsignature = document.getElementById("rightsignature");
+
+    // Add a mousemove event listener to the container
+    document.querySelector(".container").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        var mouseX = event.clientX - this.offsetLeft;
+        var mouseY = event.clientY - this.offsetTop;
+
+        // Get the center of the container
+        var centerX = this.offsetWidth / 2;
+        var centerY = this.offsetHeight / 2;
+
+        // Calculate the rotation angles in degrees
+        var rotateX = - (mouseY - centerY) / 15;
+        var rotateY = (mouseX - centerX) / 20;
+
+        // Apply the rotation to the rightsignature
+        rightsignature.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
     });
 </script>
 </body>
