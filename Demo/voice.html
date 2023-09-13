@@ -526,10 +526,7 @@
     }
     
     
-    const apiKeyPart1 = 'sk-T2bMZItdUVcL1jzr53RFT3B';
-    const apiKeyPart2 = 'lbkFJHVK85HVdGNW580LYJvPq';
-    //const apiKey = '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';
-    const apiKey = apiKeyPart1 + apiKeyPart2;
+    const apiKey = process.env.CHAT_GPT_API_KEY;
     
     async function createChatMessage(prompt) {
         const baseURL = 'https://api.openai.com/v1/chat/completions';
