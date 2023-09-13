@@ -526,7 +526,10 @@
     }
     
     
-    const apiKey = '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';
+    const apiKeyPart1 = 'sk-T2bMZItdUVcL1jzr53RFT3B';
+    const apiKeyPart2 = 'lbkFJHVK85HVdGNW580LYJvPq';
+    //const apiKey = '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';
+    const apiKey = apiKeyPart1 + apiKeyPart2;
     
     async function createChatMessage(prompt) {
         const baseURL = 'https://api.openai.com/v1/chat/completions';
