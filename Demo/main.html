@@ -1,0 +1,773 @@
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container"></div>
+    <canvas class="game-light-glow" id="canvas"></canvas>
+    <div class="game-level">
+        
+        <!-- Border Wall -->
+        <div class="game-border-wall" id="borderwall"></div>
+        
+        <!-- Landscape & Shadowmap #1 -->
+        <div class="game-landscape" id="landscape1" style="background-image: url('../Images/Tileset1.jpg'); top: 0px; left: 0px;"></div>
+        <div class="game-landscape-shadowmap" id="landscapeshadowmap1" style="background-image: url('../Images/Tileshadowmap1.png'); top: 0px; left: 0px;"></div>
+        
+        <!-- Landscape & Shadowmap #2 -->
+        <div class="game-landscape" id="landscape2" style="background-image: url('../Images/Tileset2.jpg'); top: 0px; left: 2048px;"></div>
+        <div class="game-landscape-shadowmap" id="landscapeshadowmap2" style="background-image: url('../Images/Tileshadowmap2.png'); top: 0px; left: 2048px;"></div>
+        
+        <!-- Landscape & Shadowmap #3 -->
+        <div class="game-landscape" id="landscape3" style="background-image: url('../Images/Tileset3.jpg'); top: 0px; left: 4096px;"></div>
+        <div class="game-landscape-shadowmap" id="landscapeshadowmap3" style="background-image: url('../Images/Tileshadowmap3.png'); top: 0px; left: 4096px;"></div>
+        
+        <!-- Landscape & Shadowmap #4 -->
+        <div class="game-landscape" id="landscape4" style="background-image: url('../Images/Tileset4.jpg'); top: 2048px; left: 0px;"></div>
+        <div class="game-landscape-shadowmap" id="landscapeshadowmap4" style="background-image: url('../Images/Tileshadowmap4.png'); top: 2048px; left: 0px;"></div>
+        
+        <!-- Landscape & Shadowmap #5 -->
+        <div class="game-landscape" id="landscape5" style="background-image: url('../Images/Tileset5.jpg'); top: 2048px; left: 2048px;"></div>
+        <div class="game-landscape-shadowmap" id="landscapeshadowmap5" style="background-image: url('../Images/Tileshadowmap5.png'); top: 2048px; left: 2048px;"></div>
+        
+        <!-- Landscape & Shadowmap #6 -->
+        <div class="game-landscape" id="landscape6" style="background-image: url('../Images/Tileset6.jpg'); top: 2048px; left: 4096px;"></div>
+        <div class="game-landscape-shadowmap" id="landscapeshadowmap6" style="background-image: url('../Images/Tileshadowmap6.png'); top: 2048px; left: 4096px;"></div>
+        
+        <!-- Landscape & Shadowmap #7 -->
+        <div class="game-landscape" id="landscape7" style="background-image: url('../Images/Tileset7.jpg'); top: 4096px; left: 0px;"></div>
+        <div class="game-landscape-shadowmap" id="landscapeshadowmap7" style="background-image: url('../Images/Tileshadowmap7.png'); top: 4096px; left: 0px;"></div>
+        
+        <!-- Landscape & Shadowmap #8 -->
+        <div class="game-landscape" id="landscape8" style="background-image: url('../Images/Tileset8.jpg'); top: 4096px; left: 2048px;"></div>
+        <div class="game-landscape-shadowmap" id="landscapeshadowmap8" style="background-image: url('../Images/Tileshadowmap8.png'); top: 4096px; left: 2048px;"></div>
+        
+        <!-- Landscape & Shadowmap #9 -->
+        <div class="game-landscape" id="landscape9" style="background-image: url('../Images/Tileset9.jpg'); top: 4096px; left: 4096px;"></div>
+        <div class="game-landscape-shadowmap" id="landscapeshadowmap9" style="background-image: url('../Images/Tileshadowmap9.png'); top: 4096px; left: 4096px;"></div>
+        -->
+    </div>
+    
+    <!-- Character -->
+    <div class="game-character" id="character" style="top: 40vh; left: 46vw;"></div>
+    <div class="game-character-shadowmap" id="charactershadowmap1" style="background-image: url('../Images/Charactershadowmap.png');"></div>
+        
+    <!-- Strings -->
+    <div style="top: -8vh; left: 43.35vw; background-image: url('../Images/Stringsvertical.png');" class="game-strings" id="strings"></div>
+    <div style="top: -8vh; left: 43.35vw; background-image: url('../Images/Stringsdiagonal.png');" class="game-strings" id="strings"></div>
+    <div style="top: -8vh; left: 43.35vw; background-image: url('../Images/Stringshorizontal.png');" class="game-strings" id="strings"></div>
+    <div style="background-image: url('../Images/Bloominner.png');" class="game-character-inner-bloom" id="bloominner"></div>
+    <div style="background-image: url('../Images/Bloommiddle.png');" class="game-character-middle-bloom" id="boommiddle"></div>
+    <div style="background-image: url('../Images/Bloomoutter.png');" class="game-character-outter-bloom" id="bloomoutter"></div>
+    
+    <audio id="myAudio" autoplay>
+        <source src="../Music/Music.mp3" type="audio/mpeg">
+    </audio>
+    
+    <div class="fps-counter" id="fpscounter">FPS: -</div>
+<script>
+    
+    var levelOffsetX = 0;
+    var levelOffsetY = 0;
+    var characterOffsetX = 0;
+    var characterOffsetY = 0;
+    const container = document.querySelector(".game-container");
+    const level = document.querySelector(".game-level");
+    const character = document.querySelector(".game-character");
+    const characterShadowmap = document.querySelector(".game-character-shadowmap");
+    const lightglow = document.querySelector(".game-light-glow");
+    const characterinnerbloom = document.querySelector(".game-character-inner-bloom");
+    const charactermiddlebloom = document.querySelector(".game-character-middle-bloom");
+    const characteroutterbloom = document.querySelector(".game-character-outter-bloom");
+    const levelCanvas = document.getElementById("canvas");
+    const fpsCounterElement = document.getElementById("fpscounter");
+    let lastTime = performance.now();
+    
+    var oldPhysicsTime = 0;
+    var updatePhysicsTime = 100;
+    var physics = false;
+    
+    var oldPrioritizingTime = 0;
+    var updatePrioritizingTime = 3000;
+    var prioritizing = false;
+    
+    var oldMovementTime = 0;
+    var updateMovementTime = 5;
+    var movement = false;
+    
+    var oldDrawTime = 0;
+    var updateDrawTime = 200;
+    var drawing = false;
+
+    var priorityTimerDuration = 150;
+    var priorityTimer = 0;
+
+    var objectPriorityList = persistentList();
+    
+    var stringsList = persistentList();
+    
+    var mouseDownId = -1;
+
+    var mouseDown = false;
+    let mouseCurrentX = 0;
+    let mouseCurrentY = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+    var centerX = 0;
+    var centerY = 0;
+    var angle = 0;
+    var distance = 40;
+    var movementLerp = .15;
+    var destinationX = 0;
+    var destinationY = 0;
+    var halfDestinationX = 0;
+    var halfDestinationY = 0;
+    
+    var minimumClickDistance = 50;
+    
+    var previousDistance = 8;
+    
+    var previousAngle = 0;
+    var previousDestinationX = 0;
+    var previousDestinationY = 0;
+    
+    var collision = false;
+    
+    let animationAngle = 1;
+    let animationFrame = 1;
+    
+    let oldAnimationAngle = 0;
+    
+    var avatarOffsetX = window.innerWidth/200;
+    var avatarOffsetY = window.innerHeight/20;
+    
+    var characterLightOffsetX = 0;
+    var characterLightOffsetY = 10;
+    
+    var maximumRenderDistance = 1000;
+    
+    var blocksInitialized = false;
+    
+    function persistentList() {
+        var list = [];
+        return {
+            add: function(item) {
+                list.push(item);
+            },
+            remove: function(index) {
+                if (index >= 0 && index < list.length) {
+                    list.splice(index, 1);
+                }
+            },
+            contents: function(index) {
+                return list[index];
+            },
+            getList: function() {
+                return list;
+            },
+            clear: function() {
+                list = [];
+            },
+            count: function() {
+                return list.length;
+            }
+        };
+    }
+    
+    function startGame() {
+        
+        priorityTimer = priorityTimerDuration - 1;
+        
+        lightglow.style.top = '-2048px';
+        lightglow.style.left = '-2048px';
+        level.style.top = '-2048px';
+        level.style.left = '-2048px';
+        levelOffsetX = '-2048px';
+        levelOffsetY = '-2048px';
+        previousDestinationX = '-2048px';
+        previousDestinationY = '-2048px';
+        characterOffsetX = '2048px';
+        characterOffsetY = '2048px';
+        
+        characterinnerbloom.style.top = window.innerHeight/2 - 990;
+        characterinnerbloom.style.left = window.innerWidth/2 - 1024;
+        
+        charactermiddlebloom.style.top = window.innerHeight/2 - 990;
+        charactermiddlebloom.style.left = window.innerWidth/2 - 1024;
+        
+        characteroutterbloom.style.top = window.innerHeight/2 - 990;
+        characteroutterbloom.style.left = window.innerWidth/2 - 1024;
+        
+        characterShadowmap.style.top = window.innerHeight/2 - 950;
+        characterShadowmap.style.left = window.innerWidth/2 - 1024;
+        
+        var stringContainers = document.getElementsByClassName('game-strings');
+        var stringList = Array.from(stringContainers);
+        for (var object of stringList) {
+            stringsList.add(object);
+        }
+        
+    }
+    
+    startGame();
+    
+    function updateFPS() {
+        const now = performance.now();
+        const deltaTime = now - lastTime;
+        lastTime = now;
+        const fps = Math.round(1000 / deltaTime);
+
+        fpsCounterElement.textContent = `FPS: ${fps}`;
+
+        requestAnimationFrame(updateFPS); // Call the function recursively
+    }
+
+    
+
+    // Start the FPS counter
+    updateFPS();
+    
+    function lerp(start, end, t) {
+        return start * (1 - t) + end * t;
+    }
+    
+    /* Collision Priority Manager */
+    function updatePriority(){
+        var currentPrioritizingTime = new Date().getTime();
+        if(currentPrioritizingTime - oldPrioritizingTime > updatePrioritizingTime){
+            //console.log(currentPrioritizingTime - oldPrioritizingTime);
+            oldPrioritizingTime = currentPrioritizingTime;
+            prioritizing = true;
+        }
+        if(prioritizing && blocksInitialized){
+            prioritizing = false;
+            objectPriorityList.clear();
+            for(var object of blocks){
+                var distanceX = object.position.x - lights[0].position.x;
+                var distanceY = object.position.y - lights[0].position.y;
+                var distanceRange = 1500;
+                if(distanceX < distanceRange && distanceX > -distanceRange && distanceY < distanceRange && distanceY > -distanceRange){
+                    objectPriorityList.add(object);
+                }
+            }
+            console.log("Prioritizing" + objectPriorityList.count());
+        }
+        
+        var newCurrentTime = new Date().getTime();
+        //console.log(newCurrentTime - beginningTime + " Start-Finish");
+        requestAnimationFrame(updatePriority);
+    }
+    
+    updatePriority();
+    
+    
+    /* Movement - Collision - Animation */
+    function updatePhysics(){
+        var currentPhysicsTime = new Date().getTime();
+        if(currentPhysicsTime - oldPhysicsTime > updatePhysicsTime){
+            //console.log(currentPhysicsTime - oldPhysicsTime);
+            oldPhysicsTime = currentPhysicsTime;
+            physics = true;
+        }
+        var beginningTime = currentPhysicsTime;
+        if(mouseDown && physics){
+            physics = false;
+            mouseX = mouseCurrentX - container.offsetLeft;
+            mouseY = mouseCurrentY - container.offsetTop;
+
+            centerX = container.offsetWidth / 2 + avatarOffsetX;
+            centerY = container.offsetHeight / 2 + avatarOffsetY;
+
+            const mouseDistance = Math.sqrt(Math.pow(centerX - mouseX, 2) + Math.pow(centerY - mouseY, 2));
+
+            angle = Math.atan2(mouseY - centerY, mouseX - centerX);
+
+            destinationX = levelCanvas.offsetLeft - Math.cos(angle) * distance;
+            destinationY = levelCanvas.offsetTop - Math.sin(angle) * distance;
+            halfDestinationX =  levelCanvas.offsetLeft - Math.cos(angle) * (distance/2);
+            halfDestinationY = levelCanvas.offsetTop - Math.sin(angle) * (distance/2);            
+            
+            collision = false;
+            for(var x = 0; x < objectPriorityList.count(); x++){ 
+                if(!collision){
+                    var valueX = objectPriorityList.contents(x).position.x + objectPriorityList.contents(x).width/2;
+                    var valueY = objectPriorityList.contents(x).position.y + objectPriorityList.contents(x).height/2;
+                    
+                    var characterX = lights[0].position.x + avatarOffsetX;
+                    var characterY = lights[0].position.y + avatarOffsetY;
+                    
+                    var distanceX = valueX - characterX;
+                    var distanceY = valueY - characterY;
+                    var characterDistanceRange = 60;
+                    if(distanceX < characterDistanceRange && distanceX > -characterDistanceRange && distanceY < characterDistanceRange && distanceY > -characterDistanceRange){
+                        collision = true;
+                    }
+                    if(collision){
+                        mouseY - centerY, mouseX - centerX
+                        previousAngle = Math.atan2(characterY - valueY, characterX - valueX);
+                        previousDestinationX = canvas.offsetLeft - Math.cos(previousAngle) * previousDistance;
+                        previousDestinationY = canvas.offsetTop - Math.sin(previousAngle) * previousDistance;
+                        levelOffsetX = previousDestinationX;
+                        levelOffsetY = previousDestinationY;
+                        characterOffsetX = -previousDestinationX;
+                        characterOffsetY = -previousDestinationY;
+                    }
+                }
+            }
+            if(!collision){
+                if(destinationX < 730 && destinationY < 345 && destinationX > -5340 && destinationY > -5720 && mouseDistance > minimumClickDistance){
+                    levelOffsetX = halfDestinationX;
+                    levelOffsetY = halfDestinationY;
+                    characterOffsetX = -halfDestinationX;
+                    characterOffsetY = -halfDestinationY;
+                }
+            }
+        }
+        
+        let relativeX = mouseX - centerX;
+        let relativeY = mouseY - centerY;
+
+        /* Text Box */
+        //updateText(destinationX.toString() + "  " + destinationY.toString())
+
+        /* Sprite Animation Angle */
+        if(relativeX < 30 && relativeX > -30 && relativeY > 30){
+            animationAngle = 0;
+        }
+        if(relativeX > 30 && relativeY > 30){
+            animationAngle = 1;
+        }
+        if(relativeX > 30 && relativeY < 30 && relativeY > -30){
+            animationAngle = 2;
+        }
+        if(relativeX > 30 && relativeY < -30){
+            animationAngle = 3;
+        }
+        if(relativeX < 30 && relativeX > -30 && relativeY < -30){
+            animationAngle = 4;
+        }
+        if(relativeX < -30 && relativeY < -30){
+            animationAngle = 5;
+        }
+        if(relativeX < -30 && relativeY < 30 && relativeY > -30){
+            animationAngle = 6;
+        }
+        if(relativeX < -30 && relativeY > 30){
+            animationAngle = 7;
+        }
+        if(oldAnimationAngle != animationAngle){
+            oldAnimationAngle = animationAngle;
+            adjustSprite();
+            adjustStrings();
+            adjustCharacterBloom();
+        }
+        
+        var newCurrentTime = new Date().getTime();
+        //console.log(newCurrentTime - beginningTime + " Start-Finish");
+        requestAnimationFrame(updatePhysics);
+    }
+    
+    updatePhysics();
+    
+    /* Movement Lerp */
+    function updateMovement(){
+        var currentMovementTime = new Date().getTime();
+        if(currentMovementTime - oldMovementTime > updateMovementTime){
+            //console.log(currentMovementTime - oldMovementTime);
+            oldMovementTime = currentMovementTime;
+            movement = true;
+        }
+        if(movement){
+            movement = false;
+            levelCanvas.style.top = lerp(parseFloat(levelCanvas.style.top.toString().replace("px", "")), levelOffsetY, movementLerp) + "px";
+            levelCanvas.style.left = lerp(parseFloat(levelCanvas.style.left.toString().replace("px", "")), levelOffsetX, movementLerp) + "px";
+            level.style.top = lerp(parseFloat(level.style.top.toString().replace("px", "")), levelOffsetY, movementLerp) + "px";
+            level.style.left = lerp(parseFloat(level.style.left.toString().replace("px", "")), levelOffsetX, movementLerp) + "px";
+        }
+    
+        requestAnimationFrame(updateMovement);
+    }
+    
+    updateMovement();
+    
+    function adjustSprite(){
+        var posX = -111 * animationAngle;
+        var posY = -150 * animationFrame;
+        character.style.backgroundPosition = posX + "px " + posY + "px";        
+    }
+    
+    /* Animate Strings */
+    function adjustStrings(){
+        
+        if(animationAngle == 0 || animationAngle == 4){
+            stringsList.contents(0).style.opacity = 0.08;
+            stringsList.contents(1).style.opacity = 0;
+            stringsList.contents(2).style.opacity = 0;
+        }
+        if(animationAngle == 1 || animationAngle == 3 || animationAngle == 5 || animationAngle == 7){
+            stringsList.contents(0).style.opacity = 0;
+            stringsList.contents(1).style.opacity = 0.08;
+            stringsList.contents(2).style.opacity = 0;
+        }
+        if(animationAngle == 2 || animationAngle == 6){
+            stringsList.contents(0).style.opacity = 0;
+            stringsList.contents(1).style.opacity = 0;
+            stringsList.contents(2).style.opacity = 0.08;
+        }
+    }
+    
+    function adjustCharacterBloom(){
+        var windowInnerHeight = window.innerHeight/2;
+        var windowInnerWidth = window.innerWidth/2;
+        if(animationAngle == 0){
+            var bloomHeight = windowInnerHeight - 1053;
+            var bloomWidth = windowInnerWidth - 995;
+            characterinnerbloom.style.top = bloomHeight;
+            characterinnerbloom.style.left = bloomWidth;
+            charactermiddlebloom.style.top = bloomHeight;
+            charactermiddlebloom.style.left = bloomWidth;
+            characteroutterbloom.style.top = bloomHeight;
+            characteroutterbloom.style.left = bloomWidth;
+            characterShadowmap.style.top = windowInnerHeight - 950;
+            characterShadowmap.style.left = windowInnerWidth - 990;            
+        }
+        if(animationAngle == 1){
+            var bloomHeight = windowInnerHeight - 1059;
+            var bloomWidth = windowInnerWidth - 1004;
+            characterinnerbloom.style.top = bloomHeight;
+            characterinnerbloom.style.left = bloomWidth;
+            charactermiddlebloom.style.top = bloomHeight;
+            charactermiddlebloom.style.left = bloomWidth;
+            characteroutterbloom.style.top = bloomHeight;
+            characteroutterbloom.style.left = bloomWidth;
+            characterShadowmap.style.top = windowInnerHeight - 950;
+            characterShadowmap.style.left = windowInnerWidth - 1000;
+        }
+        if(animationAngle == 2){
+            var bloomHeight = windowInnerHeight - 1059;
+            var bloomWidth = windowInnerWidth - 1015;
+            characterinnerbloom.style.top = bloomHeight;
+            characterinnerbloom.style.left = bloomWidth;
+            charactermiddlebloom.style.top = bloomHeight;
+            charactermiddlebloom.style.left = bloomWidth;
+            characteroutterbloom.style.top = bloomHeight;
+            characteroutterbloom.style.left = bloomWidth;
+            characterShadowmap.style.top = windowInnerHeight - 950;
+            characterShadowmap.style.left = windowInnerWidth - 1015;
+        }
+        if(animationAngle == 3){
+            var bloomHeight = windowInnerHeight - 1059;
+            var bloomWidth = windowInnerWidth - 1048;
+            characterinnerbloom.style.top = bloomHeight;
+            characterinnerbloom.style.left = bloomWidth;
+            charactermiddlebloom.style.top = bloomHeight;
+            charactermiddlebloom.style.left = bloomWidth;
+            characteroutterbloom.style.top = bloomHeight;
+            characteroutterbloom.style.left = bloomWidth;
+            characterShadowmap.style.top = windowInnerHeight - 950;
+            characterShadowmap.style.left = windowInnerWidth - 1044;
+        }
+        if(animationAngle == 4){
+            var bloomHeight = windowInnerHeight - 1053;
+            var bloomWidth = windowInnerWidth - 1056;
+            characterinnerbloom.style.top = bloomHeight;
+            characterinnerbloom.style.left = bloomWidth;
+            charactermiddlebloom.style.top = bloomHeight;
+            charactermiddlebloom.style.left = bloomWidth;
+            characteroutterbloom.style.top = bloomHeight;
+            characteroutterbloom.style.left = bloomWidth;
+            characterShadowmap.style.top = windowInnerHeight - 950;
+            characterShadowmap.style.left = windowInnerWidth - 1054;
+        }
+        if(animationAngle == 5){
+            var bloomHeight = windowInnerHeight - 1059;
+            var bloomWidth = windowInnerWidth - 1039;
+            characterinnerbloom.style.top = bloomHeight;
+            characterinnerbloom.style.left = bloomWidth;
+            charactermiddlebloom.style.top = bloomHeight;
+            charactermiddlebloom.style.left = bloomWidth;
+            characteroutterbloom.style.top = bloomHeight;
+            characteroutterbloom.style.left = bloomWidth;
+            characterShadowmap.style.top = windowInnerHeight - 950;
+            characterShadowmap.style.left = windowInnerWidth - 1039;
+        }
+        if(animationAngle == 6){
+            var bloomHeight = windowInnerHeight - 1059;
+            var bloomWidth = windowInnerWidth - 1011;
+            characterinnerbloom.style.top = bloomHeight;
+            characterinnerbloom.style.left = bloomWidth;
+            charactermiddlebloom.style.top = bloomHeight;
+            charactermiddlebloom.style.left = bloomWidth;
+            characteroutterbloom.style.top = bloomHeight;
+            characteroutterbloom.style.left = bloomWidth;
+            characterShadowmap.style.top = windowInnerHeight - 950;
+            characterShadowmap.style.left = windowInnerWidth - 1005;
+        }
+        if(animationAngle == 7){
+            var bloomHeight = windowInnerHeight - 1059;
+            var bloomWidth = windowInnerWidth - 999;
+            characterinnerbloom.style.top = bloomHeight;
+            characterinnerbloom.style.left = bloomWidth;
+            characteroutterbloom.style.top = bloomHeight;
+            charactermiddlebloom.style.top = bloomHeight;
+            charactermiddlebloom.style.left = bloomWidth;
+            characteroutterbloom.style.left = bloomWidth;
+            characterShadowmap.style.top = windowInnerHeight - 950;
+            characterShadowmap.style.left = windowInnerWidth - 995;
+        }
+    }
+    
+    const audio = document.getElementById('myAudio');
+    audio.volume = 1;
+    audio.addEventListener("canplaythrough", () => {
+       audio.play().catch(e => {
+          window.addEventListener('click', () => {
+             audio.play()
+          }, { once: true })
+       })
+    });
+
+    window.addEventListener("resize",function(){
+        width = window.innerWidth;
+        height = document.body.offsetHeight;
+        levelCanvas.width = width;
+        levelCanvas.height = height;
+    });
+
+    window.addEventListener("mousedown", function(e) {
+        mouseDown = true;
+
+    });
+
+    window.addEventListener("mousemove", function(e) {
+        mouseCurrentX = e.clientX;
+        mouseCurrentY = e.clientY;
+    });
+
+    window.addEventListener("mouseup", function(e) {
+        mouseDown = false;
+    });
+    
+    (function() {
+      var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame ||
+          function(callback) {
+            window.setTimeout(callback, 1000 / 60);
+          };
+      window.requestAnimationFrame = requestAnimationFrame;
+    })();
+
+    var renderCanvas = document.getElementById("canvas"),
+        ctx = renderCanvas.getContext("2d"),
+        width = 6144,
+        height = 6144;
+
+        renderCanvas.width = width;
+        renderCanvas.height = height;
+
+    var lights = [],
+        blocks = [],
+        vector = function(_x,_y){
+          this.x = _x;
+          this.y = _y;  
+        },
+        light = function(_position,_radius,_angleSpread, _color){
+          this.color = _color;
+          this.radius = _radius;
+          this.angleSpread = _angleSpread;
+          this.position = _position;
+          this.angle = Math.random()*180;
+        },
+        block = function(_position,_width,_height,_type){
+          this.position = _position;
+          this.width = _width;
+          this.height = _height;
+          this.type = _type;
+          this.visible = false;
+        },
+        angle = 0;
+
+
+    // FIND DISTANCE ************************
+    function findDistance(light, block, angle, rLen, start, shortest, closestBlock){
+      var y = (block.position.y + block.height/2) - light.position.y,
+          x = (block.position.x + block.width/2) - light.position.x,
+          dist = Math.sqrt((y * y) + (x * x));
+
+      if(light.radius >= dist)
+      {
+        var rads = angle * (Math.PI / 180),
+            pointPos = new vector(light.position.x, light.position.y);
+
+        pointPos.x += Math.cos(rads) * dist;
+        pointPos.y += Math.sin(rads) * dist;
+
+        if(pointPos.x > block.position.x && pointPos.x < block.position.x + block.width && pointPos.y > block.position.y && pointPos.y < block.position.y + block.height)
+        {
+          if(start || dist < shortest){
+            start = false;
+            shortest = dist;
+            rLen= dist;
+            closestBlock = block;
+          }
+
+          return {'start' : start, 'shortest' : shortest, 'rLen' : rLen, 'block' : closestBlock};
+        }
+      }
+      return {'start' : start, 'shortest' : shortest, 'rLen' : rLen, 'block' : closestBlock};
+    }
+    // **************************************
+
+    // SHINE LIGHT**************************
+    function shineLight(light, index){
+      var curAngle = light.angle - (light.angleSpread/2),
+          dynLen = light.radius,
+          addTo = 1/light.radius;
+
+      for(curAngle; curAngle < light.angle + (light.angleSpread/2); curAngle += (addTo * (180/Math.PI))*2){
+        dynLen = light.radius;
+
+        var findDistRes = {};
+
+        findDistRes.start = true;
+        findDistRes.shortest = 0;
+        findDistRes.rLen = dynLen;
+        findDistRes.block = {};
+
+        for(var i = 0; i < blocks.length; i++)
+        {
+            var blockLightDistanceX = blocks[i].position.x - light.position.x;
+            var blockLightDistanceY = blocks[i].position.y - light.position.y;
+            if(blockLightDistanceX < maximumRenderDistance && blockLightDistanceX > -maximumRenderDistance && blockLightDistanceY < maximumRenderDistance && blockLightDistanceY > -maximumRenderDistance){
+                findDistRes = findDistance(light, blocks[i], curAngle, findDistRes.rLen, findDistRes.start, findDistRes.shortest, findDistRes.block);
+            }
+        }
+        /* Check if character light */
+        if(index == 0){
+            var rads = curAngle * (Math.PI / 180),
+                end = new vector(light.position.x, light.position.y);
+
+            findDistRes.block.visible = true;
+            end.x += Math.cos(rads) * findDistRes.rLen;
+            end.y += Math.sin(rads) * findDistRes.rLen;
+
+            ctx.beginPath();
+            ctx.moveTo(light.position.x, light.position.y);
+            ctx.lineTo(end.x, end.y);
+            ctx.closePath();
+            ctx.stroke();
+        }
+        /* Check if not character light */
+        if(index != 0){
+            var rads = curAngle * (Math.PI / 180),
+                end = new vector(light.position.x, light.position.y);
+
+            findDistRes.block.visible = true;
+            end.x += Math.cos(rads) * findDistRes.rLen;
+            end.y += Math.sin(rads) * findDistRes.rLen;
+
+            ctx.beginPath();
+            ctx.moveTo(light.position.x, light.position.y);
+            ctx.lineTo(end.x, end.y);
+            ctx.closePath();
+            ctx.stroke();
+        }
+      }
+    }
+    // ************************************
+
+    const wallImage = new Image();
+    wallImage.src = '../Images/Wall.jpg';
+    wallImage.className = "game-lighting";
+
+    const wallImageDim = new Image();
+    wallImageDim.src = '../Images/Wallshadow.jpg';
+    wallImageDim.className = "game-lighting";
+    wallImageDim.opacity = .5;
+    
+    function draw(){
+        var currentDrawTime = new Date().getTime();
+        if(currentDrawTime - oldDrawTime > updateDrawTime){
+            //console.log(currentDrawTime - oldDrawTime);
+            oldDrawTime = currentDrawTime;
+            drawing = true;
+        }
+        if(drawing){
+            drawing = false;
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0,0,width,height);
+
+
+            for(var i = 0; i < blocks.length; i++){
+                var block = blocks[i];
+                var blockDistanceX = block.position.x - lights[0].position.x;
+                var blockDistanceY = block.position.y - lights[0].position.y;
+
+                if(Math.abs(blockDistanceX) < maximumRenderDistance && Math.abs(blockDistanceY) < maximumRenderDistance){
+                    if(block.visible){
+                        ctx.drawImage(wallImage, block.position.x, block.position.y, block.width, block.height);
+                        block.visible = false;
+                    }else{
+                        ctx.drawImage(wallImageDim, block.position.x, block.position.y, block.width, block.height);
+                    }
+                }
+            }    
+
+            angle+=0.01;
+            for(var i = 0; i < lights.length; i++){
+                ctx.strokeStyle = lights[i].color;
+                lights[i].angle+=46;
+                /* Adjust character light */
+                if(i == 0){
+                    lights[i].position.x = characterOffsetX + window.innerWidth/2 + characterLightOffsetX;
+                    lights[i].position.y = characterOffsetY + window.innerHeight/2 + characterLightOffsetY;
+                }
+                var lightToLightDistanceX = lights[i].position.x - lights[0].position.x;
+                var lightToLightDistanceY = lights[i].position.y - lights[0].position.y;
+                if(Math.abs(lightToLightDistanceX) < maximumRenderDistance && Math.abs(lightToLightDistanceY) < maximumRenderDistance){
+                    shineLight(lights[i], i);  
+                }
+            } 
+        }
+
+        requestAnimationFrame(draw);
+    }
+
+    (height < 500)?height = 500:height=height;
+
+    /* Walls #5 */
+    
+    <!-- Torches #5 -->
+    
+    blocks.push(new block(new  vector(2947, 2569), 60, 60, "Wall"));
+    blocks.push(new block(new  vector(3217, 2569), 60, 60, "Wall"));
+    blocks.push(new block(new  vector(2947, 2226), 60, 60, "Wall"));
+    blocks.push(new block(new  vector(3217, 2226), 60, 60, "Wall"));
+
+    blocks.push(new block(new  vector(2947, 3559), 60, 60, "Wall"));
+    blocks.push(new block(new  vector(3217, 3559), 60, 60, "Wall"));
+    blocks.push(new block(new  vector(2947, 3901), 60, 60, "Wall"));
+    blocks.push(new block(new  vector(3217, 3901), 60, 60, "Wall"));
+    
+    blocks.push(new block(new  vector(2238, 2952), 60, 60, "Wall"));
+    blocks.push(new block(new  vector(2238, 3266), 60, 60, "Wall"));
+    blocks.push(new block(new  vector(2579, 2952), 60, 60, "Wall"));
+    blocks.push(new block(new  vector(2579, 3266), 60, 60, "Wall"));
+    
+    blocks.push(new block(new  vector(3571, 2952), 60, 60, "Wall"));
+    blocks.push(new block(new  vector(3571, 3266), 60, 60, "Wall"));
+    blocks.push(new block(new  vector(3911, 2952), 60, 60, "Wall"));
+    blocks.push(new block(new  vector(3911, 3266), 60, 60, "Wall"));
+    
+
+    /* Character Light */
+    lights.push(new light(new vector(window.innerWidth/2,window.innerHeight/2), 350, 360, 'rgba(255,137,47,0.095)'));
+    
+    /* Level Lights */
+    lights.push(new light(new vector(window.innerWidth/2,window.innerHeight/2), 300, 360, 'rgba(255,137,47,0.04)'));
+    
+    blocksInitialized = true;
+    
+    draw();
+</script>
+</body>
+</html>

@@ -76,12 +76,29 @@
     .eyes {
         object-fit: cover;
         clip-path: circle(65% at center);
-        width: 100%;
+        top: 1vh;
+        left: 1vw;
+        position: absolute;
+        width: 95%;
         height: 100%;
         transform-style: preserve-3d;
         transition: transform 0.5s;
         opacity: .1;
         z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .nose {
+        object-fit: cover;
+        clip-path: circle(55% at center);
+        top: 19vh;
+        left: 8.25vw;
+        position: absolute;
+        width: 20%;
+        height: 55%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .1;
     }
     
     /* Rotate the image based on the mouse position */
@@ -167,23 +184,23 @@
         height: 100%;
         transform-style: preserve-3d;
         transition: transform 0.5s;
-        opacity: .03;
+        opacity: .09;
         z-index: -1;
-        background: url("../Images/Leftname.jpg") repeat-y;
         animation: leftslide 3s linear infinite;
+        filter: hue-rotate(180deg);
     }
 
     @keyframes leftslide {
         from { 
             height: 20%;
-            opacity: .01;
+            opacity: .03;
         }
         20% {
-            opacity: .02f;
+            opacity: .2f;
         }
         to { 
             height: 120%;
-            opacity: .03;
+            opacity: .02;
         }
     }
     
@@ -211,21 +228,21 @@
         transition: transform 0.5s;
         opacity: .05;
         z-index: -1;
-        background: url("../Images/Rightname.jpg") repeat-y;
         animation: rightslide 3s linear infinite;
+        filter: hue-rotate(180deg);
     }
 
     @keyframes rightslide {
         from { 
             height: 20%;
-            opacity: .01;
+            opacity: .03;
         }
         20% {
-            opacity: .02;
+            opacity: .09;
         }
         to { 
             height: 120%;
-            opacity: .03;
+            opacity: .02;
         }
     }
     
@@ -301,20 +318,21 @@
         </a>        
     </div>
     <div class="face">
-        <img src="../Images/Eyes.jpg" class="eyes" id="eyes">
-        <img src="../Images/Jaw.jpg" class="jaw" id="jaw">
+        <img src="../Images/Eyes.png" class="eyes" id="eyes">
+        <img src="../Images/Nose.png" class="nose" id="nose">
+        <img src="../Images/Jaw.png" class="jaw" id="jaw">
     </div>
     <div class="lefthand">
-        <img src="../Images/Lefthand.jpg" class="leftpalm" id="leftpalm">
+        <img src="../Images/Lefthand.png" class="leftpalm" id="leftpalm">
     </div>
     <div class="righthand">
-        <img src="../Images/Righthand.jpg" class="rightpalm" id="rightpalm">
+        <img src="../Images/Righthand.png" class="rightpalm" id="rightpalm">
     </div>
     <div class="leftname">
-        <img src="../Images/Leftname.jpg" class="leftsignature" id="leftsignature">
+        <img src="../Images/Leftname.png" class="leftsignature" id="leftsignature">
     </div>
     <div class="rightname">
-        <img src="../Images/Rightname.jpg" class="rightsignature" id="rightsignature">
+        <img src="../Images/Rightname.png" class="rightsignature" id="rightsignature">
     </div>
 </div>
 
@@ -338,6 +356,27 @@
 
         // Apply the rotation to the eyes
         eyes.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+    });
+    
+    // Get the nose element
+    var nose = document.getElementById("nose");
+
+    // Add a mousemove event listener to the container
+    document.querySelector(".container").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        var mouseX = event.clientX - this.offsetLeft;
+        var mouseY = event.clientY - this.offsetTop;
+
+        // Get the center of the container
+        var centerX = this.offsetWidth / 2;
+        var centerY = this.offsetHeight / 2;
+
+        // Calculate the rotation angles in degrees
+        var rotateX = - (mouseY - centerY) / 8;
+        var rotateY = (mouseX - centerX) / 15;
+
+        // Apply the rotation to the nose
+        nose.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
     });
     
     // Get the jaw element
@@ -444,6 +483,77 @@
         // Apply the rotation to the rightsignature
         rightsignature.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
     });
+    
+    
+    function convertTextToSpeeh(textMessage){
+        if ('speechSynthesis' in window) {
+
+            const synthesizer = window.speechSynthesis;
+
+            function speakText(text) {
+                const utterance = new SpeechSynthesisUtterance(text);
+
+                synthesizer.speak(utterance);
+            }
+
+            speakText(textMessage);
+            
+        } else {
+            console.log('Speech synthesis not supported');
+        }
+    }
+    
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var transcript;
+    
+    // Check if speech recognition is supported
+    if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+
+        // Enable continuous transcription
+        recognition.continuous = true;
+
+        recognition.start();
+
+        // Event fired when a spoken word is recognized
+        recognition.onresult = (event) => {
+            transcript = event.results[event.results.length - 1][0].transcript;
+            console.log("Recognized speech:", transcript);
+            createChatMessage(transcript);                
+        };
+    } else {
+        console.log("Speech recognition is not supported");
+    }
+    
+    
+    const apiKey = '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';
+    
+    async function createChatMessage(prompt) {
+        const baseURL = 'https://api.openai.com/v1/chat/completions';
+        const model = 'gpt-3.5-turbo';
+
+        const params = {
+            model,
+            messages: [
+                { role: 'system', content: 'You are a helpful assistant.' },
+                { role: 'user', content: prompt }
+            ]
+        };
+
+        const response = await fetch(baseURL, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(params)
+        });
+
+        const data = await response.json();
+        const reply = data.choices[0].message.content;
+        convertTextToSpeeh(reply);
+    }
+    
 </script>
 </body>
 </html>
