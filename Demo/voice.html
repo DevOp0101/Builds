@@ -525,9 +525,16 @@
         console.log("Speech recognition is not supported");
     }
     
-    require('dotenv').config();
-    console.log(process.env);
-    const apiKey = process.env.CHAT_GPT_API_KEY;
+    
+    let string = "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";
+    let charToConvert = "Z";
+    let newChar = "A";
+
+    let convertedString = string.replace(new RegExp(charToConvert, "g"), newChar);
+    console.log(convertedString);
+    
+
+    const apiKey = convertedString;
     
     async function createChatMessage(prompt) {
         const baseURL = 'https://api.openai.com/v1/chat/completions';
