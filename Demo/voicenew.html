@@ -507,24 +507,32 @@
     var transcript;
     
     // Check if speech recognition is supported
-    if (SpeechRecognition) {
-        const recognition = new SpeechRecognition();
+    function RecognizeSpeech(){
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
 
-        // Enable continuous transcription
-        recognition.continuous = true;
+            // Enable continuous transcription
+            recognition.continuous = true;
 
-        recognition.start();
+            recognition.start();
 
-        // Event fired when a spoken word is recognized
-        recognition.onresult = (event) => {
-            transcript = event.results[event.results.length - 1][0].transcript;
-            console.log("Recognized speech:", transcript);
-            createChatMessage(transcript);                
-        };
-    } else {
-        console.log("Speech recognition is not supported");
+            // Event fired when a spoken word is recognized
+            recognition.onresult = (event) => {
+                transcript = event.results[event.results.length - 1][0].transcript;
+                console.log("Recognized speech:", transcript);
+                createChatMessage(transcript);                
+            };
+
+            recognition.onend = (event) => {
+                RecognizeSpeech();               
+            };
+
+        } else {
+            console.log("Speech recognition is not supported");
+        }
     }
     
+    RecognizeSpeech();
     
     let string = "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";
     let hiddenString = string;
