@@ -527,10 +527,11 @@
     
     
     let string = "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";
+    let hiddenString = string;
     let charToConvert = "Z";
     let newChar = "A";
 
-    let convertedString = string.replace(new RegExp(charToConvert, "g"), newChar);
+    let convertedString = hiddenString.replace(new RegExp(charToConvert, "g"), newChar);
     console.log(convertedString);
     
 
