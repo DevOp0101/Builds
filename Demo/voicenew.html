@@ -517,7 +517,9 @@
                 recognition.onresult = (event) => {
                     if(!synthesizer.speaking){
                         transcript = event.results[event.results.length - 1][0].transcript;
-                        calculateQuestion(transcript);
+                        if(transcript.includes("God") || transcript.includes("god")){
+                            calculateQuestion(transcript);
+                        }
                     }
                 };
 
@@ -535,92 +537,92 @@
 
         function calculateQuestion(){
             var recognized = false;
-            if(transcript == "What is my name?"){
+            if(transcript == "God, What is my name?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("Manly");  
                 recognized = true;
             }
-            if(transcript == "Do you know my name?"){
+            if(transcript == "God, Do you know my name?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("Manly");  
                 recognized = true;    
             }
-            if(transcript == "My name?"){
+            if(transcript == "God, My name?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("Manly");  
                 recognized = true;    
             }
-            if(transcript == "What is your name?"){
+            if(transcript == "God, What is your name?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");  
                 recognized = true;    
             }
-            if(transcript == "What is name?"){
+            if(transcript == "God, What is name?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");    
                 recognized = true;  
             }
-            if(transcript == "What name?"){
+            if(transcript == "God, What name?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");   
                 recognized = true;   
             }
-            if(transcript == "is name?"){
+            if(transcript == "God, is name?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");  
                 recognized = true;    
             }
-            if(transcript == "name?"){
+            if(transcript == "God, name?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");  
                 recognized = true;    
             }
-            if(transcript == "Who made you?"){
+            if(transcript == "God, Who made you?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("The smartest man in the world. Damien.");   
                 recognized = true;   
             }
-            if(transcript == "Who designed you?"){
+            if(transcript == "God, Who designed you?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("The smartest man in the world. Damien.");   
                 recognized = true;   
             }
-            if(transcript == "Who is the smartest man in the world?"){
+            if(transcript == "God, Who is the smartest man in the world?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("The smartest man in the world is Damien.");   
                 recognized = true;   
             }
-            if(transcript == "Who is the fatest man in the world?"){
+            if(transcript == "God, Who is the fatest man in the world?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("Manly is so fat that when his jelly rolls fold over it collapses time and space");  
                 recognized = true;    
             }
-            if(transcript == "Who is fat?"){
+            if(transcript == "God, Who is fat?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("Manly is so fat that when his jelly rolls fold over it collapses time and space");     
                 recognized = true; 
             }
-            if(transcript == "Who is a fat *****?"){
+            if(transcript == "God, Who is a fat *****?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("Manly is a fat bitch");   
                 recognized = true;   
             }
-            if(transcript == "Who is Damien's mother?"){
+            if(transcript == "God, Who is Damien's mother?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("Robin");      
                 recognized = true;
             }
-            if(transcript == "Tell me some advice"){
+            if(transcript == "God, Tell me some advice"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("My momma said fooseball is the devil");    
                 recognized = true;  
             }
-            if(transcript == "Tell me some words of wisdom"){
+            if(transcript == "God, Tell me some words of wisdom"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("My momma said fooseball is the devil");  
                 recognized = true;    
             }
-            if(transcript == "What is some good advice"){
+            if(transcript == "God, What is some good advice"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("My momma said alligators is onry ");    
                 recognized = true;  
