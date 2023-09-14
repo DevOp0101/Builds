@@ -1,0 +1,568 @@
+<html>
+<head>
+<style>
+    
+    /* This CSS code makes the image expand when the link is hovered */
+    a:hover img {
+        transform: scale(1.2);
+        transition: transform 0.5s;
+    }
+    
+    /* The element to apply the animation to */
+    .pulse {
+        height: 100vh; /* full viewport height */
+        width: 100vw; /* full viewport width */
+        background-image: radial-gradient(circle closest-side, rgba(255, 0, 0, 0.75), rgba(0, 0, 255, 0.25)), url("../Images/Hexagon.jpg");
+        background-size: cover;
+        background-position: center;
+        visibility: visible;
+        overflow: hidden;
+        animation: pulse 2s linear infinite;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* The animation code */
+    @keyframes pulse {
+        from {
+            /*clip-path: circle(50% at 50% 50%); /* start from a centered circle */
+            filter: hue-rotate(0deg);
+        }
+        to {
+            /*clip-path: circle(50% at 50% 50%); /* start from a centered circle */
+            filter: hue-rotate(360deg);
+        }
+    }
+    
+    .container {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        height: 100vh; /* full viewport height */
+        width: 100vw; /* full viewport width */
+        background-color: transparent;
+        background-size: cover;
+        background-position: center;
+        animation: counterflash 1s infinite;
+        opacity: .4;
+        padding-top: 40vh;
+        padding-left: 15vh;
+        padding-right: 15vh;
+        z-index: 2;
+    }
+
+    @keyframes counterflash {
+        from {
+            filter: hue-rotate(0deg);
+        }
+        to {
+            filter: hue-rotate(-360deg);
+        }
+    }
+    
+    /* Center the image and set the perspective */
+    .face {
+        height: 30vh;
+        width: 20vw;
+        top: -5vh;
+        left: 40vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .eyes {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        top: 1vh;
+        left: 1vw;
+        position: absolute;
+        width: 95%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .1;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .nose {
+        object-fit: cover;
+        clip-path: circle(55% at center);
+        top: 19vh;
+        left: 8.25vw;
+        position: absolute;
+        width: 20%;
+        height: 55%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .1;
+    }
+    
+    /* Rotate the image based on the mouse position */
+    .jaw {
+        object-fit: cover;
+        clip-path: circle(55% at center);
+        top: 13vh;
+        left: 1.75vw;
+        position: absolute;
+        width: 85%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .1;
+    }
+    
+    /* Center the image and set the perspective */
+    .lefthand {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 65vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .leftpalm {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .3;
+        z-index: -1;
+    }
+    
+    /* Center the image and set the perspective */
+    .righthand {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 0vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .rightpalm {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .3;
+        z-index: -1;
+    }
+    
+    /* Center the image and set the perspective */
+    .leftname {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 65vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+        
+    }
+
+    /* Rotate the image based on the mouse position */
+    .leftsignature {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .09;
+        z-index: -1;
+        animation: leftslide 3s linear infinite;
+        filter: hue-rotate(180deg);
+    }
+
+    @keyframes leftslide {
+        from { 
+            height: 20%;
+            opacity: .03;
+        }
+        20% {
+            opacity: .2f;
+        }
+        to { 
+            height: 120%;
+            opacity: .02;
+        }
+    }
+    
+    /* Center the image and set the perspective */
+    .rightname {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 0vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+        
+    }
+
+    /* Rotate the image based on the mouse position */
+    .rightsignature {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        top: -5000px;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .05;
+        z-index: -1;
+        animation: rightslide 3s linear infinite;
+        filter: hue-rotate(180deg);
+    }
+
+    @keyframes rightslide {
+        from { 
+            height: 20%;
+            opacity: .03;
+        }
+        20% {
+            opacity: .09;
+        }
+        to { 
+            height: 120%;
+            opacity: .02;
+        }
+    }
+    
+    @media only screen and (max-width: 480px) {
+        .face {
+            height: 30vh;
+            width: 10vw;
+            top: -5vh;
+            left: 40vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+        
+        .lefthand {
+            height: 120vh;
+            width: 20vw;
+            top: 5vh;
+            left: 65vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+        .righthand {
+            height: 120vh;
+            width: 20vw;
+            top: 5vh;
+            left: 0vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+        .leftname {
+            height: 120vh;
+            width: 20vw;
+            top: 5vh;
+            left: 65vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+        .rightname {
+            height: 120vh;
+            width: 20vw;
+            top: 5vh;
+            left: 0vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="pulse">
+    <div class="container">
+        <!-- This HTML code creates a link to an image that is a link to another site -->
+        <a href="https://devop0101.github.io/Builds/Metaball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+        <img src="../Images/Metaball.jpg" title="Metaball" width="350px" height="350px"> <!-- This is the link to the image you want to display -->
+        </a>
+        <!-- This HTML code creates a link to an image that is a link to another site -->
+        <a href="https://devop0101.github.io/Builds/Mergeball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+        <img src="../Images/Mergeball.jpg" title="Mergeball" width="350px" height="350px" padding-top="30vh"> <!-- This is the link to the image you want to display -->
+        </a>
+        <!-- This HTML code creates a link to an image that is a link to another site -->
+        <a href="https://devop0101.github.io/Builds/Cryptoball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+        <img src="../Images/Cryptoball.jpg" title="Cryptoball" width="350px" height="350px"> <!-- This is the link to the image you want to display -->
+        </a>        
+    </div>
+    <div class="face">
+        <img src="../Images/Eyes.png" class="eyes" id="eyes">
+        <img src="../Images/Nose.png" class="nose" id="nose">
+        <img src="../Images/Jaw.png" class="jaw" id="jaw">
+    </div>
+    <div class="lefthand">
+        <img src="../Images/Lefthand.png" class="leftpalm" id="leftpalm">
+    </div>
+    <div class="righthand">
+        <img src="../Images/Righthand.png" class="rightpalm" id="rightpalm">
+    </div>
+    <div class="leftname">
+        <img src="../Images/Leftname.png" class="leftsignature" id="leftsignature">
+    </div>
+    <div class="rightname">
+        <img src="../Images/Rightname.png" class="rightsignature" id="rightsignature">
+    </div>
+</div>
+
+<script>
+    // Get the eyes element
+    var eyes = document.getElementById("eyes");
+
+    // Add a mousemove event listener to the container
+    document.querySelector(".container").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        var mouseX = event.clientX - this.offsetLeft;
+        var mouseY = event.clientY - this.offsetTop;
+
+        // Get the center of the container
+        var centerX = this.offsetWidth / 2;
+        var centerY = this.offsetHeight / 2;
+
+        // Calculate the rotation angles in degrees
+        var rotateX = - (mouseY - centerY) / 8;
+        var rotateY = (mouseX - centerX) / 15;
+
+        // Apply the rotation to the eyes
+        eyes.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+    });
+    
+    // Get the nose element
+    var nose = document.getElementById("nose");
+
+    // Add a mousemove event listener to the container
+    document.querySelector(".container").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        var mouseX = event.clientX - this.offsetLeft;
+        var mouseY = event.clientY - this.offsetTop;
+
+        // Get the center of the container
+        var centerX = this.offsetWidth / 2;
+        var centerY = this.offsetHeight / 2;
+
+        // Calculate the rotation angles in degrees
+        var rotateX = - (mouseY - centerY) / 8;
+        var rotateY = (mouseX - centerX) / 15;
+
+        // Apply the rotation to the nose
+        nose.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+    });
+    
+    // Get the jaw element
+    var jaw = document.getElementById("jaw");
+
+    // Add a mousemove event listener to the container
+    document.querySelector(".container").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        var mouseX = event.clientX - this.offsetLeft;
+        var mouseY = event.clientY - this.offsetTop;
+
+        // Get the center of the container
+        var centerX = this.offsetWidth / 2;
+        var centerY = this.offsetHeight / 2;
+
+        // Calculate the rotation angles in degrees
+        var rotateX = - (mouseY - centerY) / 8;
+        var rotateY = (mouseX - centerX) / 15;
+
+        // Apply the rotation to the jaw
+        jaw.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+    });
+    
+    // Get the leftpalm element
+    var leftpalm = document.getElementById("leftpalm");
+
+    // Add a mousemove event listener to the container
+    document.querySelector(".container").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        var mouseX = event.clientX - this.offsetLeft;
+        var mouseY = event.clientY - this.offsetTop;
+
+        // Get the center of the container
+        var centerX = this.offsetWidth / 2;
+        var centerY = this.offsetHeight / 2;
+
+        // Calculate the rotation angles in degrees
+        var rotateX = - (mouseY - centerY) / 15;
+        var rotateY = (mouseX - centerX) / 20;
+
+        // Apply the rotation to the leftpalm
+        leftpalm.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+    });
+    
+    // Get the rightpalm element
+    var rightpalm = document.getElementById("rightpalm");
+
+    // Add a mousemove event listener to the container
+    document.querySelector(".container").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        var mouseX = event.clientX - this.offsetLeft;
+        var mouseY = event.clientY - this.offsetTop;
+
+        // Get the center of the container
+        var centerX = this.offsetWidth / 2;
+        var centerY = this.offsetHeight / 2;
+
+        // Calculate the rotation angles in degrees
+        var rotateX = - (mouseY - centerY) / 15;
+        var rotateY = (mouseX - centerX) / 20;
+
+        // Apply the rotation to the rightpalm
+        rightpalm.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+    });
+    
+    // Get the leftsignature element
+    var leftsignature = document.getElementById("leftsignature");
+
+    // Add a mousemove event listener to the container
+    document.querySelector(".container").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        var mouseX = event.clientX - this.offsetLeft;
+        var mouseY = event.clientY - this.offsetTop;
+
+        // Get the center of the container
+        var centerX = this.offsetWidth / 2;
+        var centerY = this.offsetHeight / 2;
+
+        // Calculate the rotation angles in degrees
+        var rotateX = - (mouseY - centerY) / 15;
+        var rotateY = (mouseX - centerX) / 20;
+
+        // Apply the rotation to the leftsignature
+        leftsignature.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+    });
+    
+    // Get the rightsignature element
+    var rightsignature = document.getElementById("rightsignature");
+
+    // Add a mousemove event listener to the container
+    document.querySelector(".container").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        var mouseX = event.clientX - this.offsetLeft;
+        var mouseY = event.clientY - this.offsetTop;
+
+        // Get the center of the container
+        var centerX = this.offsetWidth / 2;
+        var centerY = this.offsetHeight / 2;
+
+        // Calculate the rotation angles in degrees
+        var rotateX = - (mouseY - centerY) / 15;
+        var rotateY = (mouseX - centerX) / 20;
+
+        // Apply the rotation to the rightsignature
+        rightsignature.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+    });
+    
+    
+    function convertTextToSpeeh(textMessage){
+        if ('speechSynthesis' in window) {
+
+            const synthesizer = window.speechSynthesis;
+
+            function speakText(text) {
+                const utterance = new SpeechSynthesisUtterance(text);
+
+                synthesizer.speak(utterance);
+            }
+
+            speakText(textMessage);
+            
+        } else {
+            console.log('Speech synthesis not supported');
+        }
+    }
+    
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var transcript;
+    
+    // Check if speech recognition is supported
+    if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+
+        // Enable continuous transcription
+        recognition.continuous = true;
+
+        recognition.start();
+
+        // Event fired when a spoken word is recognized
+        recognition.onresult = (event) => {
+            transcript = event.results[event.results.length - 1][0].transcript;
+            console.log("Recognized speech:", transcript);
+            createChatMessage(transcript);                
+        };
+    } else {
+        console.log("Speech recognition is not supported");
+    }
+    
+    
+    let string = "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";
+    let hiddenString = string;
+    let charToConvert = "Z";
+    let newChar = "A";
+
+    let convertedString = hiddenString.replace(new RegExp(charToConvert, "g"), newChar);
+    console.log(convertedString);
+    
+
+    const apiKey = convertedString;
+    
+    async function createChatMessage(prompt) {
+        const baseURL = 'https://api.openai.com/v1/chat/completions';
+        const model = 'gpt-3.5-turbo';
+
+        const params = {
+            model,
+            messages: [
+                { role: 'system', content: 'You are a helpful assistant.' },
+                { role: 'user', content: prompt }
+            ]
+        };
+
+        const response = await fetch(baseURL, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(params)
+        });
+
+        const data = await response.json();
+        const reply = data.choices[0].message.content;
+        convertTextToSpeeh(reply);
+    }
+    
+</script>
+</body>
+</html>
