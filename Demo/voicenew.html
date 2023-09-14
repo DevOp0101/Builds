@@ -535,6 +535,9 @@
 
         function calculateQuestion(){
             var recognized = false;
+            if(transcript == "Stop"){
+                synthesizer.cancel();
+            }
             if(transcript == "What is my name?"){
                 console.log("Recognized speech:", transcript);
                 convertTextToSpeeh("Manly");  
