@@ -519,8 +519,67 @@
             // Event fired when a spoken word is recognized
             recognition.onresult = (event) => {
                 transcript = event.results[event.results.length - 1][0].transcript;
-                console.log("Recognized speech:", transcript);
-                createChatMessage(transcript);                
+                if(transcript == "What is your name?"){
+                    console.log("Recognized speech:", transcript);
+                    convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");    
+                }
+                if(transcript == "What is name?"){
+                    console.log("Recognized speech:", transcript);
+                    convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");    
+                }
+                if(transcript == "What name?"){
+                    console.log("Recognized speech:", transcript);
+                    convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");    
+                }
+                if(transcript == "is name?"){
+                    console.log("Recognized speech:", transcript);
+                    convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");    
+                }
+                if(transcript == "name?"){
+                    console.log("Recognized speech:", transcript);
+                    convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");    
+                }
+                if(transcript == "Who made you?"){
+                    console.log("Recognized speech:", transcript);
+                    convertTextToSpeeh("The smartest man in the world. Damien.");    
+                }
+                if(transcript == "Who designed you?"){
+                    console.log("Recognized speech:", transcript);
+                    convertTextToSpeeh("The smartest man in the world. Damien.");    
+                }
+                if(transcript == "Who is the smartest man in the world?"){
+                    console.log("Recognized speech:", transcript);
+                    convertTextToSpeeh("The smartest man in the world is Damien.");    
+                }
+                if(transcript == "Who is the fatest man in the world?"){
+                    console.log("Recognized speech:", transcript);
+                    convertTextToSpeeh("Manly is so fat that when his jelly rolls fold over it collapses time and space");    
+                }
+                if(transcript == "Who is the fatest man in the world?"){
+                    console.log("Recognized speech:", transcript);
+                    convertTextToSpeeh("Manly is so fat that when his jelly rolls fold over it collapses time and space");    
+                }
+                if(transcript == "Who is a fat bitch?"){
+                    console.log("Recognized speech:", transcript);
+                    convertTextToSpeeh("Manly is a fat bitch");    
+                }
+                if(transcript == "Who is Damien's mother?"){
+                    console.log("Recognized speech:", transcript);
+                    convertTextToSpeeh("Robin");    
+                }
+                if(transcript == "What is my name?"){
+                    console.log("Recognized speech:", transcript);
+                    convertTextToSpeeh("King Gaslight");    
+                }
+                if(transcript == "What is my name?"){
+                    console.log("Recognized speech:", transcript);
+                    convertTextToSpeeh("King Gaslight");    
+                }
+                else{
+                    transcript = event.results[event.results.length - 1][0].transcript;
+                    console.log("Recognized speech:", transcript);
+                    createChatMessage(transcript);    
+                }
             };
 
             recognition.onend = (event) => {
