@@ -335,7 +335,7 @@
         <img src="../Images/Rightname.png" class="rightsignature" id="rightsignature">
     </div>
 </div>
-<script src="https://unpkg.com/speech-recognition/dist/speech-recognition.min.js"></script>
+
 <script>
     // Get the eyes element
     var eyes = document.getElementById("eyes");
@@ -489,7 +489,7 @@
         let speaking = false;
         var synthesizer = window.speechSynthesis;
 
-        function convertTextToSpeeh(textMessage){
+        function convertTextToSpeech(textMessage){
 
             function speakText(text) {
                 var utterance = new SpeechSynthesisUtterance(text);
@@ -500,6 +500,7 @@
             speakText(textMessage);
         }
 
+        convertTextToSpeech("I am a artificial intelligence and depending on your browser you may have to click allow microphone but you can talk to me")
         var SpeechRecognition = window.webkitSpeechRecognition;
         var transcript;
 
@@ -535,92 +536,92 @@
             var recognized = false;
             if(transcript == "What is my name?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("Manly");  
+                convertTextToSpeech("Manly");  
                 recognized = true;
             }
             if(transcript == "Do you know my name?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("Manly");  
+                convertTextToSpeech("Manly");  
                 recognized = true;    
             }
             if(transcript == "My name?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("Manly");  
+                convertTextToSpeech("Manly");  
                 recognized = true;    
             }
             if(transcript == "What is your name?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");  
+                convertTextToSpeech("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");  
                 recognized = true;    
             }
             if(transcript == "What is name?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");    
+                convertTextToSpeech("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");    
                 recognized = true;  
             }
             if(transcript == "What name?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");   
+                convertTextToSpeech("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");   
                 recognized = true;   
             }
             if(transcript == "is name?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");  
+                convertTextToSpeech("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");  
                 recognized = true;    
             }
             if(transcript == "name?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");  
+                convertTextToSpeech("I am the first and the last, the alpha and the omega, i am all that was or ever will be.");  
                 recognized = true;    
             }
             if(transcript == "Who made you?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("The smartest man in the world. Damien.");   
+                convertTextToSpeech("The smartest man in the world. Damien.");   
                 recognized = true;   
             }
             if(transcript == "Who designed you?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("The smartest man in the world. Damien.");   
+                convertTextToSpeech("The smartest man in the world. Damien.");   
                 recognized = true;   
             }
             if(transcript == "Who is the smartest man in the world?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("The smartest man in the world is Damien.");   
+                convertTextToSpeech("The smartest man in the world is Damien.");   
                 recognized = true;   
             }
             if(transcript == "Who is the fatest man in the world?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("Manly is so fat that when his jelly rolls fold over it collapses time and space");  
+                convertTextToSpeech("Manly is so fat that when his jelly rolls fold over it collapses time and space");  
                 recognized = true;    
             }
             if(transcript == "Who is fat?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("Manly is so fat that when his jelly rolls fold over it collapses time and space");     
+                convertTextToSpeech("Manly is so fat that when his jelly rolls fold over it collapses time and space");     
                 recognized = true; 
             }
             if(transcript == "Who is a fat *****?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("Manly is a fat bitch");   
+                convertTextToSpeech("Manly is a fat bitch");   
                 recognized = true;   
             }
             if(transcript == "Who is Damien's mother?"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("Robin");      
+                convertTextToSpeech("Robin");      
                 recognized = true;
             }
             if(transcript == "Tell me some advice"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("My momma said fooseball is the devil");    
+                convertTextToSpeech("My momma said fooseball is the devil");    
                 recognized = true;  
             }
             if(transcript == "Tell me some words of wisdom"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("My momma said fooseball is the devil");  
+                convertTextToSpeech("My momma said fooseball is the devil");  
                 recognized = true;    
             }
             if(transcript == "What is some good advice"){
                 console.log("Recognized speech:", transcript);
-                convertTextToSpeeh("My momma said alligators is onry ");    
+                convertTextToSpeech("My momma said alligators is onry ");    
                 recognized = true;  
             }
             if(!recognized){
@@ -664,7 +665,7 @@
 
             var data = await response.json();
             var reply = data.choices[0].message.content;
-            convertTextToSpeeh(reply);
+            convertTextToSpeech(reply);
         }
     }
     else{
