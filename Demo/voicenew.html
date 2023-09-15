@@ -500,38 +500,33 @@
             speakText(textMessage);
         }
 
-        const SpeechRecognition = window.webkitSpeechRecognition;
+        var SpeechRecognition = window.webkitSpeechRecognition;
         var transcript;
 
         // Check if speech recognition is supported
         function RecognizeSpeech(){
-            if (SpeechRecognition) {
-                const recognition = new SpeechRecognition();
+            const recognition = new SpeechRecognition();
 
-                // Enable continuous transcription
-                recognition.continuous = true;
+            // Enable continuous transcription
+            recognition.continuous = true;
 
-                recognition.start();
+            recognition.start();
 
-                // Event fired when a spoken word is recognized
-                recognition.onresult = (event) => {
-                    transcript = event.results[event.results.length - 1][0].transcript;
-                    if(!synthesizer.speaking && transcript != "Stop"){
-                        calculateQuestion(transcript);
-                    }
-                    if(transcript == "Stop"){
-                        synthesizer.cancel();
-                    }
-                };
+            // Event fired when a spoken word is recognized
+            recognition.onresult = (event) => {
+                transcript = event.results[event.results.length - 1][0].transcript;
+                if(!synthesizer.speaking && transcript != "Stop"){
+                    calculateQuestion(transcript);
+                }
+                if(transcript == "Stop"){
+                    synthesizer.cancel();
+                }
+            };
 
 
-                recognition.onend = (event) => {
-                    RecognizeSpeech();               
-                };
-
-            } else {
-                console.log("Speech recognition is not supported");
-            }
+            recognition.onend = (event) => {
+                RecognizeSpeech();               
+            };
         }
 
         RecognizeSpeech();
