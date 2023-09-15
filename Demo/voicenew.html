@@ -487,12 +487,12 @@
     if ('speechSynthesis' in window) {
 
         let speaking = false;
-        const synthesizer = window.speechSynthesis;
+        var synthesizer = window.speechSynthesis;
 
         function convertTextToSpeeh(textMessage){
 
             function speakText(text) {
-                const utterance = new SpeechSynthesisUtterance(text);
+                var utterance = new SpeechSynthesisUtterance(text);
                 synthesizer.speak(utterance);
                 speaking = synthesizer.speaking;
             }
@@ -505,7 +505,7 @@
 
         // Check if speech recognition is supported
         function RecognizeSpeech(){
-            const recognition = new SpeechRecognition();
+            var recognition = new SpeechRecognition();
 
             // Enable continuous transcription
             recognition.continuous = true;
@@ -639,13 +639,13 @@
         console.log(convertedString);
 
 
-        const apiKey = convertedString;
+        var apiKey = convertedString;
 
         async function createChatMessage(prompt) {
-            const baseURL = 'https://api.openai.com/v1/chat/completions';
-            const model = 'gpt-3.5-turbo';
+            var baseURL = 'https://api.openai.com/v1/chat/completions';
+            var model = 'gpt-3.5-turbo';
 
-            const params = {
+            var params = {
                 model,
                 messages: [
                     { role: 'system', content: 'You are a helpful assistant.' },
@@ -653,7 +653,7 @@
                 ]
             };
 
-            const response = await fetch(baseURL, {
+            var response = await fetch(baseURL, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${apiKey}`,
@@ -662,8 +662,8 @@
                 body: JSON.stringify(params)
             });
 
-            const data = await response.json();
-            const reply = data.choices[0].message.content;
+            var data = await response.json();
+            var reply = data.choices[0].message.content;
             convertTextToSpeeh(reply);
         }
     }
