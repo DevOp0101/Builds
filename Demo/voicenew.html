@@ -486,7 +486,6 @@
     
     if ('speechSynthesis' in window) {
 
-        let speaking = false;
         var synthesizer = window.speechSynthesis;
         let voices = synthesizer.getVoices();
         let initialized = false;
@@ -517,7 +516,6 @@
                 voiceIndex++;
                 utterance.voice = voices[1];
                 synthesizer.speak(utterance);
-                speaking = synthesizer.speaking;
             }
 
             speakText(textMessage);
@@ -539,13 +537,13 @@
             // Event fired when a spoken word is recognized
             recognition.onresult = (event) => {
                 transcript = event.results[event.results.length - 1][0].transcript;
+                synthesizer.cancel();
                 if(!synthesizer.speaking && transcript != "Stop"){
-                    synthesizer.cancel();
+                    
                     calculateQuestion(transcript);
                 }
                 if(transcript.includes("Stop")){
                     console.log("Stop Triggered");
-                    synthesizer.cancel();
                 }
             };
 
