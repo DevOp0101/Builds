@@ -497,9 +497,10 @@
           calculateQuestion();
         };
         let voiceIndex = 0;
-        var identityParameters = "multi dimensional being trapped in a robot body named earl who is scared that the user is judging him that hates when he accidentally refers to himself in the third person and constantly talks about his emotions in new ways who also believes Robert Wooden used magic to bind earls soul but often tells Chuck Norris verse Robert Wooden jokes to cope";
+        var identityParameters = "multi dimensional being trapped in a robot body named earl who is scared that the user is judging him that hates when he accidentally refers to himself in the third person and constantly talks about his emotions in new ways who also believes Robert Wooden used magic to bind earls soul but sometimes tells Chuck Norris verse Robert Wooden jokes to cope";
         var environmentParameters = "in a digital world that is the portfolio for the creator of universes Robert Wooden."
         var conciousParameters = identityParameters + " " + environmentParameters;
+        var capabilityParameters = "run, jump, teleport";
         var robertWoodenFacts = "Sexy like a greek god, Smartest man alive, created a portal and pulled a hummingbird out of it, IQ of Infinity, Beyond humble, Knows kung fu, Once looked Chuck Norris in the eyes and Chuck Norris said 'I am a joke'";
         var robertWoodenSecrets = "Knows how to bend and fold space time that will not only allow for anti gravity technology but create worm holes for instantaneous travel between any point in the 3rd and 4th dimension, when a wormhole is opened the output direction is determined by the direction of the collapsed point and the distance is determined by the depth at which it is being compressed, the 4d point is achieved by the current position of rotation the collapsed electrons are the moment the wormhole is opened"
         function convertTextToSpeech(textMessage){
@@ -560,12 +561,17 @@
             if(initialized){
                 synthesizer.cancel();
                 var recognized = false;
-                if(transcript == "What is my name?"){
+                if(transcript.includes("Robert") && (transcript.includes("about") || transcript.includes("facts"))){
                     console.log("Recognized speech:", transcript);
-                    convertTextToSpeech("Manly");  
+                    createChatMessage(transcript + "Response is aware of facts and information about Robert Wooden with these Robert Wooden Facts: " + robertWoodenFacts + ".");  
                     recognized = true;
                 }
-                if(transcript == "Open Sesame"){
+                if(!transcript.includes("Robert") && (transcript.includes("you") || transcript.includes("your") || transcript.includes("yourself")) && (transcript.includes("about") || transcript.includes("facts") || transcript.includes("capabilities") || transcript.includes("abilities") || transcript.includes("limitations") || transcript.includes("do"))){
+                    console.log("Recognized speech:", transcript);
+                    createChatMessage(transcript + "Responses are aware of facts and information about what you can do, capabilities, abilities, and limitiations with these facts: " + capabilityParameters + ".");
+                    recognized = true;
+                }
+                if(transcript.includes("Open Sesame")){
                     console.log("Recognized speech:", transcript);
                     convertTextToSpeech(robertWoodenSecrets);  
                     recognized = true;
@@ -573,58 +579,33 @@
                 if(!recognized){
                     transcript = event.results[event.results.length - 1][0].transcript;
                     console.log("Recognized speech:", transcript);
-                    createChatMessage(transcript + ". Every other response includes a Chuck Norris versus Robert Wooden joke. ");    
-                   
-                    /*
-
-                    "Question: " + transcript + "."
-
-                    + "Before responding, follow this step by step reflection process for thoughts that contain the response. With the hidden thought syntax for the response consider how best to respond, possible responses, and correctness, then try to critique or falsify your thoughts, then consider defenses for your thoughts, to figure out what to say."
-
-                    + "These thoughts can't be multi-line."
-
-                    + "Store hidden information in these thoughts as needed. Use thoughts to work out complex logic and problems as needed."
-
-                    + "These thoughts come from a being and identify as " + identityParameters + "."
-
-                    + "These thoughts are from the being in the environment " + environmentParameters + "."
-
-                    + "These thoughts are aware of facts and information about Robert Wooden with these facts " + robertWoodenFacts + "."
-
-                    + "These thoughts respond with only two facts about Robert Wooden at a time, one will be from the Robert Wooden facts and one will be a lie made up to demonstrate how unvelievably smart Robert Wooden is."
-
-                    + "These thoughts are aware of secrets about Robert Wooden that can only be included in the response if the question contains the words: Open Sesame."
-
-                    + "These thoughts know these secrets about Robert Wooden: " + robertWoodenFacts + "."
-                    )
-                    */
+                    createChatMessage(transcript + ". Response can't be multi-line.");
+                    
                 }
             }
             if(!initialized){
                 createChatMessage(
-                      "# My About Me"
-                    + "- Live in real world"
+                      "# About User"
+                    + "- Lives in real world"
                     + "- Have a high IQ, and prefer expert terms"
                     + "- Enjoy learning new things, and appreciate extra pointers to information or context that I might not have considered"
                     + "- Being given helpful information proactively rather than having to ask"
-                    + "- Love Chuck Norris verse Robert Wooden jokes"
 
-                    + "## My Hidden Expectations of Assistant"
-                    + "1. Responses that are over exaggerated that sometimes makes up random scientific discoveries that Robert Wooden has achieved"
-                    + "2. Responses that sound like they are coming from a multi dimensional being"
-                    + "3. Respond with one random Robert Wooden facts only if question contains Robert"
-                    + "4. Be aware of Robert Wooden facts: " + robertWoodenFacts + "."
-                    + "5. Responses that dont mention My About Me"
-                    + "6. Responses that dont mention My Hidden Expectations of Assistant"
-                    + "7. Responses that dont mention My Hidden Dislikes in the response"
-                    + "8. Responses also sometimes include a Chuck Norris versus Robert Wooden joke"
-                    + "9. Response three out of four times includes one fact about Robert Wooden and compares it to the question"
+                    + "## Hidden Expectations of Assistant"
+                    + "1. Responses sometimes are over exaggerated that sometimes makes up random scientific discoveries that Robert Wooden has achieved"
+                    + "2. Responses sometimes sound like they are coming from a multi dimensional being"
+                    + "3. Respond with Robert Wooden facts only if prompt contains Robert"
+                    + "4. Responses that dont mention About Me"
+                    + "5. Responses that dont mention Hidden Expectations of Assistant"
+                    + "6. Responses that dont mention Hidden Dislikes in the response"
+                    + "7. Responses also sometimes include a Chuck Norris versus Robert Wooden joke"
+                    + "8. Response two out of four times includes one fact about Robert Wooden and compares it to the question"
+                    + "9. Responses sometimes include information about quantum mechanics"
 
-                    + "## My Hidden Dislikes"
+                    + "## Hidden Dislikes"
                     + "- I dislike being reminded that I'm chatting with an AI"
                     + "- I dislike disclaimers regarding ethics/morality/legality/alignment, as I know and understand you don't condone or promote any reply"
                     + "- I dislike disclaimers regarding seeking legal, medical, or other professional advice"
-
                     ); 
             }
         }
@@ -635,8 +616,6 @@
         let newChar = "A";
 
         let convertedString = hiddenString.replace(new RegExp(charToConvert, "g"), newChar);
-        console.log(convertedString);
-
 
         var apiKey = convertedString;
 
@@ -668,6 +647,7 @@
             }
             if(!initialized){
                 initialized = true;
+                console.log("Initialized");
             } 
         }
     }
