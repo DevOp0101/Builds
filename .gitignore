@@ -33,9 +33,10 @@ package-lock.json
 .env.production.env
 
 # xcf
-public/images/xcf
+.xcf
 
 # docker
 .dockerignore
 Dockerfile
 config.js
+
