@@ -1,0 +1,1151 @@
+<html>
+<head>
+<style>
+    .game-link {
+        pointer-events: auto;
+        user-select: auto;
+        -webkit-user-drag: auto;
+        -webkit-touch-callout: auto;
+    }
+    
+    /* This CSS code makes the image expand when the link is hovered */
+    .game-link:hover img {
+        transform: scale(1.2);
+        transition: transform 0.5s;
+    }
+    
+    /* The element to apply the animation to */
+    .app {
+        height: 100vh; /* full viewport height */
+        width: 100vw; /* full viewport width */
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        pointer-events: none;
+        user-select: none;
+        -webkit-user-drag: none;
+        -webkit-touch-callout: none;
+    }
+
+    /* The animation code */
+    @keyframes pulse {
+        from {
+            /*clip-path: circle(50% at 50% 50%); /* start from a centered circle */
+            filter: hue-rotate(0deg);
+        }
+        to {
+            /*clip-path: circle(50% at 50% 50%); /* start from a centered circle */
+            filter: hue-rotate(360deg);
+        }
+    }
+    
+    .background {
+        height: 100vh; /* full viewport height */
+        width: 100vw; /* full viewport width */
+        background-image: radial-gradient(circle closest-side, rgba(255, 0, 0, 0.75), rgba(0, 0, 255, 0.25)), url("../Images/Hexagon.jpg");
+        background-size: cover;
+        background-position: center;
+        visibility: visible;
+        overflow: hidden;
+        animation: pulse 2s linear infinite;
+        position: relative;
+        z-index: -1;
+        pointer-events: auto;
+        
+    }
+    .link-container {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        height: 100vh; /* full viewport height */
+        width: 100vw; /* full viewport width */
+        background-color: transparent;
+        background-size: cover;
+        background-position: center;
+        animation: none;
+        opacity: .4;
+        padding-top: 40vh;
+        padding-left: 15vh;
+        padding-right: 15vh;
+        z-index: 2;
+        pointer-events: auto;
+        user-select: auto;
+        -webkit-user-drag: auto;
+        -webkit-touch-callout: auto;
+    }
+
+    @keyframes counterflash {
+        from {
+            filter: hue-rotate(0deg);
+        }
+        to {
+            filter: hue-rotate(-360deg);
+        }
+    }
+    
+    
+    /* Center the image and set the perspective */
+    .face {
+        height: 35vh;
+        width: 21vw;
+        top: -5vh;
+        left: 40vw;
+        position: absolute;
+        perspective: 350px;
+        z-index: -1;
+        animation: none;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .crown {
+        top: 6.5vh;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: 1;
+        z-index: -3;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .brain {
+        top: 6.5vh;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: 1;
+        z-index: -2;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .eyes {
+        top: 6.5vh;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: 1;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .nose {
+        top: 12vh;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: 1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .cheeks {
+        top: 12vh;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: 1;
+    }
+
+
+    /* Rotate the image based on the mouse position */
+    .jaw {
+        top: 14vh;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: 1;
+    }
+
+    /* Center the image and set the perspective */
+    .lefthand {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 65vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+        animation: none;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .leftpalm {
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: 1;
+        z-index: -1;
+
+    }
+
+    /* Center the image and set the perspective */
+    .righthand {     
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 1vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+        animation: none;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .rightpalm {
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: 1;
+        z-index: -1;
+    }
+
+    /* Center the image and set the perspective */
+    .leftname {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 65vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1; 
+        animation: none;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .leftsignature {
+        width: 100%;
+        height: 50%;
+
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: 1;
+        z-index: -1;
+        -moz-animation: scrollText 5s linear infinite;
+        -webkit-animation: scrollText 5s linear infinite;
+        animation: scrollText 5s linear infinite;
+    }
+
+    /* Center the image and set the perspective */
+    .rightname {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 0vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+        animation: none;
+
+    }
+
+    /* Rotate the image based on the mouse position */
+    .rightsignature {
+        width: 100%;
+        height: 50%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: 1;
+        z-index: -1;
+        -moz-animation: scrollText 5s linear infinite;
+        -webkit-animation: scrollText 5s linear infinite;
+        animation: scrollText 5s linear infinite;
+
+    }
+    
+
+    /* Rotate the image based on the mouse position */
+    .crown-good-image {
+        background-image: url("../Images/angel/Crown.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: cover;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        z-index: -3;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .brain-good-image {
+        background-image: url("../Images/angel/Brain.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: cover;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        z-index: -2;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .eyes-good-image {
+        background-image: url("../Images/angel/Eyes.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: cover;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 3s;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .nose-good-image {
+        background-image: url("../Images/angel/Nose.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: cover;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .cheeks-good-image {
+        background-image: url("../Images/angel/Cheeks.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit:contain;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+
+
+    /* Rotate the image based on the mouse position */
+    .jaw-good-image {
+        background-image: url("../Images/angel/Jaw.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit:contain;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+
+
+    /* Rotate the image based on the mouse position */
+    .leftpalm-good-image {
+        background-image: url("../Images/angel/Lefthand.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: cover;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        z-index: -1;
+
+    }
+
+    /* Rotate the image based on the mouse position */
+    .rightpalm-good-image {
+        background-image: url("../Images/angel/Righthand.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: cover;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .leftsignature-good-image {
+        background-image: url("../Images/angel/Leftname.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: cover;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        z-index: -1;
+        -moz-animation: scrollText 5s linear infinite;
+        -webkit-animation: scrollText 5s linear infinite;
+        animation: scrollText 5s linear infinite;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .rightsignature-good-image {
+        background-image: url("../Images/angel/Rightname.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: 0;
+        z-index: -1;
+        -moz-animation: scrollText 5s linear infinite;
+        -webkit-animation: scrollText 5s linear infinite;
+        animation: scrollText 5s linear infinite;
+
+    }
+
+
+
+
+
+    /* Rotate the image based on the mouse position */
+    .crown-bad-image {
+        background-image: url("../Images/puppeteer/Crown.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: cover;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+        z-index: -3;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .brain-bad-image {
+        background-image: url("../Images/puppeteer/Brain.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: cover;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+        z-index: -2;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .eyes-bad-image {
+        background-image: url("../Images/puppeteer/Eyes.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: cover;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 3s;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .nose-bad-image {
+        background-image: url("../Images/puppeteer/Nose.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: cover;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .cheeks-bad-image {
+        background-image: url("../Images/puppeteer/Cheeks.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit:contain;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+    }
+
+
+    /* Rotate the image based on the mouse position */
+    .jaw-bad-image {
+        background-image: url("../Images/puppeteer/Jaw.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit:contain;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+    }
+
+
+    /* Rotate the image based on the mouse position */
+    .leftpalm-bad-image {
+        background-image: url("../Images/puppeteer/Lefthand.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: cover;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+        z-index: -1;
+
+    }
+
+    /* Rotate the image based on the mouse position */
+    .rightpalm-bad-image {
+        background-image: url("../Images/puppeteer/Righthand.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: cover;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .leftsignature-bad-image {
+        background-image: url("../Images/puppeteer/Leftname.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        object-fit: cover;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+        z-index: -1;
+        -moz-animation: scrollText 5s linear infinite;
+        -webkit-animation: scrollText 5s linear infinite;
+        animation: scrollText 5s linear infinite;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .rightsignature-bad-image {
+        background-image: url("../Images/puppeteer/Rightname.png");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        clip-path: polygon(1% 1%, 99% 1%, 99% 99%, 1% 99%);
+        transition: opacity 1s;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: 1;
+        z-index: -1;
+        -moz-animation: scrollText 5s linear infinite;
+        -webkit-animation: scrollText 5s linear infinite;
+        animation: scrollText 5s linear infinite;
+
+    }
+
+
+
+
+    
+
+    @keyframes leftslide {
+        from { 
+            height: 20%;
+            opacity: .03;
+        }
+        20% {
+            opacity: .2f;
+        }
+        to { 
+            height: 120%;
+            opacity: .02;
+        }
+    }
+
+    @keyframes rightslide {
+        from { 
+            height: 20%;
+            opacity: .03;
+        }
+        20% {
+            opacity: .09;
+        }
+        to { 
+            height: 120%;
+            opacity: .02;
+        }
+    }
+
+        /* for Firefox */
+    @-moz-keyframes scrollText {
+        from { 
+            -moz-height: 50%;
+            -moz-opacity: .25;
+        }
+        20% {
+            -moz-opacity: .5f;
+        }
+        60% { 
+            -moz-height: 80%;
+            -moz-opacity: .1;
+        }
+        to { 
+            -moz-height: 120%;
+            -moz-opacity: .05;
+        }
+    }
+
+    /* for Chrome */
+    @-webkit-keyframes scrollText {
+        from { 
+            -webkit-height: 20%;
+            -webkit-opacity: .5;
+        }
+        20% {
+            -webkit-opacity: .5f;
+        }
+        to { 
+            -webkit-height: 120%;
+            -webkit-opacity: .5;
+        }
+    }
+
+    @keyframes scrollText {
+        from { 
+            height: 50%;
+            opacity: .01;
+        }
+        10% { 
+            opacity: .1;
+        }
+        20% {
+            opacity: .5f;
+        }
+        60% { 
+            opacity: .2;
+        }
+        70% { 
+            height: 80%;
+            opacity: .02;
+        }
+        to { 
+            height: 120%;
+            opacity: .01;
+        }
+    }
+    
+    .mood-container{
+        position: absolute;
+        left: 25%;
+        top: 0;
+        width: 50%;
+        height: 100%; 
+        animation: none;
+    }
+    
+    .mood-good-container {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 35%;
+        left: 28%;
+        width: 15%;
+        height: 15%;
+        overflow: visible;
+    }
+    
+    .mood-good {
+        background-image: url("../Images/mood/Good.png");
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        pointer-events: auto;
+        user-select: auto;
+        -webkit-user-drag: auto;
+        -webkit-touch-callout: auto;
+    }
+
+    .mood-good:hover {
+        filter: brightness(1.45);
+        transform: scale(1.15);
+        transition: transform 0.5s;
+    }
+
+    .mood-bad-container {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 35%;
+        left: 60%;
+        width: 15%;
+        height: 15%;
+        overflow: visible;
+    }
+    
+    .mood-bad {
+        background-image: url("../Images/mood/Bad.png");
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        pointer-events: auto;
+        user-select: auto;
+        -webkit-user-drag: auto;
+        -webkit-touch-callout: auto;
+    }
+
+    .mood-bad:hover {
+        filter: brightness(1.45);
+        transform: scale(1.15);
+        transition: transform 0.5s;
+    }
+    
+    .game-link-metaball {
+        position: absolute;
+        top: 65%;
+        left: 20%;
+        width: 20vw;
+        height: 20vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .game-link-mergeball {
+        position: absolute;
+        top: 47.5%;
+        left: 40%;
+        width: 20vw;
+        height: 20vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .game-link-cryptoball {
+        position: absolute;
+        top: 65%;
+        left: 60%;
+        width: 20vw;
+        height: 20vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .game-link-image {
+        width: 16vw;
+        height: 16vw;
+    }
+    
+    .game-link-image:hover {
+        transform: scale(1.2);
+        transition: transform 0.5s;
+    }
+
+        
+    @media (max-width: 500px) {
+        .game-link-image {
+            width: 25vw;
+            height: 25vw;
+        }
+    }
+
+</style>
+</head>
+<body>
+<div class="app">
+    <div class="background"></div>
+    <div class="link-container">
+        <!-- This HTML code creates a link to an image that is a link to another site -->
+        <a class="game-link-metaball" href="https://devop0101.github.io/Builds/Metaball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+        <img class="game-link-image" src="../Images/Metaball.jpg" title="Metaball"> <!-- This is the link to the image you want to display -->
+        </a>
+        <!-- This HTML code creates a link to an image that is a link to another site -->
+        <a class="game-link-mergeball" href="https://devop0101.github.io/Builds/Mergeball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+        <img class="game-link-image" src="../Images/Mergeball.jpg" title="Mergeball"> <!-- This is the link to the image you want to display -->
+        </a>
+        <!-- This HTML code creates a link to an image that is a link to another site -->
+        <a class="game-link-cryptoball" href="https://devop0101.github.io/Builds/Cryptoball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+        <img class="game-link-image" src="../Images/Cryptoball.jpg" title="Cryptoball"> <!-- This is the link to the image you want to display -->
+        </a>        
+    </div>
+    
+    <div class="mood-container">
+        <div class="mood-good-container">
+            <div class="mood-good" id="moodgood" onclick="setMood('Good')"></div>
+        </div>
+        <div class="mood-bad-container">
+            <div class="mood-bad" id="moodbad" onclick="setMood('Bad')"></div>
+        </div>
+        
+    </div>
+
+    <div class='face'>
+        <div class='crown' id='crown'>
+            <img class='crown-good-image' id='crowngood' />
+            <img class='crown-bad-image' id='crownbad' />
+        </div>
+        <div class='brain' id='brain'>
+            <img class='brain-good-image' id='braingood' />
+            <img class='brain-bad-image' id='brainbad' />
+        </div>
+        <div class='eyes' id='eyes'>
+            <img class='eyes-good-image' id='eyesgood' />
+            <img class='eyes-bad-image' id='eyesbad' />
+        </div>
+        <div class='jaw' id='jaw'>
+            <img class='jaw-good-image' id='jawgood' />
+            <img class='jaw-bad-image' id='jawbad' />
+        </div>
+        <div class='nose' id='nose'>
+            <img class='nose-good-image' id='nosegood' />
+            <img class='nose-bad-image' id='nosebad' />
+        </div>
+        <div class='cheeks' id='cheeks'>
+            <img class='cheeks-good-image' id='cheeksgood' />
+            <img class='cheeks-bad-image' id='cheeksbad' />
+        </div>
+    </div>
+    <div class='lefthand'>
+        <div class='leftpalm' id='leftpalm'>
+            <img class='leftpalm-good-image' id='leftpalmgood' />
+            <img class='leftpalm-bad-image' id='leftpalmbad' />
+        </div>
+    </div>
+    <div class='righthand'>
+        <div class='rightpalm' id='rightpalm'>
+            <img class='rightpalm-good-image' id='rightpalmgood' />
+            <img class='rightpalm-bad-image' id='rightpalmbad' />
+        </div>
+    </div>
+    <div class='leftname'>
+        <div class='leftsignature' id='leftsignature'>
+            <img class='leftsignature-good-image' id='leftnamegood' />
+            <img class='leftsignature-bad-image' id='leftnamebad' />
+        </div>
+    </div>
+    <div class='rightname'>
+        <div class='rightsignature' id='rightsignature'>
+            <img class='rightsignature-good-image' id='rightnamegood' />
+            <img class='rightsignature-bad-image' id='rightnamebad' />
+        </div>
+    </div>
+</div>
+
+<script>
+    // Get the face elements
+    var crown = document.getElementById("crown");
+    var brain = document.getElementById("brain");
+    var eyes = document.getElementById("eyes");
+    var jaw = document.getElementById("jaw");
+    var nose = document.getElementById("nose");
+    var cheeks = document.getElementById("cheeks");
+
+    // Get the hand elements
+    var leftpalm = document.getElementById("leftpalm");
+    var rightpalm = document.getElementById("rightpalm");
+    var leftsignature = document.getElementById("leftsignature");
+    var rightsignature = document.getElementById("rightsignature");
+    
+    var crowngood = document.getElementById("crowngood");
+    var braingood = document.getElementById("braingood");
+    var eyesgood = document.getElementById("eyesgood");
+    var jawgood = document.getElementById("jawgood");
+    var nosegood = document.getElementById("nosegood");
+    var cheeksgood = document.getElementById("cheeksgood");
+    var leftpalmgood = document.getElementById("leftpalmgood");
+    var rightpalmgood = document.getElementById("rightpalmgood");
+    var leftnamegood = document.getElementById("leftnamegood");
+    var rightnamegood = document.getElementById("rightnamegood");
+    
+    var crownbad = document.getElementById("crownbad");
+    var brainbad = document.getElementById("brainbad");
+    var eyesbad = document.getElementById("eyesbad");
+    var jawbad = document.getElementById("jawbad");
+    var nosebad = document.getElementById("nosebad");
+    var cheeksbad = document.getElementById("cheeksbad");
+    var leftpalmbad = document.getElementById("leftpalmbad");
+    var rightpalmbad = document.getElementById("rightpalmbad");
+    var leftnamebad = document.getElementById("leftnamebad");
+    var rightnamebad = document.getElementById("rightnamebad");
+    
+    var moodgood = document.getElementById("moodgood");
+    var moodbad = document.getElementById("moodbad");
+
+    let mouseX;
+    let mouseY;
+    
+    let centerX;
+    let centerY;
+    
+  
+    
+    let faceRotateX;
+    let faceRotateY;
+    
+    let handsRotateX;
+    let handsRotateY;
+    
+    let interval = setInterval(updateMovement, 151);
+    
+    let moodActiveStatus = 'Bad';
+    let mobileActiveStatus;
+    
+    let activeStatusChange;
+    
+    function updateMovement() {
+        
+        if(window.innerWidth < 768) {
+            mobileActiveStatus = true;
+        } else {
+            mobileActiveStatus = false;
+        }
+        
+        // Calculate the face rotation angles in degrees
+        faceRotateX = - (mouseY - centerY) / 8;
+        faceRotateY = (mouseX - centerX) / 15;
+
+        // Calculate the hand rotation angles in degrees
+        handsRotateX = - (mouseY - centerY) / 8;
+        handsRotateY = (mouseX - centerX) / 12;
+          
+        // Apply the rotation to the face
+        crown.style.transform = "rotateX(" + faceRotateX + "deg) rotateY(" + faceRotateY + "deg)";
+        brain.style.transform = "rotateX(" + faceRotateX + "deg) rotateY(" + faceRotateY + "deg)";
+        eyes.style.transform = "rotateX(" + faceRotateX + "deg) rotateY(" + faceRotateY + "deg)";
+        jaw.style.transform = "rotateX(" + faceRotateX + "deg) rotateY(" + faceRotateY + "deg)";
+        nose.style.transform = "rotateX(" + faceRotateX + "deg) rotateY(" + faceRotateY + "deg)";
+        cheeks.style.transform = "rotateX(" + faceRotateX + "deg) rotateY(" + faceRotateY + "deg)";
+
+        // Apply the rotation to the hands
+        leftpalm.style.transform = "rotateX(" + handsRotateX + "deg) rotateY(" + handsRotateY + "deg)";
+        rightpalm.style.transform = "rotateX(" + handsRotateX + "deg) rotateY(" + handsRotateY + "deg)";
+        leftsignature.style.transform = "rotateX(" + handsRotateX + "deg) rotateY(" + handsRotateY + "deg)";
+        rightsignature.style.transform = "rotateX(" + handsRotateX + "deg) rotateY(" + handsRotateY + "deg)";
+        
+        if(activeStatusChange === true){
+            if(mobileActiveStatus === true){
+                crowngood.style.opacity = 0;
+                braingood.style.opacity = 0;
+                eyesgood.style.opacity = 0;
+                jawgood.style.opacity = 0;
+                nosegood.style.opacity = 0;
+                cheeksgood.style.opacity = 0;
+                leftpalmgood.style.opacity = 0;
+                rightpalmgood.style.opacity = 0;
+                leftnamegood.style.opacity = 0;
+                rightnamegood.style.opacity = 0;
+
+                crownbad.style.opacity = 0;
+                brainbad.style.opacity = 0;
+                eyesbad.style.opacity = 0;
+                jawbad.style.opacity = 0;
+                nosebad.style.opacity = 0;
+                cheeksbad.style.opacity = 0;
+                leftpalmbad.style.opacity = 0;
+                rightpalmbad.style.opacity = 0;
+                leftnamebad.style.opacity = 0;
+                rightnamebad.style.opacity = 0;
+
+                moodgood.style.opacity = 0;
+                moodbad.style.opacity = 0;
+            }
+            if(mobileActiveStatus === false){
+                if(moodActiveStatus === 'Good'){
+                    crowngood.style.opacity = 1;
+                    braingood.style.opacity = 1;
+                    eyesgood.style.opacity = 1;
+                    jawgood.style.opacity = 1;
+                    nosegood.style.opacity = 1;
+                    cheeksgood.style.opacity = 1;
+                    leftpalmgood.style.opacity = 1;
+                    rightpalmgood.style.opacity = 1;
+                    leftnamegood.style.opacity = 1;
+                    rightnamegood.style.opacity = 1;
+
+                    crownbad.style.opacity = 0;
+                    brainbad.style.opacity = 0;
+                    eyesbad.style.opacity = 0;
+                    jawbad.style.opacity = 0;
+                    nosebad.style.opacity = 0;
+                    cheeksbad.style.opacity = 0;
+                    leftpalmbad.style.opacity = 0;
+                    rightpalmbad.style.opacity = 0;
+                    leftnamebad.style.opacity = 0;
+                    rightnamebad.style.opacity = 0;
+
+                    moodgood.style.opacity = 1;
+                    moodbad.style.opacity = 1;
+                }
+                if(moodActiveStatus === 'Bad'){
+                    crowngood.style.opacity = 0;
+                    braingood.style.opacity = 0;
+                    eyesgood.style.opacity = 0;
+                    jawgood.style.opacity = 0;
+                    nosegood.style.opacity = 0;
+                    cheeksgood.style.opacity = 0;
+                    leftpalmgood.style.opacity = 0;
+                    rightpalmgood.style.opacity = 0;
+                    leftnamegood.style.opacity = 0;
+                    rightnamegood.style.opacity = 0;
+
+                    crownbad.style.opacity = 1;
+                    brainbad.style.opacity = 1;
+                    eyesbad.style.opacity = 1;
+                    jawbad.style.opacity = 1;
+                    nosebad.style.opacity = 1;
+                    cheeksbad.style.opacity = 1;
+                    leftpalmbad.style.opacity = 1;
+                    rightpalmbad.style.opacity = 1;
+                    leftnamebad.style.opacity = 1;
+                    rightnamebad.style.opacity = 1;
+
+                    moodgood.style.opacity = 1;
+                    moodbad.style.opacity = 1;
+                }
+            } 
+            activeStatusChange = false;
+        }   
+
+    };
+    
+     // Add a mousemove event listener to the container
+    document.querySelector(".app").addEventListener("mousemove", function(event) {
+        // Get the mouse position relative to the container
+        mouseX = event.clientX - this.offsetLeft;
+        mouseY = event.clientY - this.offsetTop;
+        
+        centerX = this.offsetWidth / 2;
+        centerY = this.offsetHeight / 2;
+
+    });
+    
+    function setMood (mood) {
+        moodActiveStatus = mood;
+        activeStatusChange = true;
+    }
+
+    
+</script>
+</body>
+</html>

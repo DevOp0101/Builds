@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #gameCanvas {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #000;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="800" height="600"></canvas>
+  <script>
+    var canvas = document.getElementById("gameCanvas");
+    var context = canvas.getContext("2d");
+
+    var level = [
+      [0, 0, 0, 0, 0],
+      [0, 1, 1, 1, 0],
+      [0, 1, 1, 1, 0],
+      [0, 1, 1, 1, 0],
+      [0, 0, 0, 0, 0]
+    ];
+
+    var tileSize = 64; // Size of each tile in pixels
+    var levelWidth = level[0].length;
+    var levelHeight = level.length;
+
+    var character = {
+      x: 2, // Initial x position of the character
+      y: 2, // Initial y position of the character
+      speed: 4 // Moving speed of the character
+    };
+
+    function drawLevel() {
+      for (var y = 0; y < levelHeight; y++) {
+        for (var x = 0; x < levelWidth; x++) {
+          var tile = level[y][x];
+          var screenX = (x - y) * (tileSize / 2);
+          var screenY = (x + y) * (tileSize / 4);
+
+          if (tile === 0) {
+            context.fillStyle = "#333"; // Color for empty tiles
+          } else {
+            context.fillStyle = "#999"; // Color for non-empty tiles
+          }
+
+          context.fillRect(screenX, screenY, tileSize, tileSize);
+        }
+      }
+    }
+
+    function drawCharacter() {
+      var screenX = (character.x - character.y) * (tileSize / 2);
+      var screenY = (character.x + character.y) * (tileSize / 4) - tileSize;
+
+      context.fillStyle = "#ff0000"; // Color for the character
+      context.fillRect(screenX, screenY, tileSize, tileSize);
+    }
+
+    function update() {
+      // Update character position based on mouse movement
+      canvas.addEventListener("mousemove", function(event) {
+        var rect = canvas.getBoundingClientRect();
+        var mouseX = event.clientX - rect.left;
+        var mouseY = event.clientY - rect.top;
+
+        character.x = Math.floor((2 * mouseY + mouseX) / (2 * tileSize));
+        character.y = Math.floor((2 * mouseY - mouseX) / (2 * tileSize));
+      });
+
+      // Clear canvas
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw level and character
+      drawLevel();
+      drawCharacter();
+
+      // Call update function again for smooth animation
+      requestAnimationFrame(update);
+    }
+
+    // Start the game loop
+    update();
+  </script>
+</body>
+</html>

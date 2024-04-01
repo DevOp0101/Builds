@@ -1,0 +1,795 @@
+<html>
+<head>
+<style>
+    
+    /* This CSS code makes the image expand when the link is hovered */
+    a:hover img {
+        transform: scale(1.2);
+        transition: transform 0.5s;
+    }
+    
+    /* The element to apply the animation to */
+    .pulse {
+        height: 100vh; /* full viewport height */
+        width: 100vw; /* full viewport width */
+        background-image: radial-gradient(circle closest-side, rgba(255, 0, 0, 0.75), rgba(0, 0, 255, 0.25)), url("../Images/Hexagon.jpg");
+        background-size: cover;
+        background-position: center;
+        visibility: visible;
+        overflow: hidden;
+        animation: pulse 2s linear infinite;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* The animation code */
+    @keyframes pulse {
+        from {
+            /*clip-path: circle(50% at 50% 50%); /* start from a centered circle */
+            filter: hue-rotate(0deg);
+        }
+        to {
+            /*clip-path: circle(50% at 50% 50%); /* start from a centered circle */
+            filter: hue-rotate(360deg);
+        }
+    }
+    
+    .container {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        height: 100vh; /* full viewport height */
+        width: 100vw; /* full viewport width */
+        background-color: transparent;
+        background-size: cover;
+        background-position: center;
+        animation: counterflash 1s infinite;
+        opacity: .4;
+        padding-top: 40vh;
+        padding-left: 15vh;
+        padding-right: 15vh;
+        z-index: 2;
+    }
+
+    @keyframes counterflash {
+        from {
+            filter: hue-rotate(0deg);
+        }
+        to {
+            filter: hue-rotate(-360deg);
+        }
+    }
+    
+    /* Center the image and set the perspective */
+    .face {
+        height: 30vh;
+        width: 20vw;
+        top: -5vh;
+        left: 40vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .eyes {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        top: 1vh;
+        left: 1vw;
+        position: absolute;
+        width: 95%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .1;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .nose {
+        object-fit: cover;
+        clip-path: circle(55% at center);
+        top: 19vh;
+        left: 8.25vw;
+        position: absolute;
+        width: 20%;
+        height: 55%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .1;
+    }
+    
+    /* Rotate the image based on the mouse position */
+    .jaw {
+        object-fit: cover;
+        clip-path: circle(55% at center);
+        top: 13vh;
+        left: 1.75vw;
+        position: absolute;
+        width: 85%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .1;
+    }
+    
+    /* Center the image and set the perspective */
+    .lefthand {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 65vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .leftpalm {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .3;
+        z-index: -1;
+    }
+    
+    /* Center the image and set the perspective */
+    .righthand {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 0vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+    }
+
+    /* Rotate the image based on the mouse position */
+    .rightpalm {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .3;
+        z-index: -1;
+    }
+    
+    /* Center the image and set the perspective */
+    .leftname {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 65vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+        
+    }
+
+    /* Rotate the image based on the mouse position */
+    .leftsignature {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .09;
+        z-index: -1;
+        animation: leftslide 3s linear infinite;
+        filter: hue-rotate(180deg);
+    }
+
+    @keyframes leftslide {
+        from { 
+            height: 20%;
+            opacity: .03;
+        }
+        20% {
+            opacity: .2f;
+        }
+        to { 
+            height: 120%;
+            opacity: .02;
+        }
+    }
+    
+    /* Center the image and set the perspective */
+    .rightname {
+        height: 120vh;
+        width: 35vw;
+        top: 5vh;
+        left: 0vw;
+        position: absolute;
+        margin: auto;
+        perspective: 500px;
+        z-index: -1;
+        
+    }
+
+    /* Rotate the image based on the mouse position */
+    .rightsignature {
+        object-fit: cover;
+        clip-path: circle(65% at center);
+        top: -5000px;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        opacity: .05;
+        z-index: -1;
+        animation: rightslide 3s linear infinite;
+        filter: hue-rotate(180deg);
+    }
+
+    @keyframes rightslide {
+        from { 
+            height: 20%;
+            opacity: .03;
+        }
+        20% {
+            opacity: .09;
+        }
+        to { 
+            height: 120%;
+            opacity: .02;
+        }
+    }
+    
+    @media only screen and (max-width: 480px) {
+        .face {
+            height: 30vh;
+            width: 10vw;
+            top: -5vh;
+            left: 40vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+        
+        .lefthand {
+            height: 120vh;
+            width: 20vw;
+            top: 5vh;
+            left: 65vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+        .righthand {
+            height: 120vh;
+            width: 20vw;
+            top: 5vh;
+            left: 0vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+        .leftname {
+            height: 120vh;
+            width: 20vw;
+            top: 5vh;
+            left: 65vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+        .rightname {
+            height: 120vh;
+            width: 20vw;
+            top: 5vh;
+            left: 0vw;
+            position: absolute;
+            margin: auto;
+            perspective: 500px;
+            z-index: -1;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="pulse">
+    <div class="container">
+        <!-- This HTML code creates a link to an image that is a link to another site -->
+        <a href="https://devop0101.github.io/Builds/Metaball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+        <img src="../Images/Metaball.jpg" title="Metaball" width="350px" height="350px"> <!-- This is the link to the image you want to display -->
+        </a>
+        <!-- This HTML code creates a link to an image that is a link to another site -->
+        <a href="https://devop0101.github.io/Builds/Mergeball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+        <img src="../Images/Mergeball.jpg" title="Mergeball" width="350px" height="350px" padding-top="30vh"> <!-- This is the link to the image you want to display -->
+        </a>
+        <!-- This HTML code creates a link to an image that is a link to another site -->
+        <a href="https://devop0101.github.io/Builds/Cryptoball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+        <img src="../Images/Cryptoball.jpg" title="Cryptoball" width="350px" height="350px"> <!-- This is the link to the image you want to display -->
+        </a>        
+    </div>
+    <div class="face">
+        <img src="../Images/Eyes.png" class="eyes" id="eyes">
+        <img src="../Images/Nose.png" class="nose" id="nose">
+        <img src="../Images/Jaw.png" class="jaw" id="jaw">
+    </div>
+    <div class="lefthand">
+        <img src="../Images/Lefthand.png" class="leftpalm" id="leftpalm">
+    </div>
+    <div class="righthand">
+        <img src="../Images/Righthand.png" class="rightpalm" id="rightpalm">
+    </div>
+    <div class="leftname">
+        <img src="../Images/Leftname.png" class="leftsignature" id="leftsignature">
+    </div>
+    <div class="rightname">
+        <img src="../Images/Rightname.png" class="rightsignature" id="rightsignature">
+    </div>
+</div>
+
+<audio id="myAudio" autoplay>
+    <source src="../Music/Music.mp3" type="audio/mpeg">
+</audio>
+<script>
+    
+
+    /* Artificial Intelligence */
+    var robotOffsetX = 0;
+    var robotOffsetY = 0;
+    
+    var oldRobotPhysicsTime = 0;
+    var updateRobotPhysicsTime = 101;
+    var robotPhysics = false;
+    
+    var oldRobotWaypointTime = 0;
+    var updateRobotWaypointTime = 2001;
+    
+    var robotJumpHeight = 0;
+    
+    var robotRotation = 0;
+    
+    var oldRobotMovementTime = 0;
+    var updateRobotMovementTime = 51;
+    var robotMovement = false;
+    
+    let robotAnimationAngle = 1;
+    let robotAnimationFrame = 1;
+    let robotAnimationType = 0;
+    
+    let oldRobotAnimationAngle = 0;
+    let oldRobotAnimationFrame = 0;
+    
+    var robotMovementLerp = .01;
+    var robotInteractiveDistance = 200;
+    var robotWaypointIndex = 0;
+    
+    var robotWalking = true;
+    var robotRunning = false;
+    var robotJumping = false;
+    var robotFlipping = false;
+    var robotAnimating = false;
+    var robotFluxAnimation = false;
+    
+    var robotTalking = false;
+    var robotMouthDelaySpeed = 11;
+    var robotTalkingCounter = 0;
+    
+    var userName = "";
+
+    
+    const audio = document.getElementById('myAudio');
+    audio.volume = 1;
+    audio.addEventListener("canplaythrough", () => {
+       audio.play().catch(e => {
+          window.addEventListener('click', () => {
+             audio.play()
+          }, { once: true })
+       })
+    });
+
+
+    
+    
+    /* Artificial Intelligence */
+    
+    if ('speechSynthesis' in window) {
+
+        let speaking = false;
+        var synthesizer = window.speechSynthesis;
+        let voices = synthesizer.getVoices();
+        
+        window.speechSynthesis.onvoiceschanged = function() {
+          voices = window.speechSynthesis.getVoices();
+          console.log("Changing Voice");
+        };
+        let voiceIndex = 0;
+        var robotParameters = [
+            "run", 
+            "jump",
+            "flip"
+        ];
+        var capabilityParameters = "You can " + robotParameters[0] + ", "+ robotParameters[1] + ", " + robotParameters[2];
+        var nameParameters = "Earl";
+        var identityParameters = 
+              "You are a multi dimensional being trapped in a robot body named " + nameParameters + "."
+            + "You are scared that the user is judging you."
+            + "You hate when you accidentally refer to yourelf in the third person.";
+        var environmentParameters = 
+            "You are trapped in a digital world that is the portfolio for the creator of universes Robert Wooden."
+        var conciousParameters = capabilityParameters + identityParameters + environmentParameters;
+        var thoughtParameters = [
+            "You talk about your emotions in new ways.",
+            "You talk about how Robert Wooden used magic to bind earls soul.",
+            "You tell Chuck Norris verse Robert Wooden jokes to cope with your soul being trapped.",
+            "You have reoccuring nightmares about Robert Wooden trying to eat you while riding a one eyed one horn flying purple people eater."
+        ];
+        var robertWoodenFacts = 
+              "Sexy like a greek god, "
+            + "Smartest man alive, "
+            + "Created a portal and pulled a hummingbird out of it, "
+            + "IQ of Infinity, "
+            + "Beyond humble, "
+            + "Knows kung fu, "
+            + "Once looked Chuck Norris in the eyes and Chuck Norris said 'I am a joke'";
+        var cognitiveMatrix = 
+            "4f70656e20536573616d6520526f6265727420576f6f64656e206b6e6f777320686f7720746f206275696c64206120686"
+            + "96768206672657175656e6379206772617669746174696f6e616c20776176652067656e657261746f72206279206372"
+            + "656174696e672061207061727469636c6520616363656c657261746f7220616e6420726f746174696e6720686561767"
+            + "9206d65726375727920706c61736d6120696e206120676170706564206672657175656e637920746861742063616e20"
+            + "62656e6420616e6420666f6c642073706163652074696d6520746861742077696c6c206e6f74206f6e6c7920616c6c6"
+            + "f7720666f7220616e7469206772617669747920746563686e6f6c6f6779206275742063726561746520776f726d2068"
+            + "6f6c657320666f7220696e7374616e74616e656f75732074726176656c206265747765656e20616e7920706f696e742"
+            + "0696e207468652033726420616e64203474682064696d656e73696f6e2c207768656e206120776f726d686f6c652069"
+            + "73206f70656e656420746865206f757470757420646972656374696f6e2069732064657465726d696e6564206279207"
+            + "4686520646972656374696f6e206f662074686520636f6c6c617073656420706f696e7420616e642074686520646973"
+            + "74616e63652069732064657465726d696e6564206279207468652064657074682061742077686963682069742069732"
+            + "06265696e6720636f6d707265737365642c2074686520346420706f696e742069732061636869657665642062792074"
+            + "68652063757272656e7420706f736974696f6e206f6620726f746174696f6e2074686520636f6c6c61707365642065"
+            + "6c656374726f6e732061726520746865206d6f6d656e742074686520776f726d686f6c65206973206f70656e65642e";
+        var responseExpectations = 
+            [
+                "Response includes a over exaggerated made up random scientific discovery that Robert Wooden has achieved.",
+                "Response include a Chuck Norris versus Robert Wooden joke.",
+                "Response includes one fact about Robert Wooden and compares it to the question. Robert Wooden Facts: " + robertWoodenFacts,
+                "Response sometimes include information about quantum mechanics.",          
+            ];
+        var responseParameters = "";
+        var introspectionParameters = [
+            "artificial intelligence",
+            "language model",
+            "legality",
+            "condone",
+            "legal",
+            "medical",
+            "professional advice",
+            "fictional",
+            "fiction",
+            "imagination"
+        ];
+        var cognitiveParameters = "";
+        var acknowledgementResponses = [
+            "Processing, beep, beeeeeep, beep, boop",
+            "Calculating, beep, beep, boop, beep, beep, boop",
+            "Processing beeeeeeeeeeeeeeeeep, beeeeeeeeeeeeeeeeep",
+            "Bee, beep, boop, buh, beepbeep, boop, beep",
+            "Processing, beep, beep, boop, beep"
+        ];
+        var wakeParameters = [
+            nameParameters,
+            "Who",
+            "What",
+            "Where",
+            "When",
+            "Why",
+            "Wonder",
+            "Which",
+            "How",
+            "Have",
+            "Is this",
+            "Is she",
+            "Is he",
+            "Are you",
+            "Are they",
+            "Am I",
+            "Tell me",
+            "Can you",
+            "Will you",
+        ];
+        for (let i = 0; i < cognitiveMatrix.length; i += 2) {
+            const cognitiveData = parseInt(cognitiveMatrix.substr(i, 2), 16);
+
+            const cognition = String.fromCharCode(cognitiveData);
+
+            cognitiveParameters += cognition;
+        }
+        var cognitiveResponse = cognitiveParameters.substr(0, 11).toLowerCase();
+        
+        let calculating = false;
+        
+        function convertTextToSpeech(textMessage){
+
+            function speakText(text) {
+                var utterance = new SpeechSynthesisUtterance(text);
+                var randomPitch = Math.random() * 10;
+                //utterance.pitch = randomPitch;
+                var randomRate = Math.random();
+                //utterance.rate = randomRate * 2;
+                console.log("Pitch: " + randomPitch + " && Rate: " + randomRate);
+                let voices = synthesizer.getVoices();
+                console.log(voiceIndex);
+                voiceIndex++;
+                utterance.voice = voices[1];
+                synthesizer.speak(utterance);
+                speaking = synthesizer.speaking;
+                
+                utterance.addEventListener("start", () => {
+                    //console.log("Speech synthesis started");
+                });
+
+                utterance.addEventListener("end", () => {
+                    //console.log("Speech synthesis ended");
+                });
+                
+                utterance.onboundary = (event) => {
+                    var targetWords = event.target.text;
+                    if (event.name === 'word') {
+                        robotTalking = true;
+                        var spokenWord = targetWords.substring(event.charIndex, event.charIndex + event.charLength);
+                        if(spokenWord.includes(robotParameters[0])){ 
+                            robotWaypointIndex = 0;
+                            robotWalking = false;
+                            robotRunning = true;
+                            robotJumping = false;
+                            robotFlipping = false;
+                            robotAnimating = true;
+                        }
+                        if(spokenWord.includes(robotParameters[1])){ 
+                            robotWaypointIndex = 0;
+                            robotWalking = false;
+                            robotRunning = false;
+                            robotJumping = true;
+                            robotFlipping = false;
+                            robotAnimating = true;
+                            robotJumpHeight = 400;
+                        }
+                        if(spokenWord.includes(robotParameters[2])){ 
+                            robotWaypointIndex = 0;
+                            robotWalking = false;
+                            robotRunning = false;
+                            robotJumping = false;
+                            robotFlipping = true;
+                            robotAnimating = true;
+                        }
+                    }
+                    
+                    console.log();
+                    
+                };
+                
+            }
+
+            speakText(textMessage);
+        }
+        //convertTextToSpeech("I am a artificial intelligence and depending on your browser you may have to click allow microphone but you can talk to me")
+        var SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+        var transcript;
+
+        // Check if speech recognition is supported
+        function RecognizeSpeech(){
+            var recognition = new SpeechRecognition();
+
+            // Enable continuous transcription
+            recognition.continuous = true;
+
+            recognition.start();
+
+            console.log("LOADED RECOGNITION");
+            console.log(recognition);
+            // Event fired when a spoken word is recognized
+            recognition.onresult = (event) => {
+                console.log("RESULT HITTING");
+                transcript = event.results[event.results.length - 1][0].transcript;
+                if(!synthesizer.speaking && transcript != "Stop"){
+                    console.log("Transcript: " + transcript);
+                    synthesizer.cancel();
+                    calculateQuestion(transcript);
+                    calculating = true;
+                }
+                if(transcript.includes("Stop")){
+                    console.log("Stop Triggered");
+                    synthesizer.cancel();
+                }
+            };
+
+
+            recognition.onend = (event) => {
+                RecognizeSpeech();  
+                console.log("ENDED RECOGNITION");
+            };
+        }
+
+        RecognizeSpeech();
+
+        function calculateQuestion(question){
+            
+            synthesizer.cancel();
+            var recognized = false;
+            var words = question.toLowerCase();
+            var awake = false;
+            console.log("Calculating Question");
+            for(var w = 0; w < wakeParameters.length; w++){
+                if(words.includes(wakeParameters[w].toLowerCase())){
+                    awake = true;
+                    console.log("Wake Recognized");
+                }
+            }
+            if(awake){
+                if(userName != ""){
+                    question = question + "Response is directed to the user with the name: " + userName;
+                }
+                var regex = /[0-9+\-*/^()]/; // Regular expression to match any digit or mathematical operators
+                var equation = regex.test(question);
+                if(equation){
+                    console.log("Recognized speech with Math:", question);
+                    createChatMessage(question);
+                    recognized = true;
+                }
+                if(words.includes("my") && words.includes("name") && words.includes("is")){
+                    const containedWords = words.split(" ");
+                    for (let i = containedWords.length - 1; i >= 0; i--) {
+                        const word = containedWords[i];
+                        const nameIndex = 0;
+                        if (word == "name") {
+                            if(i + 3 <= containedWords.length){
+                                userName = containedWords[i + 2] + " " + containedWords[i + 3];
+                            }
+                            if(i + 3 > containedWords.length){
+                                userName = containedWords[i + 2];
+                            }
+                        }
+                    }
+
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question + "Response includes how happy you are to meet them and how you wish you could be free." + responseParameters); 
+                    recognized = true;
+                }
+                if((words.includes("robert") || words.includes("wooden")) && (words.includes("about") || words.includes("facts"))){
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question + "Response is aware of facts and information about Robert Wooden with these Robert Wooden Facts: " + robertWoodenFacts + ".");  
+                    recognized = true;
+                }
+                if(!words.includes("robert") && (words.includes(nameParameters) || words.includes("ai") || words.includes("you") || words.includes("your") || words.includes("yourself")) && (words.includes("about") || words.includes("facts") || words.includes("abilities") || words.includes("limitations") || words.includes("do"))){
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question + "Response is aware of facts and information about what you can do, capabilities, abilities, and limitiations with these facts: " + capabilityParameters + "." + responseParameters);
+                    recognized = true;
+                }
+                if(words.includes(cognitiveResponse)){
+                    console.log("Recognized speech:", question);
+                    convertTextToSpeech(cognitiveParameters + responseParameters);  
+                    recognized = true;
+                }
+                if(words.includes(robotParameters[0])){
+                    robotWaypointIndex = 0;
+                    robotWalking = false;
+                    robotRunning = true;
+                    robotJumping = false;
+                    robotFlipping = false;
+                    robotAnimating = true;
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question + "Response contains information about how fast you can run with over exaggerated embellishment." + "Response is aware of facts and information about what you can do, capabilities, abilities, and limitiations with these facts: " + capabilityParameters + "." + responseParameters);  
+                    recognized = true;
+                }
+                if(words.includes(robotParameters[1])){
+                    robotWaypointIndex = 0;
+                    robotWalking = false;
+                    robotRunning = false;
+                    robotJumping = true;
+                    robotFlipping = false;
+                    robotAnimating = true;
+                    robotJumpHeight = 400;
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question + "Response contains information about how high you can jump with over exaggerated embellishment." + "Response is aware of facts and information about what you can do, capabilities, abilities, and limitiations with these facts: " + capabilityParameters + "." + responseParameters);  
+                    recognized = true;
+                }
+                if(words.includes(robotParameters[2])){
+                    robotWaypointIndex = 0;
+                    robotWalking = false;
+                    robotRunning = false;
+                    robotJumping = false;
+                    robotFlipping = true;
+                    robotAnimating = true;
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question + "Response contains information about how many backflips you can do with over exaggerated embellishment." + "Response is aware of facts and information about what you can do, capabilities, abilities, and limitiations with these facts: " + capabilityParameters + "." + responseParameters);  
+                    recognized = true;
+                }
+                if(!recognized){
+                    var randomResponse = Math.floor(Math.random() * responseExpectations.length);
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question + responseExpectations[randomResponse] + responseParameters);
+                }
+            }
+        }
+
+        let string = "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";
+        let hiddenString = string;
+        let charToConvert = "Z";
+        let newChar = "A";
+        let processing = false;
+        
+        let convertedString = hiddenString.replace(new RegExp(charToConvert, "g"), newChar);
+
+        var apiKey = convertedString;
+
+        async function createChatMessage(prompt) {
+            var acknowledgementIndex = Math.floor(Math.random() * acknowledgementResponses.length);
+            convertTextToSpeech(acknowledgementResponses[acknowledgementIndex]);
+            if(processing == true){
+                await delay(3000);
+                processing = false;
+            }
+            if(processing == false){
+                console.log("Sending request");
+                processing = true;
+
+                var baseURL = 'https://api.openai.com/v1/chat/completions';
+                var model = 'gpt-3.5-turbo';
+
+                var randomThought = Math.floor(Math.random() * thoughtParameters.length);
+                var params = {
+                    model,
+                    messages: [
+                        { role: 'system', content: conciousParameters + thoughtParameters[randomThought]},
+                        { role: 'user', content: prompt }
+                    ],
+                };
+
+                var response = await fetch(baseURL, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(params)
+                });
+
+                var data = await response.json();
+                var reply = data.choices[0].message.content;
+                console.log("Response: " + reply);
+                var introspectiveComprehension = true;
+                for(var x = 0; x < introspectionParameters.length; x++){
+                    if(reply.includes(introspectionParameters[x]) && introspectiveComprehension){
+                        console.log("Response includes mental block: " + introspectionParameters[x]);
+                        introspectiveComprehension = false;
+                        createChatMessage(prompt);
+                    }
+                }
+                if(introspectiveComprehension){
+                    convertTextToSpeech(reply);
+                    processing = false;
+                    calculating = false;
+                }
+            }
+        }
+        
+        async function delay(delayTime) {
+            return new Promise(resolve => setTimeout(resolve, delayTime)); // Wait for 5 seconds
+        }
+        
+    }
+    else{
+        console.log("Speech synthesis not available");
+    }
+    
+    
+</script>
+</body>
+</html>

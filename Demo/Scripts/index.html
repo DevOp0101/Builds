@@ -1,0 +1,105 @@
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <script src="lists.js"></script>
+    <script src="synchronizeddata.js"></script>
+    <script src="vectoroperations.js"></script>
+    <script src="mathadvanced.js"></script>
+    <script type="module" src="engine.js"></script>
+</head>
+<body>
+    <div class="game-container"></div>
+    
+    <canvas class="game-light-glow" id="canvaslayerlight" style="z-index: 9;"></canvas>
+    <canvas class="game-light-glow" id="canvaslayerone" style="z-index: 8;"></canvas>
+    <canvas class="game-light-glow" id="canvaslayertwo" style="z-index: 7;"></canvas>
+    
+    <div class="game-level">
+        
+        <!-- Border Wall -->
+        <div class="game-border-wall" id="borderwall"></div>
+        
+        <!-- Foliage Bottom -->
+        <div class="game-foliage-bottom" id="foliagebottom" style="background-image: url('../../Images/Foliagebottom.png'); background-repeat: repeat;"></div>        
+        
+        <!-- Landscape --> 
+        <div class="game-landscape" id="landscape1" style="background-image: url('../../Images/Tileset.png'); top: 0px; left: 0px;"></div>
+        
+        <!-- Shadowmap -->
+        <div class="game-landscape-shadowmap" id="landscapeshadowmap" style="background-image: url('../../Images/Tileshadowmap.png'); top: 0px; left: 0px;"></div>
+        
+        <!-- Foliage Middle -->
+        <div class="game-foliage-middle" id="foliagemiddle" style="background-image: url('../../Images/Foliagemiddle.png'); background-repeat: repeat;"></div>
+        
+    </div>
+    
+    
+    <!-- Link Container -->
+    <div class="link-container">
+        <div class="link-sub-container" style="top: 3120px; left: 835px; width: 125px; height: 125px">
+            <a href="https://devop0101.github.io/Builds/Metaball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+            <img src="../../Images/Metaball.jpg" title="Metaball" width="125px" height="125px" > <!-- This is the link to the image you want to display -->
+            </a>       
+        </div>
+        <div class="link-sub-container" style="top: 3320px; left: 1085px; width: 125px; height: 125px">
+            <a href="https://devop0101.github.io/Builds/Mergeball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+            <img src="../../Images/Mergeball.jpg" title="Mergeball" width="125px" height="125px" padding-top="30vh"> <!-- This is the link to the image you want to display -->
+            </a>      
+        </div>
+        <div class="link-sub-container" style="top: 3320px; left: 585px; width: 125px; height: 125px">
+            <a href="https://devop0101.github.io/Builds/Cryptoball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+            <img src="../../Images/Cryptoball.jpg" title="Cryptoball" width="125px" height="125px"> <!-- This is the link to the image you want to display -->
+            </a>        
+        </div>
+        
+        <!-- Portal -->
+        <div class="link-sub-container" style="top: 3156px; left: 5167px; width: 175px; height: 175px">
+            <img src="../../Images/Bird.gif" width="200px" height="200px">
+        </div>
+        <div class="link-sub-container-portal" style="background-image: url('../../Images/Portaltop.png'); top: 3011px; left: 5022px; height: 470px; width: 470px; animation: vortexspin 17s linear infinite;"></div>
+        <div class="link-sub-container-portal" style="background-image: url('../../Images/Portaltop.png'); top: 3011px; left: 5022px; height: 470px; width: 470px; animation: vortexspin 14s linear infinite;"></div>
+        <div class="link-sub-container-portal" style="background-image: url('../../Images/Portaltop.png'); top: 3031px; left: 5042px; height: 430px; width: 430px; animation: vortexspin 12s linear infinite;"></div>
+        <div class="link-sub-container-portal" style="background-image: url('../../Images/Portaltop.png'); top: 3091px; left: 5102px; height: 310px; width: 310px; animation: vortexspin 10s linear infinite;"></div>
+        
+    </div>
+    
+    <!-- Character -->
+    <div class="game-character-container" id="charactercontainer" style="top: 40vh; left: 46vw;">
+        <div class="game-character-avatar" id="characteravatar"></div>
+        <div class="game-character-fresnel" id="characterfresnel"></div>
+    </div>
+    
+    <div class="game-character-shadowmap" id="charactershadowmap1" style="background-image: url('../../Images/Charactershadowmap.png');"></div>
+       
+    <!-- Artificial Intelligence -->
+    <div class="game-non-player-character-level-container" id="nonplayercharacterlevelcontainer">
+        <div class="game-non-player-character-container" id="robotcontainer">
+            <div class="game-non-player-character-avatar" id="robotavatar" style="background-image: url('../../Images/Robotavatar.png');">
+                <div class = "game-non-player-character-mouth" id="robotmouth" style="top: 38%; left: 61%;"></div>
+
+            </div>
+            <div class="game-non-player-character-fresnel" id="robotfresnel" style="background-image: url('../../Images/Robotfresnel.png');"></div>
+        </div>
+    </div>
+    
+    <!-- Strings -->
+    <div style="background-image: url('../../Images/Stringsvertical.png');" class="game-character-strings" id="strings"></div>
+    <div style="background-image: url('../../Images/Stringsdiagonal.png');" class="game-character-strings" id="strings"></div>
+    <div style="background-image: url('../../Images/Stringshorizontal.png');" class="game-character-strings" id="strings"></div>
+    <div style="background-image: url('../../Images/Bloominner.png');" class="game-character-inner-bloom" id="bloominner"></div>
+    <div style="background-image: url('../../Images/Bloommiddle.png');" class="game-character-middle-bloom" id="boommiddle"></div>
+    <div style="background-image: url('../../Images/Bloomoutter.png');" class="game-character-outter-bloom" id="bloomoutter"></div>
+    
+    <!-- Foliage Top -->
+    <div class="game-foliage-top" id="foliagetop" style="background-image: url('../../Images/Foliagetop.png'); background-repeat: repeat;"></div>
+       
+    
+    
+    <audio id="myAudio" autoplay>
+        <source src="../../Music/Music.mp3" type="audio/mpeg">
+    </audio>
+    
+    <div class="fps-counter" id="fpscounter">FPS: -</div>
+            
+</body>
+</html>

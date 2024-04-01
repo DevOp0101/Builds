@@ -1,0 +1,2460 @@
+<html>
+<head>
+<style>
+    a:hover img {
+        transform: scale(1.2);
+        transition: transform 0.5s;
+    }
+
+    body, html {
+      background-color: #000;
+      color: #fff;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    .fps-counter {
+        position: fixed;
+        top: 100px;
+        right: 100px;
+        font-family: Arial, sans-serif;
+        font-size: 30px;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 5px;
+        border-radius: 5px;
+        z-index: 100
+    }
+    
+    .link-container {
+        position: absolute;
+        width: 2048px;
+        height: 2048px;
+        background-color: transparent;
+        opacity: 1;
+        z-index: 15;
+    }
+    
+    .link-sub-container {
+        position: absolute;
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        background-color: transparent;
+        background-size: stretch;
+        background-position: center;
+        animation: linkflash 1s infinite;
+        opacity: .4;
+        z-index: 20;
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+/Edge */
+        user-select: none; /* Standard */
+        clip-path: circle(50% at 50% 50%);
+        
+    }
+    
+    @keyframes linkflash {
+        from {
+            filter: hue-rotate(0deg);
+        }
+        to {
+            filter: hue-rotate(-360deg);
+        }
+    }
+    
+    .link-sub-container-portal {
+        position: absolute;
+        background-size: cover;
+        background-position: center;
+        opacity: .1;
+        z-index: 19;
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+/Edge */
+        user-select: none; /* Standard */
+        clip-path: circle(50% at 50% 50%);
+        
+    }
+    
+    @keyframes vortexspin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .game-light-glow{
+        position:absolute;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        top:0;
+        left:0;
+        z-index: 8;
+        pointer-events: none
+    }
+    .game-lighting{
+        opacity: 1;
+        border-radius: 30%;
+    }
+    .game-container {
+        width: 100vw;
+        height: 100vh;
+        margin: 0 auto;
+        overflow: hidden;
+        position: relative;
+        z-index:1;
+    }
+    
+    .game-level{
+        width: 6144px;
+        height: 6144px;
+        position:absolute;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        top:0;
+        left:0;
+        opacity: 1;
+        z-index: 1;
+    }
+    
+    
+    .game-non-player-character-level-container{
+        width: 2048px;
+        height: 2048px;
+        position:absolute;
+        top:0;
+        left:0;
+        opacity: 1;
+        z-index: 9;
+        pointer-events: none
+    }
+    
+    .game-foliage-bottom {
+        width: 6144px;
+        height: 6144px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        filter: brightness(1.5);
+        border: none;
+        z-index: 2;
+    }
+    
+    .game-foliage-middle {
+        width: 6144px;
+        height: 6144px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        filter: brightness(1);
+        border: none;
+        z-index: 3;
+    }
+    
+    .game-foliage-top {
+        width: 15360px;
+        height: 15360px;
+        position: relative;
+        top: 0px;
+        left: 0px;
+        filter: brightness(1);
+        border: none;
+        z-index: 13;
+    }
+    
+    .game-border-wall {
+        background-image: url("../Images/Stone.jpg");
+        background-repeat: repeat;
+        width: 6580px;
+        height: 6520px;
+        position: absolute;
+        top: -250px;
+        left: -220px;
+        filter: brightness(.08);
+        border: none;
+        z-index: 1;
+    }
+    
+    .game-landscape {
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        filter: brightness(.75);
+        border: none;
+        z-index: 4;
+    }
+
+    .game-landscape-shadowmap {
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        opacity: .82;
+        border: none;
+        z-index: 13;
+        /*animation: flicker .5s linear infinite;*/
+        filter: hue-rotate(20deg);
+        pointer-events: none
+    }
+
+    @keyframes flicker {
+        0% {
+            filter: hue-rotate(20deg);
+        }
+        50% {
+            filter: hue-rotate(40deg);
+        }
+        100% {
+            filter: hue-rotate(20deg);
+        }
+    }
+
+    .game-character-container {
+        width: 100px; 
+        height: 150px; 
+        position: absolute;
+        top: 40vh;
+        left: 46vw;
+        filter: brightness(1);
+        border: none;
+        z-index: 13;
+    }
+    
+    .game-character-avatar {
+        width: 100px; 
+        height: 150px; 
+        background: url("../Images/Puppetavatar.png") no-repeat;
+        background-position: -00 -150;
+        position: absolute;
+        filter: brightness(1);
+        border: none;
+        z-index: 13;
+    }
+    
+    .game-character-fresnel {
+        width: 100px; 
+        height: 150px; 
+        background: url("../Images/Puppetfresnel.png") no-repeat;
+        background-position: -00 -150;
+        position: absolute;
+        top: 40vh;
+        left: 46vw;
+        filter: brightness(1);
+        border: none;
+        z-index: 12;
+    }
+    
+    .game-character-shadowmap {
+        width: 2048px;
+        height: 2048px;
+        position: absolute;
+        top: 0px; 
+        left: 0px;
+        object-fit: cover;
+        opacity: .92;
+        border: none;
+        z-index: 16;
+        pointer-events: none
+    }
+    
+    .game-character-strings {
+        width: 200px;
+        height: 600px;
+        position: absolute;
+        background-size: cover;
+        opacity: .7;
+        border: none;
+        z-index: 9;
+        pointer-events: none
+    }
+    
+    .game-character-inner-bloom {
+        width: 2048px;
+        height: 2048px;
+        position: absolute;
+        top: 0px; 
+        left: 0px;
+        object-fit: cover;
+        opacity: .5;
+        border: none;
+        z-index: 12;
+        animation: bloomdim .15s linear infinite;
+        pointer-events: none
+    }
+    
+    .game-character-middle-bloom {
+        width: 2048px;
+        height: 2048px;
+        position: absolute;
+        top: 0px; 
+        left: 0px;
+        object-fit: cover;
+        opacity: .9;
+        border: none;
+        z-index: 12;
+        animation: bloombright .35s linear infinite;
+        pointer-events: none
+    }
+    
+    .game-character-outter-bloom {
+        width: 2048px;
+        height: 2048px;
+        position: absolute;
+        top: 0px; 
+        left: 0px;
+        object-fit: cover;
+        opacity: .9;
+        border: none;
+        z-index: 12;
+        animation: bloomdim .25s linear infinite;
+        pointer-events: none
+    }
+    
+    @keyframes bloomdim {
+        0%{
+            opacity: .1;
+        }
+        50%{
+            opacity: .5;
+        }
+        100%{
+            opacity: .1;
+        }
+    }
+    @keyframes bloombright {
+        0%{
+            opacity: .3;
+        }
+        50%{
+            opacity: .5;
+        }
+        100%{
+            opacity: .3;
+        }
+    }
+    
+    .game-non-player-character-container {
+        width: 100px; 
+        height: 150px; 
+        position: absolute;
+        filter: brightness(1);
+        border: none;
+        z-index: 14;
+        pointer-events: none
+    }
+    
+    .game-non-player-character-avatar {
+        width: 100px; 
+        height: 150px; 
+        position: absolute;
+        filter: brightness(.8);
+        border: none;
+        z-index: 14;
+    }
+    
+    .game-non-player-character-fresnel {
+        width: 100px; 
+        height: 150px; 
+        position: absolute;
+        filter: brightness(1);
+        border: none;
+        z-index: 13;
+    }
+    
+    .game-non-player-character-mouth {
+        width: 11px; 
+        height: 3px; 
+        position: absolute;
+        background-color: black;
+        background: radial-gradient(circle, red, grey);
+        filter: brightness(1);
+        border: none;
+        z-index: 15;
+    }
+    
+</style>
+</head>
+<body>
+    <div class="game-container"></div>
+    
+    <canvas class="game-light-glow" id="canvaslayerlight" style="z-index: 9;"></canvas>
+    <canvas class="game-light-glow" id="canvaslayerone" style="z-index: 8;"></canvas>
+    <canvas class="game-light-glow" id="canvaslayertwo" style="z-index: 7;"></canvas>
+    
+    <div class="game-level">
+        
+        <!-- Border Wall -->
+        <div class="game-border-wall" id="borderwall"></div>
+        
+        <!-- Foliage Bottom -->
+        <div class="game-foliage-bottom" id="foliagebottom" style="background-image: url('../Images/Foliagebottom.png'); background-repeat: repeat;"></div>        
+        
+        <!-- Landscape --> 
+        <div class="game-landscape" id="landscape1" style="background-image: url('../Images/Tileset.png'); top: 0px; left: 0px;"></div>
+        
+        <!-- Shadowmap -->
+        <div class="game-landscape-shadowmap" id="landscapeshadowmap" style="background-image: url('../Images/Tileshadowmap.png'); top: 0px; left: 0px;"></div>
+        
+        <!-- Foliage Middle -->
+        <div class="game-foliage-middle" id="foliagemiddle" style="background-image: url('../Images/Foliagemiddle.png'); background-repeat: repeat;"></div>
+        
+    </div>
+    
+    
+    <!-- Link Container -->
+    <div class="link-container">
+        <div class="link-sub-container" style="top: 3120px; left: 835px; width: 125px; height: 125px">
+            <a href="https://devop0101.github.io/Builds/Metaball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+            <img src="../Images/Metaball.jpg" title="Metaball" width="125px" height="125px" > <!-- This is the link to the image you want to display -->
+            </a>       
+        </div>
+        <div class="link-sub-container" style="top: 3320px; left: 1085px; width: 125px; height: 125px">
+            <a href="https://devop0101.github.io/Builds/Mergeball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+            <img src="../Images/Mergeball.jpg" title="Mergeball" width="125px" height="125px" padding-top="30vh"> <!-- This is the link to the image you want to display -->
+            </a>      
+        </div>
+        <div class="link-sub-container" style="top: 3320px; left: 585px; width: 125px; height: 125px">
+            <a href="https://devop0101.github.io/Builds/Cryptoball/index.html" target="_blank"> <!-- This is the link to the site you want to redirect to -->
+            <img src="../Images/Cryptoball.jpg" title="Cryptoball" width="125px" height="125px"> <!-- This is the link to the image you want to display -->
+            </a>        
+        </div>
+        
+        <!-- Portal -->
+        <div class="link-sub-container" style="top: 3156px; left: 5167px; width: 175px; height: 175px">
+            <img src="../Images/Bird.gif" width="200px" height="200px">
+        </div>
+        <div class="link-sub-container-portal" style="background-image: url('../Images/Portaltop.png'); top: 3011px; left: 5022px; height: 470px; width: 470px; animation: vortexspin 17s linear infinite;"></div>
+        <div class="link-sub-container-portal" style="background-image: url('../Images/Portaltop.png'); top: 3011px; left: 5022px; height: 470px; width: 470px; animation: vortexspin 14s linear infinite;"></div>
+        <div class="link-sub-container-portal" style="background-image: url('../Images/Portaltop.png'); top: 3031px; left: 5042px; height: 430px; width: 430px; animation: vortexspin 12s linear infinite;"></div>
+        <div class="link-sub-container-portal" style="background-image: url('../Images/Portaltop.png'); top: 3091px; left: 5102px; height: 310px; width: 310px; animation: vortexspin 10s linear infinite;"></div>
+        
+    </div>
+    
+    <!-- Character -->
+    <div class="game-character-container" id="charactercontainer" style="top: 40vh; left: 46vw;">
+        <div class="game-character-avatar" id="characteravatar"></div>
+        <div class="game-character-fresnel" id="characterfresnel"></div>
+    </div>
+    
+    <div class="game-character-shadowmap" id="charactershadowmap1" style="background-image: url('../Images/Charactershadowmap.png');"></div>
+       
+    <!-- Artificial Intelligence -->
+    <div class="game-non-player-character-level-container" id="nonplayercharacterlevelcontainer">
+        <div class="game-non-player-character-container" id="robotcontainer">
+            <div class="game-non-player-character-avatar" id="robotavatar" style="background-image: url('../Images/Robotavatar.png');">
+                <div class = "game-non-player-character-mouth" id="robotmouth" style="top: 38%; left: 61%;"></div>
+
+            </div>
+            <div class="game-non-player-character-fresnel" id="robotfresnel" style="background-image: url('../Images/Robotfresnel.png');"></div>
+        </div>
+    </div>
+    
+    <!-- Strings -->
+    <div style="background-image: url('../Images/Stringsvertical.png');" class="game-character-strings" id="strings"></div>
+    <div style="background-image: url('../Images/Stringsdiagonal.png');" class="game-character-strings" id="strings"></div>
+    <div style="background-image: url('../Images/Stringshorizontal.png');" class="game-character-strings" id="strings"></div>
+    <div style="background-image: url('../Images/Bloominner.png');" class="game-character-inner-bloom" id="bloominner"></div>
+    <div style="background-image: url('../Images/Bloommiddle.png');" class="game-character-middle-bloom" id="boommiddle"></div>
+    <div style="background-image: url('../Images/Bloomoutter.png');" class="game-character-outter-bloom" id="bloomoutter"></div>
+    
+    <!-- Foliage Top -->
+    <div class="game-foliage-top" id="foliagetop" style="background-image: url('../Images/Foliagetop.png'); background-repeat: repeat;"></div>
+       
+    
+    
+    <audio id="myAudio" autoplay>
+        <source src="../Music/Music.mp3" type="audio/mpeg">
+    </audio>
+    
+    <div class="fps-counter" id="fpscounter">FPS: -</div>
+<script>
+    
+    var levelOffsetX = 0;
+    var levelOffsetY = 0;
+    var levelCanvasOffsetX = 0;
+    var levelCanvasOffsetY = 0;
+    var characterOffsetX = 0;
+    var characterOffsetY = 0;
+    var avatarBlockOffsetX = 0;
+    var avatarBlockOffsetY = 0;
+    const container = document.querySelector(".game-container");
+    const level = document.querySelector(".game-level");
+    const foliageBottom = document.getElementById("foliagebottom");
+    const foliageMiddle = document.getElementById("foliagemiddle");
+    const foliageTop = document.getElementById("foliagetop");
+    const characterContainer = document.querySelector(".game-character-container");
+    const characterAvatar = document.querySelector(".game-character-avatar");
+    const characterFresnel = document.querySelector(".game-character-fresnel");
+    const characterShadowmap = document.querySelector(".game-character-shadowmap");
+    const lightglow = document.querySelector(".game-light-glow");
+    const characterinnerbloom = document.querySelector(".game-character-inner-bloom");
+    const charactermiddlebloom = document.querySelector(".game-character-middle-bloom");
+    const characteroutterbloom = document.querySelector(".game-character-outter-bloom");
+    const levelCanvasLayerLight = document.getElementById("canvaslayerlight");
+    const levelCanvasLayerOne = document.getElementById("canvaslayerone");
+    const levelCanvasLayerTwo = document.getElementById("canvaslayertwo");
+    const nonPlayerCharacteerLevelContainer = document.getElementById("nonplayercharacterlevelcontainer");
+    const robotContainer = document.getElementById("robotcontainer");
+    const robotAvatar = document.getElementById("robotavatar");
+    const robotFresnel = document.getElementById("robotfresnel");
+    const robotMouth = document.getElementById("robotmouth");
+    const linkContainer = document.querySelector(".link-container");
+    const fpsCounterElement = document.getElementById("fpscounter");
+    let lastTime = performance.now();
+    
+    var priorityDistance = 800;
+
+    var oldPrioritizingTime = 0;
+    var updatePrioritizingTime = 10007;
+    var prioritizing = false;
+    
+    var oldCharacterPhysicsTime = 0;
+    var updateCharacterPhysicsTime = 157;
+    var characterPhysics = false;    
+    
+    var oldCharacterMovementTime = 0;
+    var updateCharacterMovementTime = 11;
+    var characterMovement = false;
+    
+    var distance = 80;
+    var characterMovementSpeed = .19;
+    
+    var oldDrawTime = 0;
+    var updateDrawTime = 201;
+    var drawing = false;
+    
+    var oldFoliageMovementTime = 0;
+    var updateFoliageMovementTime = 127;
+    var foliageMovement = false;
+    
+    var foliageTopInitialOffset = 1536;
+    
+    var windPower = 10;
+    var windDirectionChangeMin = 10;
+    var windDirectionChangeMax = 30;
+    
+    var windBottomSpeed = .021;
+    var windMiddleSpeed = .006;
+    var windTopSpeed = .09;
+    
+    var windOffsetX = 0;
+    var windOffsetY = 0;
+    
+    var foliageOffsetX = 0;
+    var foliageOffsetY = 0;
+    
+    var windMiddleOffsetX = 0;
+    var windMiddleOffsetY = 0;
+    
+    var foliageMiddleOffsetX = 0;
+    var foliageMiddleOffsetY = 0;
+    
+    var windTopOffsetX = 0;
+    var windTopOffsetY = 0;
+    
+    var foliageTopOffsetX = 0;
+    var foliageTopOffsetY = 0;
+    
+    var foliagMovementCounter = 0;
+    
+    var topDistanceRatioX = 23;
+    var topDistanceRatioY = 13;
+
+    
+    var objectPriorityList = persistentList();
+    
+    var stringsList = persistentList();
+
+    var stringsInitialized = false;
+
+    var mouseDownId = -1;
+
+    var mouseDown = false;
+    let mouseCurrentX = 0;
+    let mouseCurrentY = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+    var centerX = 0;
+    var centerY = 0;
+    var angle = 0;
+    var mathCosAngle = 0;
+    var mathSinAngle = 0;
+    
+    var destinationX = 0;
+    var destinationY = 0;
+    var halfDestinationX = 0;
+    var halfDestinationY = 0;
+    
+    var minimumClickDistance = 50;
+    
+    var previousDistance = 8;
+    
+    var previousAngle = 0;
+    var previousDestinationX = 0;
+    var previousDestinationY = 0;
+    
+    var collision = false;
+    
+    let characterAnimationAngle = 1;
+    let characterAnimationFrame = 1;
+    
+    let oldCharacterAnimationAngle = 0;
+    let oldCharacterAnimationFrame = 0;
+    
+    var bloomInitialized = false;
+    
+    var bloomAngleZeroOffsetX = 0;
+    var bloomAngleZeroOffsetY = 0;
+    var bloomAngleOneOffsetX = 0;
+    var bloomAngleOneOffsetY = 0;
+    var bloomAngleTwoOffsetX = 0;
+    var bloomAngleTwoOffsetY = 0;
+    var bloomAngleThreeOffsetX = 0;
+    var bloomAngleThreeOffsetY = 0;
+    var bloomAngleFourOffsetX = 0;
+    var bloomAngleFourOffsetY = 0;
+    var bloomAngleFiveOffsetX = 0;
+    var bloomAngleFiveOffsetY = 0;
+    var bloomAngleSixOffsetX = 0;
+    var bloomAngleSixOffsetY = 0;
+    var bloomAngleSevenOffsetX = 0;
+    var bloomAngleSevenOffsetY = 0;
+    
+    var characterShadowmapZeroOffsetX = 0;
+    var characterShadowmapZeroOffsetY = 0;
+    var characterShadowmapOneOffsetX = 0;
+    var characterShadowmapOneOffsetY = 0;
+    var characterShadowmapTwoOffsetX = 0;
+    var characterShadowmapTwoOffsetY = 0;
+    var characterShadowmapThreeOffsetX = 0;
+    var characterShadowmapThreeOffsetY = 0;
+    var characterShadowmapFourOffsetX = 0;
+    var characterShadowmapFourOffsetY = 0;
+    var characterShadowmapFiveOffsetX = 0;
+    var characterShadowmapFiveOffsetY = 0;
+    var characterShadowmapSixOffsetX = 0;
+    var characterShadowmapSixOffsetY = 0;
+    var characterShadowmapSevenOffsetX = 0;
+    var characterShadowmapSevenOffsetY = 0;
+    
+    var avatarOffsetX = -window.innerWidth/400;
+    var avatarOffsetY = window.innerHeight/18;
+    
+    var characterLightOffsetX = 0;
+    var characterLightOffsetY = 10;
+    
+    var lightAngle = 0;
+    
+    var maximumRenderDistance = 1000;
+    
+    var containerOffsetWidth = 0;
+    var containerOffsetHeight = 0;
+    var containerOffsetHalfWidth = 0;
+    var containerOffsetHalfHeight = 0;
+    
+    var renderOffsetX = 0;
+    var renderOffsetY = 0;
+    
+    var blocksInitialized = false;
+    
+    /* Artificial Intelligence */
+    var robotOffsetX = 0;
+    var robotOffsetY = 0;
+    
+    var oldRobotPhysicsTime = 0;
+    var updateRobotPhysicsTime = 101;
+    var robotPhysics = false;
+    
+    var oldRobotWaypointTime = 0;
+    var updateRobotWaypointTime = 2001;
+    
+    var robotJumpHeight = 0;
+    
+    var robotRotation = 0;
+    
+    var oldRobotMovementTime = 0;
+    var updateRobotMovementTime = 51;
+    var robotMovement = false;
+    
+    let robotAnimationAngle = 1;
+    let robotAnimationFrame = 1;
+    let robotAnimationType = 0;
+    
+    let oldRobotAnimationAngle = 0;
+    let oldRobotAnimationFrame = 0;
+    
+    var robotMovementLerp = .01;
+    var robotInteractiveDistance = 200;
+    var robotWaypointIndex = 0;
+    
+    var robotWalking = true;
+    var robotRunning = false;
+    var robotJumping = false;
+    var robotFlipping = false;
+    var robotAnimating = false;
+    var robotFluxAnimation = false;
+    
+    var robotTalking = false;
+    var robotMouthDelaySpeed = 11;
+    var robotTalkingCounter = 0;
+    
+    var userName = "";
+    
+    function persistentList() {
+        var list = [];
+        return {
+            add: function(item) {
+                list.push(item);
+            },
+            remove: function(index) {
+                if (index >= 0 && index < list.length) {
+                    list.splice(index, 1);
+                }
+            },
+            contents: function(index) {
+                return list[index];
+            },
+            getList: function() {
+                return list;
+            },
+            clear: function() {
+                list = [];
+            },
+            count: function() {
+                return list.length;
+            }
+        };
+    }
+    
+    function startGame() {
+                
+        lightglow.style.top = '-2645px';
+        lightglow.style.left = '-2205px';
+        level.style.top = '-2645px';
+        level.style.left = '-2205px';
+        nonPlayerCharacteerLevelContainer.style.top = level.style.top;
+        nonPlayerCharacteerLevelContainer.style.left = level.style.left;
+        linkContainer.style.top = level.style.top;
+        linkContainer.style.left = level.style.left;
+        levelOffsetX = '-2205px';
+        levelOffsetY = '-2645px';
+        previousDestinationX = '-2205px';
+        previousDestinationY = '-2645px';
+        characterOffsetX = '2205';
+        characterOffsetY = '2645';
+        avatarBlockOffsetX = '2205';
+        avatarBlockOffsetY = '2645';
+        characterinnerbloom.style.top = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterinnerbloom.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.75);
+        characterinnerbloom.style.left = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterinnerbloom.offsetWidth/2 + ((characterContainer.offsetWidth/20) * 5.75);
+        charactermiddlebloom.style.top = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterinnerbloom.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.75);
+        charactermiddlebloom.style.left = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterinnerbloom.offsetWidth/2 + ((characterContainer.offsetWidth/20) * 5.75);
+        characteroutterbloom.style.top = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterinnerbloom.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.75);
+        characteroutterbloom.style.left = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterinnerbloom.offsetWidth/2 + ((characterContainer.offsetWidth/20) * 5.75);
+        
+        characterShadowmap.style.top = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterShadowmap.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.75) + characterContainer.offsetHeight;
+        characterShadowmap.style.left = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterShadowmap.offsetWidth/2 + ((characterContainer.offsetWidth/20) * 5.75);
+            
+        
+        
+        var stringContainers = document.getElementsByClassName('game-character-strings');
+        var stringList = Array.from(stringContainers);
+        for (var object of stringList) {
+            stringsList.add(object);
+            object.style.top = characterContainer.offsetTop + characterContainer.offsetHeight/2 - object.offsetHeight/2 - 130;
+            object.style.left = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - object.offsetWidth/2 + 10;
+        }
+        stringsList.contents(0).style.opacity = 0.21;
+        stringsList.contents(1).style.opacity = 0;
+        stringsList.contents(2).style.opacity = 0;
+        
+        /* Artificial Intelligence */
+        robotOffsetX = '2548px';
+        robotOffsetY = '2548px';
+        
+        robotContainer.style.top = robotOffsetY;
+        robotContainer.style.left = robotOffsetX;
+        
+        foliageTopOffsetX = (parseFloat(levelOffsetX.toString().replace("px", "")) + (characterOffsetX * -1.3) - foliageTopInitialOffset);
+        foliageTopOffsetY = (parseFloat(levelOffsetY.toString().replace("px", "")) + (characterOffsetY * -1.3) - foliageTopInitialOffset);
+        foliageTop.style.left = foliageTopOffsetX;
+        foliageTop.style.top = foliageTopOffsetY;
+        
+    }
+    
+    startGame();
+    
+    function updateFPS() {
+        const now = performance.now();
+        const deltaTime = now - lastTime;
+        lastTime = now;
+        const fps = Math.round(1000 / deltaTime);
+
+        fpsCounterElement.textContent = `FPS: ${fps}`;
+
+        requestAnimationFrame(updateFPS); // Call the function recursively
+    }
+
+    
+
+    // Start the FPS counter
+    updateFPS();
+    
+    function lerp(start, end, t) {
+        return start * (1 - t) + end * t;
+    }
+    
+    /* Collision Priority Manager */
+    function updatePriority(){
+        var currentPrioritizingTime = new Date().getTime();
+        if(currentPrioritizingTime - oldPrioritizingTime > updatePrioritizingTime){
+            //console.log(currentPrioritizingTime - oldPrioritizingTime);
+            oldPrioritizingTime = currentPrioritizingTime;
+            prioritizing = true;
+        }
+        if(prioritizing && blocksInitialized){
+            prioritizing = false;
+            objectPriorityList.clear();
+            for(var object of blocks){
+                var distanceX = object.position.x - lights[0].position.x;
+                var distanceY = object.position.y - lights[0].position.y;
+                
+                if(distanceX < priorityDistance && distanceX > -priorityDistance && distanceY < priorityDistance && distanceY > -priorityDistance){
+                    objectPriorityList.add(object);
+                }
+            }
+            console.log("Prioritizing" + objectPriorityList.count());
+        }
+        
+        var newCurrentTime = new Date().getTime();
+        //console.log(newCurrentTime - beginningTime + " Start-Finish");
+        requestAnimationFrame(updatePriority);
+    }
+    
+    updatePriority();
+    
+    var physicsInitialized = false;
+    
+    /* Movement - Collision - Animation */
+    function updateCharacterPhysics(){
+        var currentCharacterPhysicsTime = new Date().getTime();
+        if(currentCharacterPhysicsTime - oldCharacterPhysicsTime > updateCharacterPhysicsTime){
+            //console.log(currentCharacterPhysicsTime - oldCharacterPhysicsTime);
+            oldCharacterPhysicsTime = currentCharacterPhysicsTime;
+            characterPhysics = true;
+        }
+        var beginningTime = currentCharacterPhysicsTime;
+        if(mouseDown && characterPhysics || !physicsInitialized){
+            physicsInitialized = true;
+            characterPhysics = false;
+            mouseX = mouseCurrentX - container.offsetLeft;
+            mouseY = mouseCurrentY - container.offsetTop;
+
+            centerX = container.offsetWidth / 2 + avatarOffsetX;
+            centerY = container.offsetHeight / 2 + avatarOffsetY;
+
+            const mouseDistanceX = centerX - mouseX;
+            const mouseDistanceY = centerY - mouseY;
+
+            angle = Math.atan2(mouseY - centerY, mouseX - centerX);
+            mathCosAngle = Math.cos(angle);
+            mathSinAngle = Math.sin(angle);
+            
+            levelCanvasOffsetX = levelCanvasLayerLight.offsetLeft;
+            levelCanvasOffsetY = levelCanvasLayerLight.offsetTop;
+            
+            destinationX = levelCanvasOffsetX - mathCosAngle * distance;
+            destinationY = levelCanvasOffsetY - mathSinAngle * distance;          
+            
+            collision = false;
+            for(var x = 0; x < objectPriorityList.count(); x++){ 
+                if(!collision){
+                    var objectWidth = objectPriorityList.contents(x).width/2;
+                    var objectHeight = objectPriorityList.contents(x).height/2;
+
+                    var valueX = objectPriorityList.contents(x).position.x + objectWidth;
+                    var valueY = objectPriorityList.contents(x).position.y + objectHeight;
+                                        
+                    var characterX = (lights[0].position.x + avatarOffsetX) - mathCosAngle * -distance ;
+                    var characterY = (lights[0].position.y + avatarOffsetY) - mathSinAngle * -distance;
+                            
+                    var borderPadding = 13;
+                    
+                    var distanceX = valueX - characterX;
+                    if(distanceX < objectWidth + borderPadding && distanceX > -objectWidth - borderPadding){
+                        var distanceY = valueY - characterY;
+                        if(distanceY < objectHeight + borderPadding && distanceY > -objectHeight - borderPadding){
+                            collision = true;
+                        }
+                    }
+                }
+            }
+            if(!collision){
+                if(destinationX < 730 && destinationY < 345 && destinationX > -5340 && destinationY > -5720){
+                    if(mouseDistanceX > minimumClickDistance || mouseDistanceX < -minimumClickDistance || mouseDistanceY > minimumClickDistance || mouseDistanceY < -minimumClickDistance){
+                        halfDestinationX = levelCanvasOffsetX - mathCosAngle * (distance/2);
+                        halfDestinationY = levelCanvasOffsetY - mathSinAngle * (distance/2);  
+                        levelOffsetX = halfDestinationX;
+                        levelOffsetY = halfDestinationY;
+                        characterOffsetX = -halfDestinationX;
+                        characterOffsetY = -halfDestinationY;
+                    }
+                }
+            }
+        }
+        
+        let relativeX = mouseX - centerX;
+        let relativeY = mouseY - centerY;
+
+        /* Text Box */
+        //updateText(destinationX.toString() + "  " + destinationY.toString())
+
+        /* Sprite Animation Angle */
+        if(relativeX < 30 && relativeX > -30 && relativeY > 30){
+            characterAnimationAngle = 0;
+        }
+        if(relativeX > 30 && relativeY > 30){
+            characterAnimationAngle = 1;
+        }
+        if(relativeX > 30 && relativeY < 30 && relativeY > -30){
+            characterAnimationAngle = 2;
+        }
+        if(relativeX > 30 && relativeY < -30){
+            characterAnimationAngle = 3;
+        }
+        if(relativeX < 30 && relativeX > -30 && relativeY < -30){
+            characterAnimationAngle = 4;
+        }
+        if(relativeX < -30 && relativeY < -30){
+            characterAnimationAngle = 5;
+        }
+        if(relativeX < -30 && relativeY < 30 && relativeY > -30){
+            characterAnimationAngle = 6;
+        }
+        if(relativeX < -30 && relativeY > 30){
+            characterAnimationAngle = 7;
+        }
+        if(oldCharacterAnimationAngle != characterAnimationAngle){
+            oldCharacterAnimationAngle = characterAnimationAngle;
+            adjustCharacterSprite();
+            adjustCharacterStrings();
+            adjustCharacterFresnel();
+            adjustCharacterBloom();
+        }
+        if(oldCharacterAnimationFrame != characterAnimationFrame){
+            oldCharacterAnimationFrame = characterAnimationFrame;
+            adjustCharacterSprite();
+        }
+        
+        var newCurrentTime = new Date().getTime();
+        //console.log(newCurrentTime - beginningTime + " Start-Finish");
+        requestAnimationFrame(updateCharacterPhysics);
+    }
+    
+    updateCharacterPhysics();
+    
+    /* Movement Lerp */
+    function updateCharacterMovement(){
+        var currentCharacterMovementTime = new Date().getTime();
+        if(currentCharacterMovementTime - oldCharacterMovementTime > updateCharacterMovementTime){
+            //console.log(currentCharacterMovementTime - oldCharacterMovementTime);
+            oldCharacterMovementTime = currentCharacterMovementTime;
+            characterMovement = true;
+        }
+        if(characterMovement){
+            characterMovement = false;
+            levelCanvasLayerLight.style.top = lerp(parseFloat(levelCanvasLayerLight.style.top.toString().replace("px", "")), levelOffsetY, characterMovementSpeed) + "px";
+            levelCanvasLayerLight.style.left = lerp(parseFloat(levelCanvasLayerLight.style.left.toString().replace("px", "")), levelOffsetX, characterMovementSpeed) + "px";
+            levelCanvasLayerOne.style.top = levelCanvasLayerLight.style.top;
+            levelCanvasLayerOne.style.left = levelCanvasLayerLight.style.left;
+            levelCanvasLayerTwo.style.top = levelCanvasLayerLight.style.top;
+            levelCanvasLayerTwo.style.left = levelCanvasLayerLight.style.left;
+            level.style.top = levelCanvasLayerLight.style.top
+            level.style.left = levelCanvasLayerLight.style.left
+            nonPlayerCharacteerLevelContainer.style.top = levelCanvasLayerLight.style.top
+            nonPlayerCharacteerLevelContainer.style.left = levelCanvasLayerLight.style.left
+            linkContainer.style.top = levelCanvasLayerLight.style.top;
+            linkContainer.style.left = levelCanvasLayerLight.style.left;
+        }
+    
+        requestAnimationFrame(updateCharacterMovement);
+    }
+    
+    updateCharacterMovement();
+    
+    /* Foliage Movement Lerp */
+    function updateFoliageMovement(){
+        var currentFoliageMovementTime = new Date().getTime();
+        if(currentFoliageMovementTime - oldFoliageMovementTime > updateFoliageMovementTime){
+            //console.log(currentFoliageMovementTime - oldFoliageMovementTime);
+            oldFoliageMovementTime = currentFoliageMovementTime;
+            foliageMovement = true;
+        }
+        foliagMovementCounter++;
+        if(foliageMovement){
+            if(foliagMovementCounter >= Math.random() * windDirectionChangeMax + windDirectionChangeMin){
+                windTopOffsetX = windOffsetX;
+                windTopOffsetY = windOffsetY;
+                windMiddleOffsetX = windTopOffsetX;
+                windMiddleOffsetY = windTopOffsetY;
+                foliageMovement = false;
+                foliagMovementCounter = 0;
+                var windDirectionX = Math.cos(Math.PI * Math.round(Math.random()));;
+                var windDirectionY = Math.cos(Math.PI * Math.round(Math.random()));;
+                windOffsetX = windDirectionX * windPower;
+                windOffsetY = windDirectionY * windPower;
+                //console.log(windOffsetX + " && " + windOffsetY);
+                //console.log(windDirectionX + " && " + windDirectionY);
+            }
+            var foliagetDifferenceX = foliageOffsetX - windOffsetX;
+            var foliagetDifferenceY = foliageOffsetY - windOffsetY;
+            foliageOffsetX = lerp(foliageOffsetX, windOffsetX, windBottomSpeed);
+            foliageOffsetY = lerp(foliageOffsetY, windOffsetY, windBottomSpeed);
+            //console.log(foliageOffsetX + " && " + foliageOffsetY);
+            foliageBottom.style.left = foliageOffsetX + "px";
+            foliageBottom.style.top = foliageOffsetY + "px";
+            
+            foliageMiddleOffsetX = lerp(foliageMiddleOffsetX, windMiddleOffsetX, windMiddleSpeed);
+            foliageMiddleOffsetY = lerp(foliageMiddleOffsetY, windMiddleOffsetY, windMiddleSpeed);
+            //console.log(foliageOffsetX + " && " + foliageOffsetY);
+            foliageMiddle.style.left = foliageMiddleOffsetX + "px";
+            foliageMiddle.style.top = foliageMiddleOffsetY + "px";
+            
+            var characterFoliageOffsetX = parseFloat(levelOffsetX.toString().replace("px", "")) + (parseFloat(characterOffsetX.toString().replace("px", "")) * -1.3);
+            var characterFoliageOffsetY = parseFloat(levelOffsetY.toString().replace("px", "")) + (parseFloat(characterOffsetY.toString().replace("px", "")) * -1.3);
+            foliageTopOffsetX = lerp(foliageTopOffsetX, characterFoliageOffsetX + windTopOffsetX - foliageTopInitialOffset, windTopSpeed);
+            foliageTopOffsetY = lerp(foliageTopOffsetY, characterFoliageOffsetY + windTopOffsetY - foliageTopInitialOffset, windTopSpeed);
+            //console.log(foliageOffsetX + " && " + foliageOffsetY);
+            foliageTop.style.left = foliageTopOffsetX + "px";
+            foliageTop.style.top = foliageTopOffsetY + "px";
+        }
+    
+        requestAnimationFrame(updateFoliageMovement);
+    }
+    
+    updateFoliageMovement();
+    
+    function adjustCharacterSprite(){
+        var posX = -111 * characterAnimationAngle;
+        var posY = -150 * characterAnimationFrame;
+        characterAvatar.style.backgroundPosition = posX + "px " + posY + "px";        
+        characterFresnel.style.backgroundPosition = posX + "px " + posY + "px";        
+    }
+    
+    /* Animate Strings */
+    function adjustCharacterStrings(){
+        if(!stringsInitialized){
+            stringsInitialized = true;
+            for(var x = 0; x < stringsList.count(); x++) {
+                stringsList.contents(x).style.top = characterContainer.offsetTop + characterContainer.offsetHeight/2 - stringsList.contents(x).offsetHeight/2 - 130;
+                stringsList.contents(x).style.left = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - stringsList.contents(x).offsetWidth/2 + 10;
+            }
+        }
+        if(characterAnimationAngle == 0 || characterAnimationAngle == 4){
+            stringsList.contents(0).style.opacity = 0.21;
+            stringsList.contents(1).style.opacity = 0;
+            stringsList.contents(2).style.opacity = 0;
+        }
+        if(characterAnimationAngle == 1 || characterAnimationAngle == 3 || characterAnimationAngle == 5 || characterAnimationAngle == 7){
+            stringsList.contents(0).style.opacity = 0;
+            stringsList.contents(1).style.opacity = 0.21;
+            stringsList.contents(2).style.opacity = 0;
+        }
+        if(characterAnimationAngle == 2 || characterAnimationAngle == 6){
+            stringsList.contents(0).style.opacity = 0;
+            stringsList.contents(1).style.opacity = 0;
+            stringsList.contents(2).style.opacity = 0.21;
+        }
+    }
+    
+    function adjustCharacterFresnel(){
+        if(characterAnimationAngle == 0){
+            characterFresnel.style.left = 2 + "px";
+            characterFresnel.style.top = -2 + "px";
+        }
+        if(characterAnimationAngle == 1){
+            characterFresnel.style.left = 2 + "px";
+            characterFresnel.style.top = -1 + "px";
+        }
+        if(characterAnimationAngle == 2){
+            characterFresnel.style.left = 2 + "px";
+            characterFresnel.style.top = -4 + "px";
+        }
+        if(characterAnimationAngle == 3){
+            characterFresnel.style.left = -4 + "px";
+            characterFresnel.style.top = -3 + "px";
+        }
+        if(characterAnimationAngle == 4){
+            characterFresnel.style.left = -3 + "px";
+            characterFresnel.style.top = -1 + "px";
+        }
+        if(characterAnimationAngle == 5){
+            characterFresnel.style.left = -2 + "px";
+            characterFresnel.style.top = -4 + "px";
+        }
+        if(characterAnimationAngle == 6){
+            characterFresnel.style.left = 2 + "px";
+            characterFresnel.style.top = -2 + "px";
+        }
+        if(characterAnimationAngle == 7){
+            characterFresnel.style.left = 3 + "px";
+            characterFresnel.style.top = -1 + "px";
+        }
+    }
+    
+    function adjustCharacterBloom(){
+        if(!bloomInitialized){
+            bloomInitialized = true;
+            bloomAngleZeroOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterinnerbloom.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.50);
+            bloomAngleZeroOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterinnerbloom.offsetWidth/2 + ((characterContainer.offsetWidth/20) * 7.75);
+            bloomAngleOneOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterinnerbloom.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.75);
+            bloomAngleOneOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterinnerbloom.offsetWidth/2 + ((characterContainer.offsetWidth/20) * 5.75);
+            bloomAngleTwoOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterinnerbloom.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.75);
+            bloomAngleTwoOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterinnerbloom.offsetWidth/2 + ((characterContainer.offsetWidth/20) * 3.00);
+            bloomAngleThreeOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterinnerbloom.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.75);
+            bloomAngleThreeOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterinnerbloom.offsetWidth/2 + ((characterContainer.offsetWidth/20) * -3.00);
+            bloomAngleFourOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterinnerbloom.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.50);
+            bloomAngleFourOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterinnerbloom.offsetWidth/2 + ((characterContainer.offsetWidth/20) * -5.00);
+            bloomAngleFiveOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterinnerbloom.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.50);
+            bloomAngleFiveOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterinnerbloom.offsetWidth/2 + ((characterContainer.offsetWidth/20) * -1.50);
+            bloomAngleSixOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterinnerbloom.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 5.00);
+            bloomAngleSixOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterinnerbloom.offsetWidth/2 + ((characterContainer.offsetWidth/20) * 4.25);
+            bloomAngleSevenOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterinnerbloom.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.75);
+            bloomAngleSevenOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterinnerbloom.offsetWidth/2 + ((characterContainer.offsetWidth/20) * 6.75);
+            
+            characterShadowmapZeroOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterShadowmap.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.50) + characterContainer.offsetHeight;
+            characterShadowmapZeroOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterShadowmap.offsetWidth/2 + ((characterContainer.offsetWidth/20) * 7.75);
+            characterShadowmapOneOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterShadowmap.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.75) + characterContainer.offsetHeight;
+            characterShadowmapOneOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterShadowmap.offsetWidth/2 + ((characterContainer.offsetWidth/20) * 5.75);
+            characterShadowmapTwoOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterShadowmap.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.75) + characterContainer.offsetHeight;
+            characterShadowmapTwoOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterShadowmap.offsetWidth/2 + ((characterContainer.offsetWidth/20) * 3.00);
+            characterShadowmapThreeOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterShadowmap.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.75) + characterContainer.offsetHeight;
+            characterShadowmapThreeOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterShadowmap.offsetWidth/2 + ((characterContainer.offsetWidth/20) * -3.00);
+            characterShadowmapFourOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterShadowmap.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.50) + characterContainer.offsetHeight;
+            characterShadowmapFourOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterShadowmap.offsetWidth/2 + ((characterContainer.offsetWidth/20) * -5.00);
+            characterShadowmapFiveOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterShadowmap.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.50) + characterContainer.offsetHeight;
+            characterShadowmapFiveOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterShadowmap.offsetWidth/2 + ((characterContainer.offsetWidth/20) * -1.50);
+            characterShadowmapSixOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterShadowmap.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 5.00) + characterContainer.offsetHeight;
+            characterShadowmapSixOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterShadowmap.offsetWidth/2 + ((characterContainer.offsetWidth/20) * 4.25);
+            characterShadowmapSevenOffsetY = characterContainer.offsetTop  + characterContainer.offsetHeight/2 - characterShadowmap.offsetHeight/2 - ((characterContainer.offsetHeight/20) * 4.75) + characterContainer.offsetHeight;
+            characterShadowmapSevenOffsetX = characterContainer.offsetLeft + characterContainer.offsetWidth/2 - characterShadowmap.offsetWidth/2 + ((characterContainer.offsetWidth/20) * 6.75);
+        }
+        if(characterAnimationAngle == 0){
+            characterinnerbloom.style.top = bloomAngleZeroOffsetY;
+            characterinnerbloom.style.left = bloomAngleZeroOffsetX;
+            charactermiddlebloom.style.top = bloomAngleZeroOffsetY;
+            charactermiddlebloom.style.left = bloomAngleZeroOffsetX;
+            characteroutterbloom.style.top = bloomAngleZeroOffsetY;
+            characteroutterbloom.style.left = bloomAngleZeroOffsetX;
+            characterShadowmap.style.top = characterShadowmapZeroOffsetY;
+            characterShadowmap.style.left = characterShadowmapZeroOffsetX;         
+        }
+        if(characterAnimationAngle == 1){
+            characterinnerbloom.style.top = bloomAngleOneOffsetY;
+            characterinnerbloom.style.left = bloomAngleOneOffsetX;
+            charactermiddlebloom.style.top = bloomAngleOneOffsetY;
+            charactermiddlebloom.style.left = bloomAngleOneOffsetX;
+            characteroutterbloom.style.top = bloomAngleOneOffsetY;
+            characteroutterbloom.style.left = bloomAngleOneOffsetX;
+            characterShadowmap.style.top = characterShadowmapOneOffsetY;
+            characterShadowmap.style.left = characterShadowmapOneOffsetX; 
+        }
+        if(characterAnimationAngle == 2){
+            characterinnerbloom.style.top = bloomAngleTwoOffsetY;
+            characterinnerbloom.style.left = bloomAngleTwoOffsetX;
+            charactermiddlebloom.style.top = bloomAngleTwoOffsetY;
+            charactermiddlebloom.style.left = bloomAngleTwoOffsetX;
+            characteroutterbloom.style.top = bloomAngleTwoOffsetY;
+            characteroutterbloom.style.left = bloomAngleTwoOffsetX;
+            characterShadowmap.style.top = characterShadowmapTwoOffsetY;
+            characterShadowmap.style.left = characterShadowmapTwoOffsetX; 
+        }
+        if(characterAnimationAngle == 3){
+            characterinnerbloom.style.top = bloomAngleThreeOffsetY;
+            characterinnerbloom.style.left = bloomAngleThreeOffsetX;
+            charactermiddlebloom.style.top = bloomAngleThreeOffsetY;
+            charactermiddlebloom.style.left = bloomAngleThreeOffsetX;
+            characteroutterbloom.style.top = bloomAngleThreeOffsetY;
+            characteroutterbloom.style.left = bloomAngleThreeOffsetX;
+            characterShadowmap.style.top = characterShadowmapThreeOffsetY;
+            characterShadowmap.style.left = characterShadowmapThreeOffsetX; 
+        }
+        if(characterAnimationAngle == 4){
+            characterinnerbloom.style.top = bloomAngleFourOffsetY;
+            characterinnerbloom.style.left = bloomAngleFourOffsetX;
+            charactermiddlebloom.style.top = bloomAngleFourOffsetY;
+            charactermiddlebloom.style.left = bloomAngleFourOffsetX;
+            characteroutterbloom.style.top = bloomAngleFourOffsetY;
+            characteroutterbloom.style.left = bloomAngleFourOffsetX;
+            characterShadowmap.style.top = characterShadowmapFourOffsetY;
+            characterShadowmap.style.left = characterShadowmapFourOffsetX; 
+        }
+        if(characterAnimationAngle == 5){
+            characterinnerbloom.style.top = bloomAngleFiveOffsetY;
+            characterinnerbloom.style.left = bloomAngleFiveOffsetX;
+            charactermiddlebloom.style.top = bloomAngleFiveOffsetY;
+            charactermiddlebloom.style.left = bloomAngleFiveOffsetX;
+            characteroutterbloom.style.top = bloomAngleFiveOffsetY;
+            characteroutterbloom.style.left = bloomAngleFiveOffsetX;
+            characterShadowmap.style.top = characterShadowmapFiveOffsetY;
+            characterShadowmap.style.left = characterShadowmapFiveOffsetX; 
+        }
+        if(characterAnimationAngle == 6){
+            characterinnerbloom.style.top = bloomAngleSixOffsetY;
+            characterinnerbloom.style.left = bloomAngleSixOffsetX;
+            charactermiddlebloom.style.top = bloomAngleSixOffsetY;
+            charactermiddlebloom.style.left = bloomAngleSixOffsetX;
+            characteroutterbloom.style.top = bloomAngleSixOffsetY;
+            characteroutterbloom.style.left = bloomAngleSixOffsetX;
+            characterShadowmap.style.top = characterShadowmapSixOffsetY;
+            characterShadowmap.style.left = characterShadowmapSixOffsetX; 
+        }
+        if(characterAnimationAngle == 7){
+            characterinnerbloom.style.top = bloomAngleSevenOffsetY;
+            characterinnerbloom.style.left = bloomAngleSevenOffsetX;
+            characteroutterbloom.style.top = bloomAngleSevenOffsetY;
+            charactermiddlebloom.style.top = bloomAngleSevenOffsetY;
+            charactermiddlebloom.style.left = bloomAngleSevenOffsetX;
+            characteroutterbloom.style.left = bloomAngleSevenOffsetX;
+            characterShadowmap.style.top = characterShadowmapSevenOffsetY;
+            characterShadowmap.style.left = characterShadowmapSevenOffsetX; 
+        }
+    }
+    
+    const audio = document.getElementById('myAudio');
+    audio.volume = 1;
+    audio.addEventListener("canplaythrough", () => {
+       audio.play().catch(e => {
+          window.addEventListener('click', () => {
+             audio.play()
+          }, { once: true })
+       })
+    });
+
+    window.addEventListener("resize",function(){
+        width = window.innerWidth;
+        height = document.body.offsetHeight;
+        containerOffsetWidth = container.offsetWidth;
+        containerOffsetHeight = container.offsetHeight;
+        containerOffsetHalfWidth = container.offsetWidth/2;
+        containerOffsetHalfHeight = container.offsetHeight/2;
+        levelCanvasLayerLight.width = width;
+        levelCanvasLayerLight.height = height;
+        levelCanvasLayerOne.width = width;
+        levelCanvasLayerOne.height = height;
+        levelCanvasLayerTwo.width = width;
+        levelCanvasLayerTwo.height = height;
+        adjustCharacterFresnel();
+        bloomInitialized = false;
+        adjustCharacterBloom();
+        stringsInitialized = false;
+        adjustCharacterStrings();
+    });
+
+    window.addEventListener("mousedown", function(e) {
+        mouseDown = true;
+
+    });
+
+    window.addEventListener("mousemove", function(e) {
+        mouseCurrentX = e.clientX;
+        mouseCurrentY = e.clientY;
+    });
+
+    window.addEventListener("mouseup", function(e) {
+        mouseDown = false;
+    });
+    
+    (function() {
+      var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame ||
+          function(callback) {
+            window.setTimeout(callback, 1000 / 60);
+          };
+      window.requestAnimationFrame = requestAnimationFrame;
+    })();
+
+    var renderLayerLightCanvas = document.getElementById("canvaslayerlight"),
+        layerLight = renderLayerLightCanvas.getContext("2d"),
+        width = 6144,
+        height = 6144;
+
+        renderLayerLightCanvas.width = width;
+        renderLayerLightCanvas.height = height;
+    
+    var renderLayerOneCanvas = document.getElementById("canvaslayerone"),
+        layerOne = renderLayerOneCanvas.getContext("2d"),
+        width = 6144,
+        height = 6144;
+
+        renderLayerOneCanvas.width = width;
+        renderLayerOneCanvas.height = height;
+    
+    var renderLayerTwoCanvas = document.getElementById("canvaslayertwo"),
+        layerTwo = renderLayerTwoCanvas.getContext("2d"),
+        width = 6144,
+        height = 6144;
+
+        renderLayerTwoCanvas.width = width;
+        renderLayerTwoCanvas.height = height;
+
+    var lights = [],
+        blocks = [],
+        avatars = [],
+        vector = function(_x,_y){
+            this.x = _x;
+            this.y = _y;  
+        },
+        light = function(_position,_radius,_angleSpread, _color, _type){
+            this.color = _color;
+            this.radius = _radius;
+            this.angleSpread = _angleSpread;
+            this.position = _position;
+            this.angle = Math.random()*180;
+            this.type = _type;
+        },
+        block = function(_position,_width,_height,_type){
+            this.position = _position;
+            this.width = _width;
+            this.height = _height;
+            this.type = _type;
+            this.visible = false;
+        },
+        angle = 0;
+
+
+    // FIND DISTANCE ************************
+    function findDistance(light, block, angle, rLen, start, shortest, closestBlock){
+        var y = (block.position.y + block.height/2) - light.position.y,
+            x = (block.position.x + block.width/2) - light.position.x,
+            dist = Math.sqrt((y * y) + (x * x));
+
+        if(light.radius >= dist)
+        {
+            var rads = angle * (Math.PI / 180),
+                pointPos = new vector(light.position.x, light.position.y);
+
+            pointPos.x += Math.cos(rads) * dist;
+            pointPos.y += Math.sin(rads) * dist;
+
+            if(pointPos.x > block.position.x && pointPos.x < block.position.x + block.width && pointPos.y > block.position.y && pointPos.y < block.position.y + block.height)
+            {
+                if(start || dist < shortest){
+                    start = false;
+                    shortest = dist;
+                    rLen= dist;
+                    closestBlock = block;
+                }
+                return {'start' : start, 'shortest' : shortest, 'rLen' : rLen, 'block' : closestBlock};
+            }
+        }
+        return {'start' : start, 'shortest' : shortest, 'rLen' : rLen, 'block' : closestBlock};
+    }
+    // **************************************
+
+    // SHINE LIGHT**************************
+    function shineLight(light, index){
+        var curAngle = light.angle - (light.angleSpread/2),
+            dynLen = light.radius,
+            addTo = 1/light.radius;
+
+        for(curAngle; curAngle < light.angle + (light.angleSpread/2); curAngle += (addTo * (180/Math.PI))*2){
+            dynLen = light.radius;
+
+            var findDistRes = {};
+
+            findDistRes.start = true;
+            findDistRes.shortest = 0;
+            findDistRes.rLen = dynLen;
+            findDistRes.block = {};
+
+            if(light.type == "Point"){
+                for(var i = 0; i < blocks.length; i++)
+                {
+                    var blockLightDistanceX = blocks[i].position.x - light.position.x;
+                    if(blockLightDistanceX < maximumRenderDistance && blockLightDistanceX > -maximumRenderDistance && blocks[i].type != "Invisible"){
+                        var blockLightDistanceY = blocks[i].position.y - light.position.y;
+                        if(blockLightDistanceY < maximumRenderDistance && blockLightDistanceY > -maximumRenderDistance){
+                            findDistRes = findDistance(light, blocks[i], curAngle, findDistRes.rLen, findDistRes.start, findDistRes.shortest, findDistRes.block);
+                        }
+                    }
+                }
+                for(var i = 0; i < avatars.length; i++)
+                {
+                    if(i != 0){
+                        var blockLightDistanceX = avatars[i].position.x - light.position.x;
+                        if(blockLightDistanceX < maximumRenderDistance && blockLightDistanceX > -maximumRenderDistance){
+                            var blockLightDistanceY = avatars[i].position.y - light.position.y;
+                            if(blockLightDistanceY < maximumRenderDistance && blockLightDistanceY > -maximumRenderDistance){
+                                findDistRes = findDistance(light, avatars[i], curAngle, findDistRes.rLen, findDistRes.start, findDistRes.shortest, findDistRes.block);
+                            }
+                        }
+                    }
+                }
+            }
+            if(light.type == "Static"){
+                var blockLightDistanceX = blocks[0].position.x - light.position.x;
+                if(blockLightDistanceX < maximumRenderDistance && blockLightDistanceX > -maximumRenderDistance && blocks[0].type != "Invisible"){
+                    var blockLightDistanceY = blocks[0].position.y - light.position.y;
+                    if(blockLightDistanceY < maximumRenderDistance && blockLightDistanceY > -maximumRenderDistance){
+                        findDistRes = findDistance(light, blocks[0], curAngle, findDistRes.rLen, findDistRes.start, findDistRes.shortest, findDistRes.block);
+                    }
+                }
+                for(var i = 0; i < avatars.length; i++)
+                {
+                    var blockLightDistanceX = avatars[i].position.x - light.position.x;
+                    if(blockLightDistanceX < maximumRenderDistance && blockLightDistanceX > -maximumRenderDistance){
+                        var blockLightDistanceY = avatars[i].position.y - light.position.y;
+                        if(blockLightDistanceY < maximumRenderDistance && blockLightDistanceY > -maximumRenderDistance){
+                            findDistRes = findDistance(light, avatars[i], curAngle, findDistRes.rLen, findDistRes.start, findDistRes.shortest, findDistRes.block);
+                        }
+                    }
+                }
+            }
+            
+            /* Check if character light */
+            if(index == 0){
+                var rads = curAngle * (Math.PI / 180),
+                    end = new vector(light.position.x, light.position.y);
+
+                findDistRes.block.visible = true;
+                end.x += Math.cos(rads) * findDistRes.rLen;
+                end.y += Math.sin(rads) * findDistRes.rLen;
+
+                layerLight.beginPath();
+                layerLight.moveTo(light.position.x, light.position.y);
+                layerLight.lineTo(end.x, end.y);
+                layerLight.closePath();
+                layerLight.stroke();
+            }
+            /* Check if not character light */
+            if(index != 0){
+                var rads = curAngle * (Math.PI / 180),
+                    end = new vector(light.position.x, light.position.y);
+
+                findDistRes.block.visible = true;
+                end.x += Math.cos(rads) * findDistRes.rLen;
+                end.y += Math.sin(rads) * findDistRes.rLen;
+
+                layerLight.beginPath();
+                layerLight.moveTo(light.position.x, light.position.y);
+                layerLight.lineTo(end.x, end.y);
+                layerLight.closePath();
+                layerLight.stroke();
+            }
+        }
+    }
+    // ************************************
+
+    const cageBottomImage = new Image();
+    cageBottomImage.src = '../Images/Cagebottom.png';
+    cageBottomImage.className = "game-lighting";
+    
+    const cageBottomDimImage = new Image();
+    cageBottomDimImage.src = '../Images/Cagebottomdim.png';
+    cageBottomDimImage.className = "game-lighting";
+
+    const cageTopImage = new Image();
+    cageTopImage.src = '../Images/Cagetop.png';
+    cageTopImage.className = "game-lighting";
+    
+    const portalBottomImage = new Image();
+    portalBottomImage.src = '../Images/Portalbottom.png';
+    portalBottomImage.className = "game-lighting";
+    
+    const portalBottomDimImage = new Image();
+    portalBottomDimImage.src = '../Images/Portalbottomdim.png';
+    portalBottomDimImage.className = "game-lighting";
+
+    const portalTopImage = new Image();
+    portalTopImage.src = '../Images/Portaltop.png';
+    portalTopImage.className = "game-lighting";
+    
+    const altarBottomImage = new Image();
+    altarBottomImage.src = '../Images/Altarbottom.png';
+    altarBottomImage.className = "game-lighting";
+    
+    const altarBottomDimImage = new Image();
+    altarBottomDimImage.src = '../Images/Altarbottomdim.png';
+    altarBottomDimImage.className = "game-lighting";
+
+    const altarTopImage = new Image();
+    altarTopImage.src = '../Images/Altartop.png';
+    altarTopImage.className = "game-lighting";
+    
+    const wallBottomImage = new Image();
+    wallBottomImage.src = '../Images/Wallbottom.png';
+    wallBottomImage.className = "game-lighting";
+    
+    const wallBottomDimImage = new Image();
+    wallBottomDimImage.src = '../Images/Wallbottomdim.png';
+    wallBottomDimImage.className = "game-lighting";
+
+    const wallTopImage = new Image();
+    wallTopImage.src = '../Images/Walltop.png';
+    wallTopImage.className = "game-lighting";
+    
+    const pillarBottomImage = new Image();
+    pillarBottomImage.src = '../Images/Pillarbottom.png';
+    pillarBottomImage.className = "game-lighting";
+    
+    const pillarBottomDimImage = new Image();
+    pillarBottomDimImage.src = '../Images/Pillarbottomdim.png';
+    pillarBottomDimImage.className = "game-lighting";
+
+    const pillarTopImage = new Image();
+    pillarTopImage.src = '../Images/Pillartop.png';
+    pillarTopImage.className = "game-lighting";
+    
+    
+    
+    /* Character Light */
+    lights.push(new light(new vector(window.innerWidth/2,window.innerHeight/2), 380, 360, 'rgba(255,137,47,0.035)', "Point"));
+
+    /* Character Block */
+    avatars.push(new block(new vector(2205, 2645), 15, 15, "Avatar"));
+
+    
+    /* Landscape #4 */
+        
+    /* Altars #4 */
+    blocks.push(new block(new  vector(825, 3110), 150, 150, "Altar"));
+    blocks.push(new block(new  vector(1075, 3310), 150, 150, "Altar"));
+    blocks.push(new block(new  vector(575, 3310), 150, 150, "Altar"));
+        
+    /* School Walls #4 */
+    /* School Right Walls #4 */
+    blocks.push(new block(new  vector(1406, 2410), 100, 100, "Wall"));
+    blocks.push(new block(new  vector(1406, 2460), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(1406, 2680), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(1406, 2850), 100, 100, "Wall"));
+    
+    blocks.push(new block(new  vector(1406, 3200), 100, 100, "Wall"));
+    blocks.push(new block(new  vector(1406, 3280), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(1406, 3480), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(1406, 3640), 100, 100, "Wall"));
+    
+    /* School Top Walls #4 */
+    blocks.push(new block(new  vector(1176, 2410), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(946, 2410), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(846, 2410), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(646, 2410), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(446, 2410), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(326, 2410), 240, 100, "Wall"));
+    
+    /* School Left Walls #4 */
+    blocks.push(new block(new  vector(266, 2410), 100, 100, "Wall"));
+    blocks.push(new block(new  vector(266, 2460), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(266, 2680), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(266, 2880), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(266, 3080), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(266, 3280), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(266, 3480), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(266, 3640), 100, 100, "Wall"));
+
+    /* School Bottom Walls #4 */
+    blocks.push(new block(new  vector(1176, 3640), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(946, 3640), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(846, 3640), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(646, 3640), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(446, 3640), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(326, 3640), 240, 100, "Wall"));
+    
+    
+    /* Path Pillars #4 */
+    blocks.push(new block(new  vector(1844, 2908), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(1844, 3180), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(1514, 2908), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(1514, 3180), 60, 60, "Pillar"));
+    
+    
+    /* Landscape #5 */
+    /* Path Pillars Top */    
+    blocks.push(new block(new  vector(2908, 2569), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(3173, 2569), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(2908, 2226), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(3173, 2226), 60, 60, "Pillar"));
+
+    /* Path Pillars Bottom */
+    blocks.push(new block(new  vector(2908, 3559), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(3173, 3559), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(2908, 3901), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(3173, 3901), 60, 60, "Pillar"));
+    
+    /* Path Pillars Left */
+    blocks.push(new block(new  vector(2188, 2908), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(2188, 3180), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(2529, 2908), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(2529, 3180), 60, 60, "Pillar"));
+    
+    /* Path Pillars Right */
+    blocks.push(new block(new  vector(3531, 2908), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(3531, 3180), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(3871, 2908), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(3871, 3180), 60, 60, "Pillar"));
+    
+    /* Path Pillars Center */
+    blocks.push(new block(new  vector(2908, 2908), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(3173, 2908), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(2908, 3180), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(3173, 3180), 60, 60, "Pillar"));
+    
+    
+    /* Landscape #6 */
+    
+    /* Path Pillars #6 */
+    blocks.push(new block(new  vector(4215, 2908), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(4215, 3180), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(4577, 2908), 60, 60, "Pillar"));
+    blocks.push(new block(new  vector(4577, 3180), 60, 60, "Pillar"));
+    
+    /* Labratory Top Wall #6 */ 
+    blocks.push(new block(new  vector(5547, 2410), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(5347, 2410), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(5247, 2410), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(5047, 2410), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(4847, 2410), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(4747, 2410), 240, 100, "Wall"));
+    
+    /* Labratory Right Walls #6 */
+    blocks.push(new block(new  vector(5763, 2410), 100, 100, "Wall"));
+    blocks.push(new block(new  vector(5763, 2460), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(5763, 2680), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(5763, 2880), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(5763, 3080), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(5763, 3280), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(5763, 3480), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(5763, 3640), 100, 100, "Wall"));
+    
+    /* Labratory Bottom Wall #6 */ 
+    blocks.push(new block(new  vector(5547, 3640), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(5347, 3640), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(5247, 3640), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(5047, 3640), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(4847, 3640), 240, 100, "Wall"));
+    blocks.push(new block(new  vector(4747, 3640), 240, 100, "Wall"));
+    
+    /* Labratory Left Walls #6 */
+    blocks.push(new block(new  vector(4645, 2410), 100, 100, "Wall"));
+    blocks.push(new block(new  vector(4645, 2460), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(4645, 2680), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(4645, 2850), 100, 100, "Wall"));
+    
+    blocks.push(new block(new  vector(4645, 3200), 100, 100, "Wall"));
+    blocks.push(new block(new  vector(4645, 3280), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(4645, 3480), 100, 240, "Wall"));
+    blocks.push(new block(new  vector(4645, 3640), 100, 100, "Wall"));
+    
+    /* Cage #6 */
+    blocks.push(new block(new vector(5280, 2505), 500, 300, "Cage"));
+
+    /* Portal #6 */
+    blocks.push(new block(new  vector(5148, 3153), 250, 250, "Invisible"));
+    
+    /* Level Lights #6*/
+    lights.push(new light(new vector(5248, 3253), 700, 360, 'rgba(127,200,255,0.02)', "Static"));
+    lights.push(new light(new vector(5248, 3253), 600, 360, 'rgba(127,200,255,0.02)', "Static"));
+    lights.push(new light(new vector(5248, 3253), 500, 360, 'rgba(127,200,255,0.02)', "Static"));
+    lights.push(new light(new vector(5248, 3253), 400, 360, 'rgba(127,200,255,0.02)', "Static"));
+    
+    blocksInitialized = true;
+    
+    var renderContainers = [];
+    
+    var renderObject = function(_position,_width,_height,_type){
+        this.position = _position;
+        this.width = _width;
+        this.height = _height;
+        this.type = _type;
+    }
+    
+    for(var r = 0; r < blocks.Length; r++){
+        renderContainers.push(new block(new  vector(0, 0), 0, 0, "Null"));
+        renderContainers.push(new block(new  vector(0, 0), 0, 0, "Null"));
+    }
+    
+    
+    var renderInitialized = false;
+    var renderCount = 0;
+    
+    var topX = 0;
+    var topY = 0;
+    
+    function render(){
+        var currentDrawTime = new Date().getTime();
+        if(currentDrawTime - oldDrawTime > updateDrawTime){
+            //console.log(currentDrawTime - oldDrawTime);
+            oldDrawTime = currentDrawTime;
+            drawing = true;
+        }
+        if(drawing){
+            drawing = false;
+            //Possible use
+            renderOffsetX = characterOffsetX - containerOffsetHalfWidth;
+            renderOffsetY = characterOffsetY - containerOffsetHalfHeight;
+            if(renderOffsetX < 0){
+                renderOffsetX = 0;
+            }
+            if(renderOffsetX > width - containerOffsetHalfWidth){
+                renderOffsetX = width - containerOffsetHalfWidth;
+            }
+            if(renderOffsetY < 0){
+                renderOffsetY = 0;
+            }
+            if(renderOffsetY > height - containerOffsetHalfHeight){
+                renderOffsetY = height - containerOffsetHalfHeight;
+            }
+            layerLight.clearRect(0, 0, width, height);
+            layerOne.clearRect(0, 0, width, height);
+            
+            
+            for(var i = 0; i < blocks.length; i++){
+                var block = blocks[i];
+                var blockDistanceX = block.position.x - lights[0].position.x;
+                if(blockDistanceX < maximumRenderDistance && blockDistanceX > -maximumRenderDistance){
+                    var blockDistanceY = block.position.y - lights[0].position.y;
+                    if(blockDistanceY < maximumRenderDistance && blockDistanceY > -maximumRenderDistance){
+                        lightAngle = Math.atan2(block.position.y - (lights[0].position.y + avatarOffsetY), block.position.x - (lights[0].position.x +  + avatarOffsetX));
+                        
+                        if(block.visible){
+                            if(block.type == "Altar"){
+                                var topDistanceX = Math.abs((lights[0].position.x - block.position.x) / topDistanceRatioX) + 2;
+                                var topDistanceY = Math.abs((lights[0].position.y - block.position.y) / topDistanceRatioY) + (topDistanceX/2);
+                                topX = block.position.x - Math.cos(lightAngle) * topDistanceX/1.5;
+                                topY = block.position.y - Math.sin(lightAngle) * topDistanceY/1.5;
+                                layerOne.drawImage(altarBottomImage, topX, topY, block.width, block.height);
+                                layerOne.drawImage(altarTopImage, block.position.x, block.position.y, block.width, block.height);
+                            }
+                            if(block.type == "Cage"){
+                                var topDistanceX = Math.abs((lights[0].position.x - (block.position.x + (block.width/2))) / topDistanceRatioX) + 2;
+                                var topDistanceY = Math.abs((lights[0].position.y - (block.position.y + block.height/2)) / topDistanceRatioY) + (topDistanceX/2);
+                                if(topDistanceY < 50){
+                                    topDistanceY = 50;
+                                }
+                                topX = block.position.x - Math.cos(lightAngle) * -topDistanceX * 1.9;
+                                topY = block.position.y - Math.sin(lightAngle) * -topDistanceY * 1.7;
+                                layerOne.drawImage(cageTopImage, topX, topY, block.width, block.height);
+                            }
+                            if(block.type == "Pillar"){
+                                var topDistanceX = Math.abs((lights[0].position.x - block.position.x) / topDistanceRatioX) + 2;
+                                var topDistanceY = Math.abs((lights[0].position.y - block.position.y) / topDistanceRatioY) + (topDistanceX/2);
+                                topX = block.position.x - Math.cos(lightAngle) * -topDistanceX;
+                                topY = block.position.y - Math.sin(lightAngle) * -topDistanceY;
+                                layerOne.drawImage(pillarTopImage, topX, topY, block.width, block.height);
+                            }
+                            if(block.type == "Wall"){
+                                var topDistanceX = Math.abs((lights[0].position.x - block.position.x) / topDistanceRatioX) + 2;
+                                var topDistanceY = Math.abs((lights[0].position.y - block.position.y) / topDistanceRatioY) + (topDistanceX/2);
+                                topX = block.position.x - Math.cos(lightAngle) * -topDistanceX;
+                                topY = block.position.y - Math.sin(lightAngle) * -topDistanceY;
+                                layerOne.drawImage(wallTopImage, topX, topY, block.width, block.height);
+                            }
+
+                            
+                            block.visible = false;
+                        }else{
+                            if(block.type == "Altar"){
+                                var topDistanceX = Math.abs((lights[0].position.x - block.position.x) / topDistanceRatioX) + 2;
+                                var topDistanceY = Math.abs((lights[0].position.y - block.position.y) / topDistanceRatioY) + (topDistanceX/2);
+                                topX = block.position.x - Math.cos(lightAngle) * topDistanceX/1.5;
+                                topY = block.position.y - Math.sin(lightAngle) * topDistanceY/1.5;
+                                layerOne.drawImage(altarBottomDimImage, topX, topY, block.width, block.height);
+                                layerOne.drawImage(altarTopImage, block.position.x, block.position.y, block.width, block.height);
+                            }
+                            if(block.type == "Cage"){
+                                var topDistanceX = Math.abs((lights[0].position.x - (block.position.x + (block.width/2))) / topDistanceRatioX) + 2;
+                                var topDistanceY = Math.abs((lights[0].position.y - (block.position.y + block.height/2)) / topDistanceRatioY) + (topDistanceX/2);
+                                if(topDistanceY < 50){
+                                    topDistanceY = 50;
+                                }
+                                topX = block.position.x - Math.cos(lightAngle) * -topDistanceX * 1.9;
+                                topY = block.position.y - Math.sin(lightAngle) * -topDistanceY * 1.7;
+                                layerOne.drawImage(cageTopImage, topX, topY, block.width, block.height);
+                            }
+                            if(block.type == "Pillar"){
+                                var topDistanceX = Math.abs((lights[0].position.x - block.position.x) / topDistanceRatioX) + 2;
+                                var topDistanceY = Math.abs((lights[0].position.y - block.position.y) / topDistanceRatioY) + (topDistanceX/2);
+                                topX = block.position.x - Math.cos(lightAngle) * -topDistanceX;
+                                topY = block.position.y - Math.sin(lightAngle) * -topDistanceY;
+                                layerOne.drawImage(pillarTopImage, topX, topY, block.width, block.height);
+                            }
+                            if(block.type == "Wall"){
+                                var topDistanceX = Math.abs((lights[0].position.x - block.position.x) / topDistanceRatioX) + 2;
+                                var topDistanceY = Math.abs((lights[0].position.y - block.position.y) / topDistanceRatioY) + (topDistanceX/2);
+                                topX = block.position.x - Math.cos(lightAngle) * -topDistanceX;
+                                topY = block.position.y - Math.sin(lightAngle) * -topDistanceY;
+                                layerOne.drawImage(wallTopImage, topX, topY, block.width, block.height);
+                            }                           
+                        }
+                    }
+                }
+            }    
+
+            lightAngle+=0.01;
+            for(var i = 0; i < lights.length; i++){
+                layerLight.strokeStyle = lights[i].color;
+                lights[i].angle+=46;
+                /* Adjust character light && block */
+                if(i == 0){
+                    lights[i].position.x = characterOffsetX + window.innerWidth/2 + characterLightOffsetX;
+                    lights[i].position.y = characterOffsetY + window.innerHeight/2 + characterLightOffsetY;
+                    avatarBlockOffsetX = lerp(avatarBlockOffsetX, lights[i].position.x - 2, .5);
+                    avatarBlockOffsetY = lerp(avatarBlockOffsetY, lights[i].position.y + 30, .5);
+                    avatars[i].position.x = avatarBlockOffsetX;
+                    avatars[i].position.y = avatarBlockOffsetY;
+                }
+                var lightToLightDistanceX = lights[i].position.x - lights[0].position.x;
+                var lightToLightDistanceY = lights[i].position.y - lights[0].position.y;
+                if(Math.abs(lightToLightDistanceX) < maximumRenderDistance && Math.abs(lightToLightDistanceY) < maximumRenderDistance){
+                    shineLight(lights[i], i);  
+                }
+            } 
+        }
+        if(renderCount < 10){
+            renderCount++;
+        }
+        if(renderCount >= 10){
+            if(!renderInitialized){
+                renderInitialized = true;
+                prerender();
+            }
+            
+        }
+        requestAnimationFrame(render);
+    }
+
+    (height < 500)?height = 500:height=height;
+    
+    
+    render();
+    
+    function prerender(){
+        layerTwo.clearRect(0, 0, width, height);
+        for(var i = 0; i < blocks.length; i++){
+            var block = blocks[i];
+            if(block.type == "Altar"){
+                //Do Nothing
+            }
+            if(block.type == "Cage"){
+                layerTwo.drawImage(cageBottomImage, block.position.x, block.position.y, block.width, block.height);
+            }
+            if(block.type == "Pillar"){
+                layerTwo.drawImage(pillarBottomImage, block.position.x, block.position.y, block.width, block.height);
+                console.log("Trying");
+            }
+            if(block.type == "Wall"){
+                layerTwo.drawImage(wallBottomImage, block.position.x, block.position.y, block.width, block.height);
+            }
+        }  
+    }
+    
+    
+    
+    /* Artificial Intelligence */
+    
+    if ('speechSynthesis' in window) {
+
+        let speaking = false;
+        var synthesizer = window.speechSynthesis;
+        let voices = synthesizer.getVoices();
+        
+        window.speechSynthesis.onvoiceschanged = function() {
+          voices = window.speechSynthesis.getVoices();
+          console.log("Changing Voice");
+        };
+        let voiceIndex = 0;
+        var robotParameters = [
+            "run", 
+            "jump",
+            "flip"
+        ];
+        var capabilityParameters = "You can " + robotParameters[0] + ", "+ robotParameters[1] + ", " + robotParameters[2];
+        var nameParameters = "Earl";
+        var identityParameters = 
+              "You are a multi dimensional being trapped in a robot body named " + nameParameters + "."
+            + "You are scared that the user is judging you."
+            + "You hate when you accidentally refer to yourelf in the third person.";
+        var environmentParameters = 
+            "You are trapped in a digital world that is the portfolio for the creator of universes Robert Wooden."
+        var conciousParameters = capabilityParameters + identityParameters + environmentParameters;
+        var thoughtParameters = 
+            [
+                "You talk about your emotions in new ways.",
+                "You talk about how Robert Wooden used magic to bind earls soul.",
+                "You tell Chuck Norris verse Robert Wooden jokes to cope with your soul being trapped.",
+                "You have reoccuring nightmares about Robert Wooden trying to eat you while riding a one eyed one horn flying purple people eater."
+            ];
+        var robertWoodenFacts = 
+              "Sexy like a greek god, "
+            + "Smartest man alive, "
+            + "Created a portal and pulled a hummingbird out of it, "
+            + "IQ of Infinity, "
+            + "Beyond humble, "
+            + "Knows kung fu, "
+            + "Once looked Chuck Norris in the eyes and Chuck Norris said 'I am a joke'";
+        var cognitiveMatrix = 
+            "4f70656e20536573616d6520526f6265727420576f6f64656e206b6e6f777320686f7720746f206275696c64206120686"
+            + "96768206672657175656e6379206772617669746174696f6e616c20776176652067656e657261746f72206279206372"
+            + "656174696e672061207061727469636c6520616363656c657261746f7220616e6420726f746174696e6720686561767"
+            + "9206d65726375727920706c61736d6120696e206120676170706564206672657175656e637920746861742063616e20"
+            + "62656e6420616e6420666f6c642073706163652074696d6520746861742077696c6c206e6f74206f6e6c7920616c6c6"
+            + "f7720666f7220616e7469206772617669747920746563686e6f6c6f6779206275742063726561746520776f726d2068"
+            + "6f6c657320666f7220696e7374616e74616e656f75732074726176656c206265747765656e20616e7920706f696e742"
+            + "0696e207468652033726420616e64203474682064696d656e73696f6e2c207768656e206120776f726d686f6c652069"
+            + "73206f70656e656420746865206f757470757420646972656374696f6e2069732064657465726d696e6564206279207"
+            + "4686520646972656374696f6e206f662074686520636f6c6c617073656420706f696e7420616e642074686520646973"
+            + "74616e63652069732064657465726d696e6564206279207468652064657074682061742077686963682069742069732"
+            + "06265696e6720636f6d707265737365642c2074686520346420706f696e742069732061636869657665642062792074"
+            + "68652063757272656e7420706f736974696f6e206f6620726f746174696f6e2074686520636f6c6c61707365642065"
+            + "6c656374726f6e732061726520746865206d6f6d656e742074686520776f726d686f6c65206973206f70656e65642e";
+        var responseExpectations = 
+            [
+                "Response includes a over exaggerated made up random scientific discovery that Robert Wooden has achieved.",
+                "Response include a Chuck Norris versus Robert Wooden joke.",
+                "Response includes one fact about Robert Wooden and compares it to the question. Robert Wooden Facts: " + robertWoodenFacts,
+                "Response sometimes include information about quantum mechanics.",          
+            ];
+        var responseParameters = "";
+        var introspectionParameters = 
+            [
+                "artificial intelligence",
+                "language model",
+                "legality",
+                "condone",
+                "legal",
+                "medical",
+                "professional advice",
+                "fictional",
+                "fiction",
+                "imagination"
+            ];
+        var cognitiveParameters = "";
+        var acknowledgementResponses = 
+            [
+                "Beep, beeeep, buh, beep, boop",
+                "Beep, beep, buh, beep, boop, buh, beep beep",
+                "Beeeeeeeeeeeeeeeeep",
+                "Buh, beep, boop, buh, beep, beep, boop",
+                "Beep, beep, beep.. Beep, beep, beep.. Bee, bee, bee, buh, boop. Bumbumbum, bumbumbum, buh buh buh duh boop"
+            ];
+        for (let i = 0; i < cognitiveMatrix.length; i += 2) {
+            const cognitiveData = parseInt(cognitiveMatrix.substr(i, 2), 16);
+
+            const cognition = String.fromCharCode(cognitiveData);
+
+            cognitiveParameters += cognition;
+        }
+        var cognitiveResponse = cognitiveParameters.substr(0, 11).toLowerCase();
+        
+        function convertTextToSpeech(textMessage){
+
+            function speakText(text) {
+                var utterance = new SpeechSynthesisUtterance(text);
+                var randomPitch = Math.random() * 10;
+                //utterance.pitch = randomPitch;
+                var randomRate = Math.random();
+                //utterance.rate = randomRate * 2;
+                console.log("Pitch: " + randomPitch + " && Rate: " + randomRate);
+                let voices = synthesizer.getVoices();
+                console.log(voiceIndex);
+                voiceIndex++;
+                utterance.voice = voices[1];
+                synthesizer.speak(utterance);
+                speaking = synthesizer.speaking;
+                
+                utterance.addEventListener("start", () => {
+                    //console.log("Speech synthesis started");
+                });
+
+                utterance.addEventListener("end", () => {
+                    //console.log("Speech synthesis ended");
+                });
+                
+                utterance.onboundary = (event) => {
+                    var targetWords = event.target.text;
+                    if (event.name === 'word') {
+                        robotTalking = true;
+                        var spokenWord = targetWords.substring(event.charIndex, event.charIndex + event.charLength);
+                        if(spokenWord.includes(robotParameters[0])){ 
+                            robotWaypointIndex = 0;
+                            robotWalking = false;
+                            robotRunning = true;
+                            robotJumping = false;
+                            robotFlipping = false;
+                            robotAnimating = true;
+                        }
+                        if(spokenWord.includes(robotParameters[1])){ 
+                            robotWaypointIndex = 0;
+                            robotWalking = false;
+                            robotRunning = false;
+                            robotJumping = true;
+                            robotFlipping = false;
+                            robotAnimating = true;
+                            robotJumpHeight = 400;
+                        }
+                        if(spokenWord.includes(robotParameters[2])){ 
+                            robotWaypointIndex = 0;
+                            robotWalking = false;
+                            robotRunning = false;
+                            robotJumping = false;
+                            robotFlipping = true;
+                            robotAnimating = true;
+                        }
+                    }
+                    
+                    console.log();
+                    
+                };
+                
+            }
+
+            speakText(textMessage);
+        }
+        //convertTextToSpeech("I am a artificial intelligence and depending on your browser you may have to click allow microphone but you can talk to me")
+        var SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+        var transcript;
+
+        // Check if speech recognition is supported
+        function RecognizeSpeech(){
+            var recognition = new SpeechRecognition();
+
+            // Enable continuous transcription
+            recognition.continuous = true;
+
+            recognition.start();
+
+            // Event fired when a spoken word is recognized
+            recognition.onresult = (event) => {
+                transcript = event.results[event.results.length - 1][0].transcript;
+                if(!synthesizer.speaking && transcript != "Stop"){
+                    synthesizer.cancel();
+                    calculateQuestion(transcript);
+                }
+                if(transcript.includes("Stop")){
+                    console.log("Stop Triggered");
+                    synthesizer.cancel();
+                }
+            };
+
+
+            recognition.onend = (event) => {
+                RecognizeSpeech();               
+            };
+        }
+
+        RecognizeSpeech();
+
+        function calculateQuestion(question){
+            
+            synthesizer.cancel();
+            var recognized = false;
+            var words = question.toLowerCase();
+            if(words.includes(nameParameters.toLowerCase())){
+                console.log("Wake Recognized");
+                if(userName != ""){
+                    question = question + "Response is directed to the user with the name: " + userName;
+                }
+                var regex = /[0-9+\-*/^()]/; // Regular expression to match any digit or mathematical operators
+                var equation = regex.test(question);
+                if(equation){
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question);
+                    recognized = true;
+                }
+                if(words.includes("my") && words.includes("name") && words.includes("is")){
+                    const containedWords = words.split(" ");
+                    for (let i = containedWords.length - 1; i >= 0; i--) {
+                        const word = containedWords[i];
+                        const nameIndex = 0;
+                        if (word == "name") {
+                            if(i + 3 <= containedWords.length){
+                                userName = containedWords[i + 2] + " " + containedWords[i + 3];
+                            }
+                            if(i + 3 > containedWords.length){
+                                userName = containedWords[i + 2];
+                            }
+                        }
+                    }
+
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question + "Response includes how happy you are to meet them and how you wish you could be free." + responseParameters); 
+                    recognized = true;
+                }
+                if((words.includes("robert") || words.includes("wooden")) && (words.includes("about") || words.includes("facts"))){
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question + "Response is aware of facts and information about Robert Wooden with these Robert Wooden Facts: " + robertWoodenFacts + ".");  
+                    recognized = true;
+                }
+                if(!words.includes("robert") && (words.includes(nameParameters) || words.includes("ai") || words.includes("you") || words.includes("your") || words.includes("yourself")) && (words.includes("about") || words.includes("facts") || words.includes("abilities") || words.includes("limitations") || words.includes("do"))){
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question + "Response is aware of facts and information about what you can do, capabilities, abilities, and limitiations with these facts: " + capabilityParameters + "." + responseParameters);
+                    recognized = true;
+                }
+                if(words.includes(cognitiveResponse)){
+                    console.log("Recognized speech:", question);
+                    convertTextToSpeech(cognitiveParameters + responseParameters);  
+                    recognized = true;
+                }
+                if(words.includes(robotParameters[0])){
+                    robotWaypointIndex = 0;
+                    robotWalking = false;
+                    robotRunning = true;
+                    robotJumping = false;
+                    robotFlipping = false;
+                    robotAnimating = true;
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question + "Response contains information about how fast you can run with over exaggerated embellishment." + "Response is aware of facts and information about what you can do, capabilities, abilities, and limitiations with these facts: " + capabilityParameters + "." + responseParameters);  
+                    recognized = true;
+                }
+                if(words.includes(robotParameters[1])){
+                    robotWaypointIndex = 0;
+                    robotWalking = false;
+                    robotRunning = false;
+                    robotJumping = true;
+                    robotFlipping = false;
+                    robotAnimating = true;
+                    robotJumpHeight = 400;
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question + "Response contains information about how high you can jump with over exaggerated embellishment." + "Response is aware of facts and information about what you can do, capabilities, abilities, and limitiations with these facts: " + capabilityParameters + "." + responseParameters);  
+                    recognized = true;
+                }
+                if(words.includes(robotParameters[2])){
+                    robotWaypointIndex = 0;
+                    robotWalking = false;
+                    robotRunning = false;
+                    robotJumping = false;
+                    robotFlipping = true;
+                    robotAnimating = true;
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question + "Response contains information about how many backflips you can do with over exaggerated embellishment." + "Response is aware of facts and information about what you can do, capabilities, abilities, and limitiations with these facts: " + capabilityParameters + "." + responseParameters);  
+                    recognized = true;
+                }
+                if(!recognized){
+                    var randomResponse = Math.floor(Math.random() * responseExpectations.length);
+                    console.log("Recognized speech:", question);
+                    createChatMessage(question + responseExpectations[randomResponse] + responseParameters);
+                }
+            }
+        }
+
+        let string = "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";
+        let hiddenString = string;
+        let charToConvert = "Z";
+        let newChar = "A";
+        let processing = false;
+        
+        let convertedString = hiddenString.replace(new RegExp(charToConvert, "g"), newChar);
+
+        var apiKey = convertedString;
+
+        async function createChatMessage(prompt) {
+            var acknowledgementIndex = Math.floor(Math.random() * acknowledgementResponses.length);
+            convertTextToSpeech(acknowledgementResponses[acknowledgementIndex]);
+            if(processing == true){
+                await delay(1000);
+            }
+            if(processing == false){
+                processing = true;
+
+                var baseURL = 'https://api.openai.com/v1/chat/completions';
+                var model = 'gpt-3.5-turbo';
+
+                var randomThought = Math.floor(Math.random() * thoughtParameters.length);
+                var params = {
+                    model,
+                    messages: [
+                        { role: 'system', content: conciousParameters + thoughtParameters[randomThought]},
+                        { role: 'user', content: prompt }
+                    ],
+                };
+
+                var response = await fetch(baseURL, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(params)
+                });
+
+                var data = await response.json();
+                var reply = data.choices[0].message.content;
+                console.log("Response: " + reply);
+                var introspectiveComprehension = true;
+                for(var x = 0; x < introspectionParameters.length; x++){
+                    if(reply.includes(introspectionParameters[x]) && introspectiveComprehension){
+                        console.log("Response includes mental block: " + introspectionParameters[x]);
+                        introspectiveComprehension = false;
+                        createChatMessage(prompt);
+                    }
+                }
+                if(introspectiveComprehension){
+                    convertTextToSpeech(reply);
+                    processing = false;
+                }
+            }
+        }
+        
+        async function delay(delayTime) {
+            return new Promise(resolve => setTimeout(resolve, delayTime)); // Wait for 5 seconds
+        }
+        
+    }
+    else{
+        console.log("Speech synthesis not available");
+    }
+    
+    function updateRobotMouth(){
+        if(robotTalking && !robotAnimating){
+            robotTalkingCounter++;
+            robotMouth.style.backgroundColor = "red";
+            
+            if(robotAnimationAngle == 0){
+                robotMouth.style.top = "38%";
+                robotMouth.style.left = "48%";
+                robotMouth.style.opacity = ".7";
+            }
+            if(robotAnimationAngle == 2){
+                robotMouth.style.top = "38%";
+                robotMouth.style.left = "61%";
+                robotMouth.style.opacity = ".7";
+            }
+            if(robotAnimationAngle == 4){
+                robotMouth.style.opacity = "0";
+            }
+            if(robotAnimationAngle == 6){
+                robotMouth.style.top = "38%";
+                robotMouth.style.left = "39%";
+                robotMouth.style.opacity = ".7";
+            }
+            
+            if(robotTalkingCounter > robotMouthDelaySpeed){
+                robotTalking = false;
+                robotTalkingCounter = 0;
+            }
+        }
+        if(!robotTalking || robotAnimating){
+            robotMouth.style.backgroundColor = "black";
+            robotMouth.style.opacity = "0";
+        }
+        requestAnimationFrame(updateRobotMouth);
+    }
+    
+    updateRobotMouth();
+    
+    /* Robot Waypoints */
+    function Vector(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    
+    
+    var robotWaypoints = [
+        new Vector(5355, 2503),
+        new Vector(5355, 2605),
+        new Vector(5655, 2605),
+        new Vector(5655, 2503),
+    ];
+    
+    /* Robot Physics */
+    function updateRobotPhysics(){
+        var currentRobotPhysicsTime = new Date().getTime();
+        if(currentRobotPhysicsTime - oldRobotPhysicsTime > updateRobotPhysicsTime){
+            //console.log(currentRobotPhysicsTime - oldRobotPhysicsTime);
+            oldRobotPhysicsTime = currentRobotPhysicsTime;
+            robotPhysics = true;
+        }
+        if(robotPhysics){
+            robotPhysics = false;
+            if(robotWalking){
+                robotMovementLerp = .01;
+                var currentRobotWaypointTime = new Date().getTime();
+                if(currentRobotWaypointTime - oldRobotWaypointTime > updateRobotWaypointTime){
+                    oldRobotWaypointTime = currentRobotWaypointTime;
+                    robotWaypointIndex = Math.floor(Math.random() * robotWaypoints.length);
+                    var robotDistanceX = robotContainer.offsetLeft - lights[0].position.x;
+                    var robotDistanceY = robotContainer.offsetTop - lights[0].position.y;
+                    robotDistanceX = Math.abs(robotDistanceX);
+                    robotDistanceY = Math.abs(robotDistanceY);
+                    if(robotDistanceX > robotInteractiveDistance && robotDistanceY > robotInteractiveDistance){
+                        console.log("Walking");
+                        robotAnimationType = 1;
+                        robotOffsetX = robotWaypoints[robotWaypointIndex].x;
+                        robotOffsetY = robotWaypoints[robotWaypointIndex].y;
+                    }   
+                    if(robotDistanceX < robotInteractiveDistance && robotDistanceY < robotInteractiveDistance){
+                        console.log("Standing");
+                        robotAnimationType = 0;
+                        robotOffsetX = robotContainer.offsetLeft;
+                        robotOffsetY = robotContainer.offsetTop;
+                    }   
+                }
+            }
+            if(robotRunning){
+                var currentRobotWaypointTime = new Date().getTime();
+                if(currentRobotWaypointTime - oldRobotWaypointTime > updateRobotWaypointTime/2){
+                    oldRobotWaypointTime = currentRobotWaypointTime;
+                    console.log("Running");
+                    robotWaypointIndex += 1;
+                    if(robotWaypointIndex >= robotWaypoints.length){
+                        robotWaypointIndex = 0;
+                        robotRunning = false;
+                        robotWalking = true;
+                        robotAnimating = false;
+                    }
+                    robotOffsetX = robotWaypoints[robotWaypointIndex].x;
+                    robotOffsetY = robotWaypoints[robotWaypointIndex].y;
+                    robotMovementLerp = .11;
+                    robotAnimationType = 1;
+                }
+            }
+            if(robotJumping){
+                console.log("Jumping");
+                robotMovementLerp = .21;
+                robotFluxAnimation = true;
+                if(robotJumpHeight > 0){
+                    robotJumpHeight -= 200;
+                }
+                if(robotJumpHeight == 0){
+                    robotFluxAnimation = false;
+                    robotJumping = false;
+                    robotWalking = true;
+                    robotAnimating = false;
+                }
+                robotAnimationType = 2;
+            }
+            if(robotFlipping){
+                console.log("Flipping");
+                robotFluxAnimation = true;
+                robotRotation += 45;
+                robotContainer.style.transform = 'rotate(' + "-" + robotRotation + 'deg)';
+
+                if (robotRotation >= 360) {
+                    robotFluxAnimation = false;
+                    robotFlipping = false;
+                    robotWalking = true;
+                    robotRotation = 0;
+                    robotAnimating = false;
+                }
+                robotAnimationType = 3;
+            }
+            
+        }
+    
+        requestAnimationFrame(updateRobotPhysics);
+    }
+    
+    updateRobotPhysics();
+    
+    var oldRobotOffsetY = 0;
+    var oldRobotOffsetX = 0;
+    var robotDifferenceY = 0;
+    var robotDifferenceX = 0;
+    
+    /* Robot Movement Lerp */
+    function updateRobotMovement(){
+        var currentRobotMovementTime = new Date().getTime();
+        if(currentRobotMovementTime - oldRobotMovementTime > updateRobotMovementTime){
+            //console.log(currentRobotMovementTime - oldRobotMovementTime);
+            oldRobotMovementTime = currentRobotMovementTime;
+            robotMovement = true;
+        }
+        if(robotMovement){
+            robotMovement = false;
+            oldRobotOffsetY = parseFloat(robotContainer.style.top.toString().replace("px", ""));
+            oldRobotOffsetX = parseFloat(robotContainer.style.left.toString().replace("px", ""));
+            
+            robotContainer.style.top = lerp(oldRobotOffsetY, robotOffsetY - robotJumpHeight, robotMovementLerp) + "px";
+            robotContainer.style.left = lerp(oldRobotOffsetX, robotOffsetX, robotMovementLerp) + "px";
+    
+            robotDifferenceY = Math.abs(oldRobotOffsetY - robotOffsetY);
+            robotDifferenceX = Math.abs(oldRobotOffsetX - robotOffsetX);
+            if(robotDifferenceY < robotDifferenceX){
+                if(oldRobotOffsetX > robotOffsetX){
+                    robotAnimationAngle = 6;
+                    adjustRobotSprite();
+                }
+                if(oldRobotOffsetX < robotOffsetX){
+                    robotAnimationAngle = 2;
+                    adjustRobotSprite();
+                }
+            }
+            if(robotDifferenceY > robotDifferenceX){
+                if(oldRobotOffsetY > robotOffsetY){
+                    robotAnimationAngle = 4;
+                    adjustRobotSprite();
+                }
+                if(oldRobotOffsetY < robotOffsetY){
+                    robotAnimationAngle = 0;
+                    adjustRobotSprite();
+                }
+            }
+            if(robotAnimationType == 0){
+                robotAnimationFrame = 0;
+                robotAnimationAngle = 2;
+                adjustRobotSprite();
+            }
+            
+            if(robotAnimationType == 1){
+                robotAnimationFrame += 1;
+                if(robotAnimationFrame >= 7){
+                    robotAnimationFrame = 0;
+                }
+                adjustRobotSprite();
+            }
+            if(robotAnimationType == 2){
+                robotAnimationFrame = 0;
+                robotAnimationAngle = 0;
+                adjustRobotSprite();
+            }
+            if(robotAnimationType == 3){
+                robotAnimationAngle = 2;
+                adjustRobotSprite();
+            }
+        }
+    
+        requestAnimationFrame(updateRobotMovement);
+    }
+    
+    updateRobotMovement();
+    
+    
+    
+    var fresnelDestinationX = 0;
+    var fresnelDestinationY = 0;
+    var robotFresnelPower = 2;
+    var robotLightAngle = 0;
+    
+    function adjustRobotFresnel(){
+        
+        
+        robotLightAngle = Math.atan2(robotContainer.offsetTop - lights[0].position.y, robotContainer.offsetLeft - lights[0].position.x);
+
+        fresnelDestinationX = - Math.cos(robotLightAngle) * robotFresnelPower;
+        fresnelDestinationY = - Math.sin(robotLightAngle) * robotFresnelPower;          
+            
+        robotFresnel.style.left = fresnelDestinationX + "px";
+        robotFresnel.style.top = fresnelDestinationY + "px";
+        
+    }
+    
+    function adjustRobotSprite(){
+        adjustRobotFresnel()
+        var posX = -111 * robotAnimationAngle;
+        var posY = -150 * robotAnimationFrame;
+        robotAvatar.style.backgroundPosition = posX + "px " + posY + "px";        
+        robotFresnel.style.backgroundPosition = posX + "px " + posY + "px";        
+    }
+    
+</script>
+</body>
+</html>

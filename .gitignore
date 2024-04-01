@@ -1,0 +1,41 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+package-lock.json
+
+# testing
+/coverage
+
+# production
+/build
+
+# dist
+/dist
+
+# cache
+/.cache
+
+# misc
+.DS_Store
+
+# dotenv environment variables file
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.development.local
+.env.test.local
+.env.production.local
+.env.development.env
+.env.test.env
+.env.production.env
+
+# xcf
+public/images/xcf
+
+# docker
+.dockerignore
+Dockerfile
+config.js
